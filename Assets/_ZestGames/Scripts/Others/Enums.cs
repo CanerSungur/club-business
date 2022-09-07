@@ -4,8 +4,9 @@ namespace ZestGames
     {
         public enum GameState { WaitingToStart, Started, PlatrofmEnded, GameEnded }
         public enum GameEnd { None, Success, Fail }
-        public enum PoolStamp { Something, MoneyCollect2D, MoneySpend2D }
+        public enum PoolStamp { Something, MoneyCollect2D, MoneySpend2D, Customer }
         public enum AudioType { Testing_PlayerMove, Button_Click, UpgradeMenu }
-        public enum AiStateType { Idle, WalkRandom, GetInQueue }
+        public enum AiStateType { Idle, Wander, GetInQueue }
+        public enum AiLocation { Outside, Inside }
     }
 }

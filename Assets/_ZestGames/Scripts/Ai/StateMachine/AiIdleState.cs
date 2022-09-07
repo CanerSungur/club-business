@@ -1,4 +1,5 @@
 using UnityEngine;
+using ZestCore.Utility;
 
 namespace ZestGames
 {
@@ -12,7 +13,7 @@ namespace ZestGames
 
         public override void EnterState(AiStateManager aiStateManager)
         {
-            Debug.Log("Entered idle state");
+            //Debug.Log("Entered idle state");
             aiStateManager.SwitchStateType(Enums.AiStateType.Idle);
 
             if (_ai == null)
@@ -46,7 +47,11 @@ namespace ZestGames
                 {
                     if (QueueManager.ExampleQueue.QueueIsFull || !_ai.CanGetIntoQueue)
                     {
-                        aiStateManager.SwitchState(aiStateManager.WalkState);
+                        //aiStateManager.SwitchState(aiStateManager.WanderState);
+                        if (RNG.RollDice(60))
+                            aiStateManager.SwitchState(aiStateManager.WanderState);
+                        else
+                            aiStateManager.SwitchState(aiStateManager.IdleState);
                     }
                     else
                     {

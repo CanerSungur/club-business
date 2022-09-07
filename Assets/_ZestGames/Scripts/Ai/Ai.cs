@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using ZestCore.Utility;
+using ClubBusiness;
 
 namespace ZestGames
 {
@@ -33,20 +34,26 @@ namespace ZestGames
         [SerializeField, Tooltip("Select layers that you want this object to be grounded.")] private LayerMask groundLayerMask;
         [SerializeField, Tooltip("Height that this object will be considered grounded when above groundable layers.")] private float groundedHeightLimit = 0.05f;
 
+        private Enums.AiLocation _currentLocation;
+
         #region CONTROLS
         public bool CanMove => GameManager.GameState == Enums.GameState.Started;
         public bool IsGrounded => Physics.Raycast(Collider.bounds.center, Vector3.down, Collider.bounds.extents.y + groundedHeightLimit, groundLayerMask);
         #endregion
 
         #region PROPERTIES
-        public float WalkSpeed => walkSpeed;
-        public float RunSpeed => runSpeed;
         public bool IsDead { get; private set; }
         public Transform Target { get; private set; }
         public bool IsInQueue { get; private set; }
         public bool QueueIsUp { get; set; }
         public bool CanGetIntoQueue { get; set; }
+        #endregion
+
+        #region GETTERS
+        public float WalkSpeed => walkSpeed;
+        public float RunSpeed => runSpeed;
         public float CurrentMovementSpeed => _currentMovementSpeed;
+        public Enums.AiLocation CurrentLocation => _currentLocation;
         #endregion
 
         #region EVENTS
@@ -54,10 +61,21 @@ namespace ZestGames
         public Action<Transform> OnSetTarget;
         #endregion
 
-        private void Init()
+        public void Init(CustomerManager customerManager, Enums.AiLocation location)
         {
+            _currentLocation = location;
+            if (_currentLocation == Enums.AiLocation.Outside)
+            {
+                CustomerManager.AddCustomerOutside(this);
+                CanGetIntoQueue = true;
+            }
+            else if (_currentLocation == Enums.AiLocation.Inside)
+            {
+                CustomerManager.AddCustomerInside(this);
+                CanGetIntoQueue = false;
+            }
+
             IsDead = IsInQueue = false;
-            CanGetIntoQueue = true;
             Target = null;
 
             CharacterTracker.AddAi(this);
@@ -70,35 +88,15 @@ namespace ZestGames
             OnDie += Die;
         }
 
-        private void OnEnable()
-        {
-            Init();
-        }
-
         private void OnDisable()
         {
             CharacterTracker.RemoveAi(this);
+            CustomerManager.RemoveCustomerInside(this);
+            CustomerManager.RemoveCustomerOutside(this);
+
             OnSetTarget -= SetTarget;
             OnDie -= Die;
         }
-
-        //private void Update()
-        //{
-        //    if (!IsMoving && IsGrounded && Rigidbody) Rigidbody.velocity = Vector3.zero;
-
-        //    UpdateCurrentMovementSpeed();
-        //}
-
-        //private void UpdateCurrentMovementSpeed()
-        //{
-        //    if (!useAcceleration) return;
-
-        //    if (IsMoving)
-        //        _currentMovementSpeed = Mathf.MoveTowards(_currentMovementSpeed, maxMovementSpeed, accelerationRate * Time.deltaTime);
-        //    else
-        //        _currentMovementSpeed = minMovementSpeed;
-        //}
-
         private void Die()
         {
             IsDead = true;

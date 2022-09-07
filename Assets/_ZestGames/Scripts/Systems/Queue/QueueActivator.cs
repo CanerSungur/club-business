@@ -1,3 +1,4 @@
+using ClubBusiness;
 using System.Collections;
 using UnityEngine;
 
@@ -6,12 +7,15 @@ namespace ZestGames
     public class QueueActivator : MonoBehaviour
     {
         private QueueSystem _queueSystem;
+        private Player _player;
+
         private readonly float _queueActivatorDelay = 1f;
-        private readonly WaitForSeconds _waitForBetweenActivations = new WaitForSeconds(1.5f);
+        private readonly WaitForSeconds _waitForBetweenActivations = new WaitForSeconds(0.5f);
         private IEnumerator _emptyCoroutine;
 
         #region PROPERTIES
         public bool PlayerIsInArea { get; private set; }
+        public bool CanTakeSomeoneIn => CustomerManager.ClubHasCapacity && _player != null && _queueSystem.EmptyQueuePoints.Count < _queueSystem.Capacity && _queueSystem.AisInQueue[0].StateManager.GetIntoQueueState.ReachedToQueue && !_player.TimerForAction.IsFilling;
         #endregion
 
         public void Init(QueueSystem queueSystem)
@@ -26,12 +30,15 @@ namespace ZestGames
         #region PUBLICS
         public void StartEmptyingQueue(Player player)
         {
+            if (_player == null)
+                _player = player;
+
             PlayerIsInArea = true;
 
             if (_queueSystem.EmptyQueuePoints.Count == _queueSystem.Capacity) // queue is empty
                 Debug.Log("Line is empty");
-            else
-                StartEmptyingCoroutine(player);
+
+            StartEmptyingCoroutine(player);
         }
         public void StopEmptyingQueue(Player player)
         {
@@ -47,12 +54,21 @@ namespace ZestGames
             _emptyCoroutine = EmptyQueueCoroutine(player);
             StartCoroutine(_emptyCoroutine);
         }
-        private void StopEmptyingCoroutine() => StopCoroutine(_emptyCoroutine);
+        private void StopEmptyingCoroutine()
+        {
+            if (_emptyCoroutine != null)
+                StopCoroutine(_emptyCoroutine);
+        }
         private IEnumerator EmptyQueueCoroutine(Player player)
         {
-            while (_queueSystem.EmptyQueuePoints.Count < _queueSystem.Capacity)
+            while (true)
             {
-                player.TimerForAction.StartFilling(_queueActivatorDelay, () => PlayerEvents.OnEmptyNextInQueue?.Invoke());
+                if (CanTakeSomeoneIn)
+                    player.TimerForAction.StartFilling(_queueActivatorDelay, () => PlayerEvents.OnEmptyNextInQueue?.Invoke());
+
+                if (!CustomerManager.ClubHasCapacity)
+                    Debug.Log("NO ROOM INSIDE!");
+
                 yield return _waitForBetweenActivations;
             }
         }

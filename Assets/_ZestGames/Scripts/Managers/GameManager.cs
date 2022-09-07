@@ -1,5 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
+using ClubBusiness;
+using ZestCore.Utility;
 
 namespace ZestGames
 {
@@ -14,6 +16,8 @@ namespace ZestGames
         private SettingsManager _settingsManager;
         private DataManager _dataManager;
         private QueueManager _queueManager;
+        private CustomerManager _customerManager;
+        private AreaManager _areaManager;
 
         private void Init()
         {
@@ -30,6 +34,10 @@ namespace ZestGames
             _uiManager.Init(this);
             _queueManager = GetComponent<QueueManager>();
             _queueManager.Init(this);
+            _customerManager = GetComponent<CustomerManager>();
+            Delayer.DoActionAfterDelay(this, 0.2f, () => _customerManager.Init(this));
+            _areaManager = GetComponent<AreaManager>();
+            _areaManager.Init(this);
 
             UiEvents.OnUpdateCollectableText?.Invoke(DataManager.TotalMoney);
             UiEvents.OnUpdateLevelText?.Invoke(LevelHandler.Level);

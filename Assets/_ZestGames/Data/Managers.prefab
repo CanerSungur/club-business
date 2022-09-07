@@ -16,6 +16,8 @@ GameObject:
   - component: {fileID: 5491084403859615927}
   - component: {fileID: 1124688366865923144}
   - component: {fileID: 2375652696458217420}
+  - component: {fileID: 8118947795600113794}
+  - component: {fileID: 5478943835266996791}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -133,3 +135,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exampleQueue: {fileID: 0}
+--- !u!114 &8118947795600113794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5491084403859615924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 487acecbd6b6c494d895e42a16a877cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  customersOutsideMaxCount: 10
+  customersInsideMaxCount: 20
+  spawnTransform: {fileID: 0}
+--- !u!114 &5478943835266996791
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5491084403859615924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5dbf53d1da66da428d6af47e3f05c47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleAreas:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}

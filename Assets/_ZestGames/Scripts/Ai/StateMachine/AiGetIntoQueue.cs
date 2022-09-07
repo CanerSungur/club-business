@@ -2,6 +2,7 @@ using UnityEngine;
 using ZestCore.Ai;
 using DG.Tweening;
 using System;
+using ClubBusiness;
 
 namespace ZestGames
 {
@@ -13,15 +14,17 @@ namespace ZestGames
         private bool _reachedToQueue, _isMoving;
 
         public QueuePoint CurrentQueuePoint => _currentQueuePoint;
+        public bool ReachedToQueue => _reachedToQueue;
 
         #region SEQUENCE
         private Sequence _rotationSequence;
         private Guid _rotationSequenceID;
+        private readonly Vector3 _rotation = new Vector3(0f, -90f, 0f);
         #endregion
 
         public override void EnterState(AiStateManager aiStateManager)
         {
-            Debug.Log("Entered get into queue state.");
+            //Debug.Log("Entered get into queue state.");
             aiStateManager.SwitchStateType(Enums.AiStateType.GetInQueue);
 
             if (_ai == null)
@@ -46,14 +49,14 @@ namespace ZestGames
             if (!_reachedToQueue)
             {
                 // go to queue
-                if (Operation.IsTargetReached(_ai.transform, _currentQueuePoint.transform.position, 0.001f))
+                if (Operation.IsTargetReached(_ai.transform, _currentQueuePoint.transform.position, 0.002f))
                 {
                     _reachedToQueue = true;
                     StartRotationSequence();
                 }
                 else
                 {
-                    Navigation.MoveTransform(_ai.transform, _currentQueuePoint.transform.position, _ai.WalkSpeed);
+                    Navigation.MoveTransform(_ai.transform, _currentQueuePoint.transform.position, _ai.RunSpeed);
                     Navigation.LookAtTarget(_ai.transform, _currentQueuePoint.transform.position);
                 }
             }
@@ -81,7 +84,9 @@ namespace ZestGames
         }
         public void ActivateStateAfterQueue()
         {
-            _ai.StateManager.SwitchState(_ai.StateManager.WalkState);
+            CustomerManager.RemoveCustomerOutside(_ai);
+            CustomerManager.AddCustomerInside(_ai);
+            _ai.StateManager.SwitchState(_ai.StateManager.WanderState);
         }
         #endregion
 
@@ -100,7 +105,7 @@ namespace ZestGames
                 _rotationSequenceID = Guid.NewGuid();
                 _rotationSequence.id = _rotationSequenceID;
 
-                _rotationSequence.Append(_ai.transform.DORotate(Vector3.zero, 1f)).OnComplete(() => DeleteRotationSequence());
+                _rotationSequence.Append(_ai.transform.DORotate(_rotation, 1f)).OnComplete(() => DeleteRotationSequence());
             }
         }
         private void DeleteRotationSequence()

@@ -1,9 +1,10 @@
+using ClubBusiness;
 using UnityEngine;
 using ZestCore.Ai;
 
 namespace ZestGames
 {
-    public class AiWalkState : AiBaseState
+    public class AiWanderState : AiBaseState
     {
         private Ai _ai;
 
@@ -12,14 +13,15 @@ namespace ZestGames
 
         public override void EnterState(AiStateManager aiStateMachine)
         {
-            Debug.Log("Entered walk state");
-            aiStateMachine.SwitchStateType(Enums.AiStateType.WalkRandom);
+            //Debug.Log("Entered wander state");
+            aiStateMachine.SwitchStateType(Enums.AiStateType.Wander);
 
             if (_ai == null)
                 _ai = aiStateMachine.Ai;
 
             _targetReached = false;
-            _randomPosition = new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-5f, 5f));
+            //_randomPosition = new Vector3(Random.Range(-5f, 5f), 0f, Random.Range(-5f, 5f));
+            _randomPosition = AreaManager.GetRandomIdleAreaPosition();
 
             _ai.OnMove?.Invoke();
         }

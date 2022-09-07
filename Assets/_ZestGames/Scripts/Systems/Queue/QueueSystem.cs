@@ -24,6 +24,7 @@ namespace ZestGames
         #endregion
 
         #region QUEUE POINTS LIST SYSTEM
+        private Dictionary<int, QueuePoint> _queuePoints = new Dictionary<int, QueuePoint>();
         private List<QueuePoint> _emptyQueuePoints;
         public List<QueuePoint> EmptyQueuePoints => _emptyQueuePoints == null ? _emptyQueuePoints = new List<QueuePoint>() : _emptyQueuePoints;
         public void AddQueuePoint(QueuePoint queuePoint)
@@ -74,6 +75,8 @@ namespace ZestGames
             for (int i = 0; i < count; i++)
             {
                 QueuePoint queuePoint = Instantiate(queuePointPrefab, Vector3.zero, _defaultRotation, transform);
+                _queuePoints.Add(i + 1, queuePoint);
+
                 queuePoint.Init(this, i + 1);
                 queuePoint.transform.localPosition = new Vector3(0f, 0f, queue * _queueOffset);
                 AddQueuePoint(queuePoint);
@@ -109,7 +112,8 @@ namespace ZestGames
             {
                 Ai ai = AisInQueue[i];
                 //ai.StateManager.GetIntoQueueState.CurrentQueuePoint.QueueIsReleased();
-                ai.StateManager.GetIntoQueueState.UpdateQueue(EmptyQueuePoints[0]);
+                //ai.StateManager.GetIntoQueueState.UpdateQueue(EmptyQueuePoints[0]);
+                ai.StateManager.GetIntoQueueState.UpdateQueue(_queuePoints[i + 1]);
                 // go to next queue
             }
 

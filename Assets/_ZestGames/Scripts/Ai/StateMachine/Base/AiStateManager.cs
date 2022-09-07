@@ -10,7 +10,7 @@ namespace ZestGames
 
         #region STATES
         public AiIdleState IdleState = new AiIdleState();
-        public AiWalkState WalkState = new AiWalkState();
+        public AiWanderState WanderState = new AiWanderState();
         public AiGetIntoQueue GetIntoQueueState = new AiGetIntoQueue();
         #endregion
 
@@ -23,6 +23,17 @@ namespace ZestGames
         {
             if (_ai == null)
                 _ai = ai;
+
+            //if (_ai.CurrentLocation == Enums.AiLocation.Outside)
+            //{
+            //    _currentState = GetIntoQueueState;
+            //    _currentState.EnterState(this);
+            //}
+            //else if (_ai.CurrentLocation == Enums.AiLocation.Inside)
+            //{
+            //    _currentState = IdleState;
+            //    _currentState.EnterState(this);
+            //}
 
             _currentState = IdleState;
             _currentState.EnterState(this);

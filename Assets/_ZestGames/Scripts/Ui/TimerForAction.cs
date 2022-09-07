@@ -93,6 +93,7 @@ namespace ZestGames
                     .Append(_canvas.DOScale(Vector3.zero, fillTime * 0.1f)).OnComplete(() => {
                         DeleteFillSequence();
                         DoAction();
+                        IsFilling = false;
                     });
             }
         }

@@ -27,9 +27,12 @@ namespace ZestGames
         #endregion
 
         public static float TotalMoney { get; private set; }
+        public static int ClubCapacity { get; private set; }
 
         public void Init(GameManager gameManager)
         {
+            ClubCapacity = 20;
+
             LoadData();
 
             UpdateMovementSpeed();
