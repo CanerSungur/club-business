@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace ZestGames
 {
@@ -16,6 +17,7 @@ namespace ZestGames
         public static Action OnSetCurrentMovementSpeed, OnSetCurrentMoneyValue;
         public static Action OnOpenedUpgradeCanvas, OnClosedUpgradeCanvas;
         public static Action OnEmptyNextInQueue, OnStopSpendingMoney;
+        public static Action OnStartLettingPeopleIn, OnStopLettingPeopleIn, OnStartFillingDrinks, OnStopFillingDrinks, OnStartCleaning, OnStopCleaning, OnStartBreakingUpFight, OnStopBreakingUpFight;
     }
 
     public static class PlayerUpgradeEvents

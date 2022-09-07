@@ -16,10 +16,6 @@ namespace ClubBusiness
         private readonly WaitForSeconds _waitForSpawnDelay = new WaitForSeconds(3f);
         #endregion
 
-        #region STATIC PROPERTIES
-        public static bool ClubHasCapacity => CustomersInside.Count < DataManager.ClubCapacity;
-        #endregion
-
         #region CUSTOMERS INSIDE
         private static List<Ai> _customersInside;
         public static List<Ai> CustomersInside => _customersInside == null ? _customersInside = new List<Ai>() : _customersInside;
@@ -50,6 +46,21 @@ namespace ClubBusiness
         }
         #endregion
 
+        #region CUSTOMERS ON DANCE FLOOR
+            private static List<Ai> _customersOnDanceFloor;
+        public static List<Ai> CustomersOnDanceFloor => _customersOnDanceFloor == null ? _customersOnDanceFloor = new List<Ai>() : _customersOnDanceFloor;
+        public static void AddCustomerOnDanceFloor(Ai ai)
+        {
+            if (!CustomersOnDanceFloor.Contains(ai))
+                CustomersOnDanceFloor.Add(ai);
+        }
+        public static void RemoveCustomerFromDanceFloor(Ai ai)
+        {
+            if (CustomersOnDanceFloor.Contains(ai))
+                CustomersOnDanceFloor.Remove(ai);
+        }
+        #endregion
+
         public void Init(GameManager gameManager)
         {
             StartCoroutine(SpawnCustomerOutsideCoroutine());
@@ -65,8 +76,8 @@ namespace ClubBusiness
                     Ai customerOutside = ObjectPooler.Instance.SpawnFromPool(Enums.PoolStamp.Customer, spawnTransform.position, Quaternion.identity).GetComponent<Ai>();
                     customerOutside.Init(this, Enums.AiLocation.Outside);
 
-                    Debug.Log("Outside: " + CustomersOutside.Count);
-                    Debug.Log("Inside: " + CustomersInside.Count);
+                    //Debug.Log("Outside: " + CustomersOutside.Count);
+                    //Debug.Log("Inside: " + CustomersInside.Count);
                 }
 
                 yield return _waitForSpawnDelay;

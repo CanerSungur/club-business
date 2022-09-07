@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 using System;
+using ClubBusiness;
 
 namespace ZestGames
 {
@@ -30,6 +31,8 @@ namespace ZestGames
         public PlayerMoneyHandler MoneyHandler => _moneyHandler == null ? _moneyHandler = GetComponent<PlayerMoneyHandler>() : _moneyHandler;
         private PlayerAudio _audioHandler;
         public PlayerAudio AudioHandler => _audioHandler == null ? _audioHandler = GetComponent<PlayerAudio>() : _audioHandler;
+        private PlayerStateController _stateController;
+        public PlayerStateController StateController => _stateController == null ? _stateController = GetComponent<PlayerStateController>() : _stateController;
         #endregion
 
         #region PROPERTIES
@@ -56,6 +59,7 @@ namespace ZestGames
             CollisionHandler.Init(this);
             MoneyHandler.Init(this);
             AudioHandler.Init(this);
+            StateController.Init(this);
             timerForAction.Init();
 
             PlayerUpgradeEvents.OnOpenCanvas += HandleUpgradeStart;

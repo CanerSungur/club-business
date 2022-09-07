@@ -14,6 +14,7 @@ namespace ZestGames
         private readonly int _loseID = Animator.StringToHash("Lose");
         private readonly int _cheerID = Animator.StringToHash("Cheer");
         private readonly int _cheerIndexID = Animator.StringToHash("CheerIndex");
+        private readonly int _letInID = Animator.StringToHash("LetIn");
         #endregion
 
         public void Init(Player player)
@@ -21,7 +22,7 @@ namespace ZestGames
             if (_player == null)
             {
                 _player = player;
-                _animator = GetComponent<Animator>();
+                _animator = transform.GetChild(0).GetComponent<Animator>();
             }
 
             PlayerEvents.OnMove += Move;
@@ -30,6 +31,8 @@ namespace ZestGames
             PlayerEvents.OnWin += Win;
             PlayerEvents.OnLose += Lose;
             PlayerEvents.OnCheer += Cheer;
+            PlayerEvents.OnStartLettingPeopleIn += StartLettingIn;
+            PlayerEvents.OnStopLettingPeopleIn += StopLettingIn;
         }
 
         private void OnDisable()
@@ -42,6 +45,17 @@ namespace ZestGames
             PlayerEvents.OnWin -= Win;
             PlayerEvents.OnLose -= Lose;
             PlayerEvents.OnCheer -= Cheer;
+            PlayerEvents.OnStartLettingPeopleIn -= StartLettingIn;
+            PlayerEvents.OnStopLettingPeopleIn -= StopLettingIn;
+        }
+
+        private void StartLettingIn()
+        {
+            _animator.SetBool(_letInID, true);
+        }
+        private void StopLettingIn()
+        {
+            _animator.SetBool(_letInID, false);
         }
 
         #region BASIC ANIM FUNCTIONS

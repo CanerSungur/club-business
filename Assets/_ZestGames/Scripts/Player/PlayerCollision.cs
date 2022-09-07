@@ -19,6 +19,7 @@ namespace ZestGames
             if (other.TryGetComponent(out QueueActivator queueActivator) && !queueActivator.PlayerIsInArea)
             {
                 queueActivator.StartEmptyingQueue(_player);
+                PlayerEvents.OnStartLettingPeopleIn?.Invoke();
                 //_player.TimerForAction.StartFilling(() => queueActivator.StartEmptyingQueue());
             }
 
@@ -37,6 +38,7 @@ namespace ZestGames
             if (other.TryGetComponent(out QueueActivator queueActivator) && queueActivator.PlayerIsInArea)
             {
                 queueActivator.StopEmptyingQueue(_player);
+                PlayerEvents.OnStopLettingPeopleIn?.Invoke();
                 //_player.TimerForAction.StopFilling();
             }
 

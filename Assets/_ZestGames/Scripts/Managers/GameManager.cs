@@ -18,6 +18,7 @@ namespace ZestGames
         private QueueManager _queueManager;
         private CustomerManager _customerManager;
         private AreaManager _areaManager;
+        private ClubManager _clubManager;
 
         private void Init()
         {
@@ -34,6 +35,8 @@ namespace ZestGames
             _uiManager.Init(this);
             _queueManager = GetComponent<QueueManager>();
             _queueManager.Init(this);
+            _clubManager = GetComponent<ClubManager>();
+            _clubManager.Init(this);
             _customerManager = GetComponent<CustomerManager>();
             Delayer.DoActionAfterDelay(this, 0.2f, () => _customerManager.Init(this));
             _areaManager = GetComponent<AreaManager>();

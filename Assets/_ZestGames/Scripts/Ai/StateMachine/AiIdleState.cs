@@ -1,3 +1,4 @@
+using ClubBusiness;
 using UnityEngine;
 using ZestCore.Utility;
 
@@ -41,24 +42,26 @@ namespace ZestGames
         {
             if (_canMakeADecision)
             {
-                if (_ai.IsInQueue)
-                    _canMakeADecision = false;
-                else
+                if (QueueManager.ExampleQueue.QueueIsFull || !_ai.CanGetIntoQueue)
                 {
-                    if (QueueManager.ExampleQueue.QueueIsFull || !_ai.CanGetIntoQueue)
+                    //aiStateManager.SwitchState(aiStateManager.WanderState);
+                    if (ClubManager.DanceFloorHasCapacity)
                     {
-                        //aiStateManager.SwitchState(aiStateManager.WanderState);
+                        aiStateManager.SwitchState(aiStateManager.DanceState);
+                    }
+                    else
+                    {
                         if (RNG.RollDice(60))
                             aiStateManager.SwitchState(aiStateManager.WanderState);
                         else
                             aiStateManager.SwitchState(aiStateManager.IdleState);
                     }
-                    else
-                    {
-                        // we can get into queue
-                        aiStateManager.SwitchState(aiStateManager.GetIntoQueueState);
-                        _ai.CanGetIntoQueue = false;
-                    }
+                }
+                else
+                {
+                    // we can get into queue
+                    aiStateManager.SwitchState(aiStateManager.GetIntoClubState);
+                    _ai.CanGetIntoQueue = false;
                 }
             }
         }

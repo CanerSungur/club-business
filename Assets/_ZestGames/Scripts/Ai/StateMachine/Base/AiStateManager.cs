@@ -1,3 +1,4 @@
+using ClubBusiness;
 using UnityEngine;
 
 namespace ZestGames
@@ -11,7 +12,8 @@ namespace ZestGames
         #region STATES
         public AiIdleState IdleState = new AiIdleState();
         public AiWanderState WanderState = new AiWanderState();
-        public AiGetIntoQueue GetIntoQueueState = new AiGetIntoQueue();
+        public AiGetIntoClubState GetIntoClubState = new AiGetIntoClubState();
+        public AiDanceState DanceState = new AiDanceState();
         #endregion
 
         #region PROPERTIES

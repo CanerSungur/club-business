@@ -15,7 +15,7 @@ namespace ZestGames
 
         #region PROPERTIES
         public bool PlayerIsInArea { get; private set; }
-        public bool CanTakeSomeoneIn => CustomerManager.ClubHasCapacity && _player != null && _queueSystem.EmptyQueuePoints.Count < _queueSystem.Capacity && _queueSystem.AisInQueue[0].StateManager.GetIntoQueueState.ReachedToQueue && !_player.TimerForAction.IsFilling;
+        public bool CanTakeSomeoneIn => ClubManager.ClubHasCapacity && _player != null && _queueSystem.EmptyQueuePoints.Count < _queueSystem.Capacity && _queueSystem.AisInQueue[0].StateManager.GetIntoClubState.ReachedToQueue && !_player.TimerForAction.IsFilling;
         #endregion
 
         public void Init(QueueSystem queueSystem)
@@ -66,7 +66,7 @@ namespace ZestGames
                 if (CanTakeSomeoneIn)
                     player.TimerForAction.StartFilling(_queueActivatorDelay, () => PlayerEvents.OnEmptyNextInQueue?.Invoke());
 
-                if (!CustomerManager.ClubHasCapacity)
+                if (!ClubManager.ClubHasCapacity)
                     Debug.Log("NO ROOM INSIDE!");
 
                 yield return _waitForBetweenActivations;

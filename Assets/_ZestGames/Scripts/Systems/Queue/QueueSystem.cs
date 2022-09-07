@@ -105,15 +105,15 @@ namespace ZestGames
 
             Ai firstAi = AisInQueue[0];
             RemoveAiFromQueue(firstAi);
-            firstAi.StateManager.GetIntoQueueState.CurrentQueuePoint.QueueIsReleased();
-            firstAi.StateManager.GetIntoQueueState.ActivateStateAfterQueue();
+            firstAi.StateManager.GetIntoClubState.CurrentQueuePoint.QueueIsReleased();
+            firstAi.StateManager.GetIntoClubState.ActivateStateAfterQueue();
 
             for (int i = 0; i < AisInQueue.Count; i++)
             {
                 Ai ai = AisInQueue[i];
                 //ai.StateManager.GetIntoQueueState.CurrentQueuePoint.QueueIsReleased();
                 //ai.StateManager.GetIntoQueueState.UpdateQueue(EmptyQueuePoints[0]);
-                ai.StateManager.GetIntoQueueState.UpdateQueue(_queuePoints[i + 1]);
+                ai.StateManager.GetIntoClubState.UpdateQueue(_queuePoints[i + 1]);
                 // go to next queue
             }
 

@@ -13,6 +13,9 @@ namespace ZestGames
         private readonly int _dieID = Animator.StringToHash("Die");
         private readonly int _winID = Animator.StringToHash("Win");
         private readonly int _loseID = Animator.StringToHash("Lose");
+        private readonly int _startDancingID = Animator.StringToHash("StartDancing");
+        private readonly int _stopDancingID = Animator.StringToHash("StopDancing");
+        private readonly int _danceIndexID = Animator.StringToHash("DanceIndex");
         #endregion
 
         public void Init(Ai ai)
@@ -28,6 +31,8 @@ namespace ZestGames
             _ai.OnDie += Die;
             _ai.OnWin += Win;
             _ai.OnLose += Lose;
+            _ai.OnStartDancing += StartDancing;
+            _ai.OnStopDancing += StopDancing;
         }
 
         private void OnDisable()
@@ -39,8 +44,20 @@ namespace ZestGames
             _ai.OnDie -= Die;
             _ai.OnWin -= Win;
             _ai.OnLose -= Lose;
+            _ai.OnStartDancing -= StartDancing;
+            _ai.OnStopDancing -= StopDancing;
         }
 
+        private void SelectRandomDance()
+        {
+            _animator.SetInteger(_danceIndexID, Random.Range(0, 4));
+        }
+        private void StartDancing()
+        {
+            SelectRandomDance();
+            _animator.SetTrigger(_startDancingID);
+        }
+        private void StopDancing() => _animator.SetTrigger(_stopDancingID);
         #region BASIC ANIM FUNCTIONS
         private void Idle() => _animator.SetBool(_moveID, false);
         private void Move() => _animator.SetBool(_moveID, true);

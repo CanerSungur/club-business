@@ -21,9 +21,15 @@ namespace ZestGames
         public AiAnimationController AnimationController => animationController == null ? animationController = GetComponent<AiAnimationController>() : animationController;
         private AiCollision collision;
         public AiCollision Collision => collision == null ? collision = GetComponent<AiCollision>() : collision;
+        private AiAppearanceHandler _appereanceHandler;
+        public AiAppearanceHandler AppereanceHandler => _appereanceHandler == null ? _appereanceHandler = GetComponent<AiAppearanceHandler>() : _appereanceHandler;
         //private IAiMovement movement;
         //public IAiMovement Movement => movement == null ? movement = GetComponent<IAiMovement>() : movement;
         #endregion
+
+        [Header("-- SETUP --")]
+        [SerializeField] private Enums.AiGender gender;
+        private Enums.AiLocation _currentLocation;
 
         [Header("-- MOVEMENT SETUP --")]
         [SerializeField] private float runSpeed = 3f;
@@ -34,8 +40,6 @@ namespace ZestGames
         [SerializeField, Tooltip("Select layers that you want this object to be grounded.")] private LayerMask groundLayerMask;
         [SerializeField, Tooltip("Height that this object will be considered grounded when above groundable layers.")] private float groundedHeightLimit = 0.05f;
 
-        private Enums.AiLocation _currentLocation;
-
         #region CONTROLS
         public bool CanMove => GameManager.GameState == Enums.GameState.Started;
         public bool IsGrounded => Physics.Raycast(Collider.bounds.center, Vector3.down, Collider.bounds.extents.y + groundedHeightLimit, groundLayerMask);
@@ -44,8 +48,7 @@ namespace ZestGames
         #region PROPERTIES
         public bool IsDead { get; private set; }
         public Transform Target { get; private set; }
-        public bool IsInQueue { get; private set; }
-        public bool QueueIsUp { get; set; }
+        public bool IsDancing { get; private set; }
         public bool CanGetIntoQueue { get; set; }
         #endregion
 
@@ -54,10 +57,11 @@ namespace ZestGames
         public float RunSpeed => runSpeed;
         public float CurrentMovementSpeed => _currentMovementSpeed;
         public Enums.AiLocation CurrentLocation => _currentLocation;
+        public Enums.AiGender Gender => gender;
         #endregion
 
         #region EVENTS
-        public Action OnIdle, OnMove, OnDie, OnWin, OnLose;
+        public Action OnIdle, OnMove, OnDie, OnWin, OnLose, OnStartDancing, OnStopDancing;
         public Action<Transform> OnSetTarget;
         #endregion
 
@@ -75,16 +79,19 @@ namespace ZestGames
                 CanGetIntoQueue = false;
             }
 
-            IsDead = IsInQueue = false;
+            IsDead = IsDancing = false;
             Target = null;
 
             CharacterTracker.AddAi(this);
 
             StateManager.Init(this);
             AnimationController.Init(this);
+            AppereanceHandler.Init(this);
             //Movement.Init(this);
 
             OnSetTarget += SetTarget;
+            OnStartDancing += StartDancing;
+            OnStopDancing += StopDancing;
             OnDie += Die;
         }
 
@@ -95,6 +102,8 @@ namespace ZestGames
             CustomerManager.RemoveCustomerOutside(this);
 
             OnSetTarget -= SetTarget;
+            OnStartDancing -= StartDancing;
+            OnStopDancing -= StopDancing;
             OnDie -= Die;
         }
         private void Die()
@@ -104,7 +113,16 @@ namespace ZestGames
             CharacterTracker.RemoveAi(this);
             Delayer.DoActionAfterDelay(this, 5f, () => gameObject.SetActive(false));
         }
+        private void StartDancing()
+        {
+            IsDancing = true;
+        }
+        private void StopDancing()
+        {
+            IsDancing = false;
+        }
 
+        #region PUBLICS
         public void SetTarget(Transform transform)
         {
             if (!CanMove) return;
@@ -112,5 +130,6 @@ namespace ZestGames
             Target = transform;
             OnMove?.Invoke();
         }
+        #endregion
     }
 }

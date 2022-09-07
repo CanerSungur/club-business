@@ -6,7 +6,7 @@ using ClubBusiness;
 
 namespace ZestGames
 {
-    public class AiGetIntoQueue : AiBaseState
+    public class AiGetIntoClubState : AiBaseState
     {
         private Ai _ai;
 
@@ -25,7 +25,7 @@ namespace ZestGames
         public override void EnterState(AiStateManager aiStateManager)
         {
             //Debug.Log("Entered get into queue state.");
-            aiStateManager.SwitchStateType(Enums.AiStateType.GetInQueue);
+            aiStateManager.SwitchStateType(Enums.AiStateType.GetIntoClub);
 
             if (_ai == null)
                 _ai = aiStateManager.Ai;
