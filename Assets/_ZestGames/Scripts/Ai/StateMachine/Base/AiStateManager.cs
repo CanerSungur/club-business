@@ -14,6 +14,7 @@ namespace ZestGames
         public AiWanderState WanderState = new AiWanderState();
         public AiGetIntoClubState GetIntoClubState = new AiGetIntoClubState();
         public AiDanceState DanceState = new AiDanceState();
+        public AiBuyDrinkState BuyDrinkState = new AiBuyDrinkState();
         #endregion
 
         #region PROPERTIES
@@ -26,19 +27,19 @@ namespace ZestGames
             if (_ai == null)
                 _ai = ai;
 
-            //if (_ai.CurrentLocation == Enums.AiLocation.Outside)
-            //{
-            //    _currentState = GetIntoQueueState;
-            //    _currentState.EnterState(this);
-            //}
-            //else if (_ai.CurrentLocation == Enums.AiLocation.Inside)
-            //{
-            //    _currentState = IdleState;
-            //    _currentState.EnterState(this);
-            //}
+            if (_ai.CurrentLocation == Enums.AiLocation.Outside)
+            {
+                _currentState = GetIntoClubState;
+                _currentState.EnterState(this);
+            }
+            else if (_ai.CurrentLocation == Enums.AiLocation.Inside)
+            {
+                _currentState = IdleState;
+                _currentState.EnterState(this);
+            }
 
-            _currentState = IdleState;
-            _currentState.EnterState(this);
+            //_currentState = IdleState;
+            //_currentState.EnterState(this);
         }
 
         private void Update()

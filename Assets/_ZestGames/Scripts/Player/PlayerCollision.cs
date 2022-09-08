@@ -19,7 +19,10 @@ namespace ZestGames
             if (other.TryGetComponent(out QueueActivator queueActivator) && !queueActivator.PlayerIsInArea)
             {
                 queueActivator.StartEmptyingQueue(_player);
-                PlayerEvents.OnStartLettingPeopleIn?.Invoke();
+                if (queueActivator.QueueSystem.QueueType == Enums.QueueType.Gate)
+                    PlayerEvents.OnStartLettingPeopleIn?.Invoke();
+                else if (queueActivator.QueueSystem.QueueType == Enums.QueueType.Bar)
+                    PlayerEvents.OnStartFillingDrinks?.Invoke();
                 //_player.TimerForAction.StartFilling(() => queueActivator.StartEmptyingQueue());
             }
 
@@ -38,7 +41,10 @@ namespace ZestGames
             if (other.TryGetComponent(out QueueActivator queueActivator) && queueActivator.PlayerIsInArea)
             {
                 queueActivator.StopEmptyingQueue(_player);
-                PlayerEvents.OnStopLettingPeopleIn?.Invoke();
+                if (queueActivator.QueueSystem.QueueType == Enums.QueueType.Gate)
+                    PlayerEvents.OnStopLettingPeopleIn?.Invoke();
+                else if (queueActivator.QueueSystem.QueueType == Enums.QueueType.Bar)
+                    PlayerEvents.OnStopFillingDrinks?.Invoke();
                 //_player.TimerForAction.StopFilling();
             }
 

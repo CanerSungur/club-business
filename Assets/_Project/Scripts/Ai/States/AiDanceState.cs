@@ -16,6 +16,8 @@ namespace ClubBusiness
 
         public override void EnterState(AiStateManager aiStateManager)
         {
+            aiStateManager.SwitchStateType(Enums.AiStateType.Dance);
+
             if (_ai == null)
                 _ai = aiStateManager.Ai;
 

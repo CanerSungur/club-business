@@ -1,17 +1,17 @@
-using UnityEngine;
-using ZestCore.Ai;
 using DG.Tweening;
 using System;
-using ClubBusiness;
+using UnityEngine;
+using ZestGames;
+using ZestCore.Ai;
+using ZestCore.Utility;
 
-namespace ZestGames
+namespace ClubBusiness
 {
-    public class AiGetIntoClubState : AiBaseState
+    public class AiBuyDrinkState : AiBaseState
     {
         private Ai _ai;
-
         private QueuePoint _currentQueuePoint;
-        private bool _reachedToQueue, _isMoving;
+        private bool _reachedToQueue;
 
         public QueuePoint CurrentQueuePoint => _currentQueuePoint;
         public bool ReachedToQueue => _reachedToQueue;
@@ -24,14 +24,15 @@ namespace ZestGames
 
         public override void EnterState(AiStateManager aiStateManager)
         {
-            //Debug.Log("Entered get into queue state.");
-            aiStateManager.SwitchStateType(Enums.AiStateType.GetIntoClub);
+            aiStateManager.SwitchStateType(Enums.AiStateType.BuyDrink);
 
             if (_ai == null)
                 _ai = aiStateManager.Ai;
 
-            _reachedToQueue = _isMoving = false;
-            _currentQueuePoint = QueueManager.ExampleQueue.GetQueue(_ai);
+            _reachedToQueue = false;
+            _currentQueuePoint = QueueManager.BarQueue.GetQueue(_ai);
+
+            _ai.OnMove?.Invoke();
         }
 
         public override void UpdateState(AiStateManager aiStateManager)
@@ -50,45 +51,34 @@ namespace ZestGames
                 {
                     _reachedToQueue = true;
                     StartRotationSequence();
+
+                    // start asking for drink animation
+                    _ai.OnIdle?.Invoke();
+                    _ai.OnStartAskingForDrink?.Invoke();
                 }
                 else
                 {
-                    if (!_isMoving)
-                    {
-                        _ai.OnMove?.Invoke();
-                        _isMoving = true;
-                    }
-
                     Navigation.MoveTransform(_ai.transform, _currentQueuePoint.transform.position, _ai.RunSpeed);
                     Navigation.LookAtTarget(_ai.transform, _currentQueuePoint.transform.position);
-                }
-            }
-            else
-            {
-                // wait for your turn
-                if (_isMoving)
-                {
-                    _ai.OnIdle?.Invoke();
-                    _isMoving = false;
                 }
             }
         }
 
         #region PUBLICS
-        public void UpdateQueue(QueuePoint queuePoint)
-        {
-            _currentQueuePoint.QueueIsReleased();
-            _currentQueuePoint = queuePoint;
-            _currentQueuePoint.QueueIsTaken();
-
-            _reachedToQueue = false;
-            _ai.OnMove?.Invoke();
-            _isMoving = true;
-        }
         public void ActivateStateAfterQueue()
         {
-            CustomerManager.RemoveCustomerOutside(_ai);
-            CustomerManager.AddCustomerInside(_ai);
+            // Take drink
+            // Drink it
+            _ai.OnStopAskingForDrink?.Invoke();
+            _ai.OnDrink?.Invoke();
+
+            //CustomerManager.RemoveCustomerOutside(_ai);
+            //CustomerManager.AddCustomerInside(_ai);
+            //_ai.StateManager.SwitchState(_ai.StateManager.WanderState);
+        }
+        public void FinishDrinking()
+        {
+            _currentQueuePoint.QueueIsReleased();
             _ai.StateManager.SwitchState(_ai.StateManager.WanderState);
         }
         #endregion

@@ -49,7 +49,6 @@ namespace ZestGames
         public bool IsDead { get; private set; }
         public Transform Target { get; private set; }
         public bool IsDancing { get; private set; }
-        public bool CanGetIntoQueue { get; set; }
         #endregion
 
         #region GETTERS
@@ -61,7 +60,7 @@ namespace ZestGames
         #endregion
 
         #region EVENTS
-        public Action OnIdle, OnMove, OnDie, OnWin, OnLose, OnStartDancing, OnStopDancing;
+        public Action OnIdle, OnMove, OnDie, OnWin, OnLose, OnStartDancing, OnStopDancing, OnDrink, OnStartAskingForDrink, OnStopAskingForDrink;
         public Action<Transform> OnSetTarget;
         #endregion
 
@@ -71,12 +70,10 @@ namespace ZestGames
             if (_currentLocation == Enums.AiLocation.Outside)
             {
                 CustomerManager.AddCustomerOutside(this);
-                CanGetIntoQueue = true;
             }
             else if (_currentLocation == Enums.AiLocation.Inside)
             {
                 CustomerManager.AddCustomerInside(this);
-                CanGetIntoQueue = false;
             }
 
             IsDead = IsDancing = false;

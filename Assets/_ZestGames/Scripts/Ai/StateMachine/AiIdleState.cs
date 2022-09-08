@@ -42,7 +42,7 @@ namespace ZestGames
         {
             if (_canMakeADecision)
             {
-                if (QueueManager.ExampleQueue.QueueIsFull || !_ai.CanGetIntoQueue)
+                if (QueueManager.BarQueue.QueueIsFull)
                 {
                     //aiStateManager.SwitchState(aiStateManager.WanderState);
                     if (ClubManager.DanceFloorHasCapacity)
@@ -60,8 +60,7 @@ namespace ZestGames
                 else
                 {
                     // we can get into queue
-                    aiStateManager.SwitchState(aiStateManager.GetIntoClubState);
-                    _ai.CanGetIntoQueue = false;
+                    aiStateManager.SwitchState(aiStateManager.BuyDrinkState);
                 }
             }
         }

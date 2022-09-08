@@ -30,6 +30,8 @@ namespace ClubBusiness
 
             PlayerEvents.OnStartLettingPeopleIn += StartLettingPeopleIn;
             PlayerEvents.OnStopLettingPeopleIn += StopLettingPeopleIn;
+            PlayerEvents.OnStartFillingDrinks += StartFillingDrinks;
+            PlayerEvents.OnStopFillingDrinks += StopFillingDrinks;
         }
 
         private void OnDisable()
@@ -38,6 +40,8 @@ namespace ClubBusiness
 
             PlayerEvents.OnStartLettingPeopleIn -= StartLettingPeopleIn;
             PlayerEvents.OnStopLettingPeopleIn -= StopLettingPeopleIn;
+            PlayerEvents.OnStartFillingDrinks -= StartFillingDrinks;
+            PlayerEvents.OnStopFillingDrinks -= StopFillingDrinks;
         }
 
         private void Update()
@@ -56,6 +60,16 @@ namespace ClubBusiness
             //StartRotateSequence(new Vector3(0f, 90f, 0f), _rotateDuration);
         }
         private void StopLettingPeopleIn()
+        {
+            _startRotating = false;
+            StartRotateSequence(Vector3.zero, _rotateDuration * 0.25f);
+        }
+        private void StartFillingDrinks()
+        {
+            _startRotating = true;
+            _targetRotation = Quaternion.Euler(0f, 90f, 0f);
+        }
+        private void StopFillingDrinks()
         {
             _startRotating = false;
             StartRotateSequence(Vector3.zero, _rotateDuration * 0.25f);

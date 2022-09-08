@@ -66,7 +66,7 @@ namespace ZestGames
             CreateEmptySequence(fillTime);
             _emptySequence.Play();
         }
-        public void StopFilling(float fillTime)
+        public void StopFilling(float fillTime = 0.5f)
         {
             //PlayerIsInArea = false;
             _currentAction = null;

@@ -16,6 +16,9 @@ namespace ZestGames
         private readonly int _startDancingID = Animator.StringToHash("StartDancing");
         private readonly int _stopDancingID = Animator.StringToHash("StopDancing");
         private readonly int _danceIndexID = Animator.StringToHash("DanceIndex");
+        private readonly int _askForDrinkID = Animator.StringToHash("AskForDrink");
+        private readonly int _askForDrinkIndexID = Animator.StringToHash("AskForDrinkIndex");
+        private readonly int _drinkID = Animator.StringToHash("Drink");
         #endregion
 
         public void Init(Ai ai)
@@ -33,6 +36,9 @@ namespace ZestGames
             _ai.OnLose += Lose;
             _ai.OnStartDancing += StartDancing;
             _ai.OnStopDancing += StopDancing;
+            _ai.OnStartAskingForDrink += StartAskingForDrink;
+            _ai.OnStopAskingForDrink += StopAskingForDrink;
+            _ai.OnDrink += Drink;
         }
 
         private void OnDisable()
@@ -46,12 +52,21 @@ namespace ZestGames
             _ai.OnLose -= Lose;
             _ai.OnStartDancing -= StartDancing;
             _ai.OnStopDancing -= StopDancing;
+            _ai.OnStartAskingForDrink -= StartAskingForDrink;
+            _ai.OnStopAskingForDrink -= StopAskingForDrink;
+            _ai.OnDrink -= Drink;
         }
 
-        private void SelectRandomDance()
+        private void Drink() => _animator.SetTrigger(_drinkID);
+        private void StartAskingForDrink()
         {
-            _animator.SetInteger(_danceIndexID, Random.Range(0, 4));
+            SelectRandomAskForDrink();
+            _animator.SetBool(_askForDrinkID, true);
         }
+
+        private void StopAskingForDrink() => _animator.SetBool(_askForDrinkID, false);
+        private void SelectRandomAskForDrink() => _animator.SetInteger(_askForDrinkIndexID, Random.Range(0, 4));
+        private void SelectRandomDance() => _animator.SetInteger(_danceIndexID, Random.Range(0, 5));
         private void StartDancing()
         {
             SelectRandomDance();
@@ -64,6 +79,17 @@ namespace ZestGames
         private void Die() => _animator.SetTrigger(_dieID);
         private void Win() => _animator.SetTrigger(_winID);
         private void Lose() => _animator.SetTrigger(_loseID);
+        #endregion
+
+        #region ANIMATION EVENT LISTENER
+        public void SelectRandomAskForDrinkAnim()
+        {
+            SelectRandomAskForDrink();
+        }
+        public void DrinkingFinished()
+        {
+            _ai.StateManager.BuyDrinkState.FinishDrinking();
+        }
         #endregion
     }
 }

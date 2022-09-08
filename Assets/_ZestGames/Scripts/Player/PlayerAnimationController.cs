@@ -1,4 +1,5 @@
 using UnityEngine;
+using ClubBusiness;
 
 namespace ZestGames
 {
@@ -6,6 +7,7 @@ namespace ZestGames
     {
         private Player _player;
         private Animator _animator;
+        private PlayerAnimationEventListener _animationEventListener;
 
         #region ANIMATION PARAMETERS
         private readonly int _moveID = Animator.StringToHash("Move");
@@ -15,6 +17,7 @@ namespace ZestGames
         private readonly int _cheerID = Animator.StringToHash("Cheer");
         private readonly int _cheerIndexID = Animator.StringToHash("CheerIndex");
         private readonly int _letInID = Animator.StringToHash("LetIn");
+        private readonly int _bartendingID = Animator.StringToHash("Bartending");
         #endregion
 
         public void Init(Player player)
@@ -23,6 +26,8 @@ namespace ZestGames
             {
                 _player = player;
                 _animator = transform.GetChild(0).GetComponent<Animator>();
+                _animationEventListener = GetComponentInChildren<PlayerAnimationEventListener>();
+                _animationEventListener.Init(this);
             }
 
             PlayerEvents.OnMove += Move;
@@ -33,6 +38,8 @@ namespace ZestGames
             PlayerEvents.OnCheer += Cheer;
             PlayerEvents.OnStartLettingPeopleIn += StartLettingIn;
             PlayerEvents.OnStopLettingPeopleIn += StopLettingIn;
+            PlayerEvents.OnStartFillingDrinks += StartBartending;
+            PlayerEvents.OnStopFillingDrinks += StopBartending;
         }
 
         private void OnDisable()
@@ -47,8 +54,18 @@ namespace ZestGames
             PlayerEvents.OnCheer -= Cheer;
             PlayerEvents.OnStartLettingPeopleIn -= StartLettingIn;
             PlayerEvents.OnStopLettingPeopleIn -= StopLettingIn;
+            PlayerEvents.OnStartFillingDrinks -= StartBartending;
+            PlayerEvents.OnStopFillingDrinks -= StopBartending;
         }
 
+        private void StartBartending()
+        {
+            _animator.SetBool(_bartendingID, true);
+        }
+        private void StopBartending()
+        {
+            _animator.SetBool(_bartendingID, false);
+        }
         private void StartLettingIn()
         {
             _animator.SetBool(_letInID, true);
