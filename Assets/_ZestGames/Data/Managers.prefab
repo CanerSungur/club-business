@@ -136,6 +136,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   exampleQueue: {fileID: 0}
+  barQueue: {fileID: 0}
+  toiletQueue: {fileID: 0}
 --- !u!114 &8118947795600113794
 MonoBehaviour:
   m_ObjectHideFlags: 0

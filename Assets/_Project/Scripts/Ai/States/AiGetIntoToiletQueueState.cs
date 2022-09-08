@@ -1,12 +1,12 @@
 using UnityEngine;
-using ZestCore.Ai;
+using ZestGames;
 using DG.Tweening;
 using System;
-using ClubBusiness;
+using ZestCore.Ai;
 
-namespace ZestGames
+namespace ClubBusiness
 {
-    public class AiGetIntoClubState : AiBaseState
+    public class AiGetIntoToiletQueueState : AiBaseState
     {
         private Ai _ai;
 
@@ -19,19 +19,19 @@ namespace ZestGames
         #region SEQUENCE
         private Sequence _rotationSequence;
         private Guid _rotationSequenceID;
-        private readonly Vector3 _rotation = new Vector3(0f, -90f, 0f);
+        private readonly Vector3 _rotation = new Vector3(0f, 180f, 0f);
         #endregion
 
         public override void EnterState(AiStateManager aiStateManager)
         {
             //Debug.Log("Entered get into queue state.");
-            aiStateManager.SwitchStateType(Enums.AiStateType.GetIntoClub);
+            aiStateManager.SwitchStateType(Enums.AiStateType.GetIntoToiletQueue);
 
             if (_ai == null)
                 _ai = aiStateManager.Ai;
 
             _reachedToQueue = _isMoving = false;
-            _currentQueuePoint = QueueManager.ExampleQueue.GetQueue(_ai);
+            _currentQueuePoint = QueueManager.ToiletQueue.GetQueue(_ai);
         }
 
         public override void UpdateState(AiStateManager aiStateManager)
@@ -80,9 +80,7 @@ namespace ZestGames
         }
         public void ActivateStateAfterQueue()
         {
-            CustomerManager.RemoveCustomerOutside(_ai);
-            CustomerManager.AddCustomerInside(_ai);
-            _ai.StateManager.SwitchState(_ai.StateManager.WanderState);
+            _ai.StateManager.SwitchState(_ai.StateManager.GoToToiletState);
         }
         #endregion
 

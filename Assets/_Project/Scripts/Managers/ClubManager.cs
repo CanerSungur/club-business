@@ -10,6 +10,7 @@ namespace ClubBusiness
 
         #region CONTROLS
         public static bool ClubHasCapacity => CustomerManager.CustomersInside.Count < ClubCapacity;
+        public static bool ToiletIsAvailable => Toilet.EmptyToiletItems.Count > 0;
         public static bool DanceFloorHasCapacity => CustomerManager.CustomersOnDanceFloor.Count < DanceFloorCapacity;
         #endregion
 

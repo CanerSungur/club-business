@@ -19,6 +19,9 @@ namespace ZestGames
         private readonly int _askForDrinkID = Animator.StringToHash("AskForDrink");
         private readonly int _askForDrinkIndexID = Animator.StringToHash("AskForDrinkIndex");
         private readonly int _drinkID = Animator.StringToHash("Drink");
+        private readonly int _waitForToiletID = Animator.StringToHash("WaitForToilet");
+        private readonly int _startPissingID = Animator.StringToHash("StartPissing");
+        private readonly int _stopPissingID = Animator.StringToHash("StopPissing");
         #endregion
 
         public void Init(Ai ai)
@@ -39,6 +42,10 @@ namespace ZestGames
             _ai.OnStartAskingForDrink += StartAskingForDrink;
             _ai.OnStopAskingForDrink += StopAskingForDrink;
             _ai.OnDrink += Drink;
+            _ai.OnStartPissing += StartPissing;
+            _ai.OnStopPissing += StopPissing;
+            _ai.OnStartWaitingForToilet += StartWaitingForToilet;
+            _ai.OnStopWaitingForToilet += StopWaitingForToilet;
         }
 
         private void OnDisable()
@@ -55,8 +62,16 @@ namespace ZestGames
             _ai.OnStartAskingForDrink -= StartAskingForDrink;
             _ai.OnStopAskingForDrink -= StopAskingForDrink;
             _ai.OnDrink -= Drink;
+            _ai.OnStartPissing -= StartPissing;
+            _ai.OnStopPissing -= StopPissing;
+            _ai.OnStartWaitingForToilet -= StartWaitingForToilet;
+            _ai.OnStopWaitingForToilet -= StopWaitingForToilet;
         }
 
+        private void StartPissing() => _animator.SetTrigger(_startPissingID);
+        private void StopPissing() => _animator.SetTrigger(_stopPissingID);
+        private void StartWaitingForToilet() => _animator.SetBool(_waitForToiletID, true);
+        private void StopWaitingForToilet() => _animator.SetBool(_waitForToiletID, false);
         private void Drink() => _animator.SetTrigger(_drinkID);
         private void StartAskingForDrink()
         {

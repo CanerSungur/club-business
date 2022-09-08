@@ -11,6 +11,7 @@ namespace ZestGames
         [Space(10)]
 
         [Header("-- SETUP --")]
+        [SerializeField, Tooltip("Make it true if you don't want Player to release this queue, instead do it with a condition.")] private bool automaticRelease = false;
         [SerializeField] private bool spawnWithCode = true;
         [SerializeField] private bool reFormationWhenActivated = true;
         [SerializeField] private int capacity = 5;
@@ -67,13 +68,21 @@ namespace ZestGames
         public Action OnPlayerEntered, OnPlayerExited;
         #endregion
 
-        private void Start()
+        private void OnDisable()
+        {
+            PlayerEvents.OnEmptyNextInQueue -= UpdateQueue;
+        }
+
+        protected virtual void Init() 
         {
             if (TryGetComponent(out _animationController))
                 _animationController.Init(this);
 
             _queueActivator = GetComponentInChildren<QueueActivator>();
-            _queueActivator.Init(this);
+            if (automaticRelease)
+                _queueActivator.gameObject.SetActive(false);
+            else
+                _queueActivator.Init(this);
 
             if (spawnWithCode)
                 SpawnQueuePoints(capacity);
@@ -81,11 +90,6 @@ namespace ZestGames
                 InitQueuePoints();
 
             PlayerEvents.OnEmptyNextInQueue += UpdateQueue;
-        }
-
-        private void OnDisable()
-        {
-            PlayerEvents.OnEmptyNextInQueue -= UpdateQueue;
         }
 
         private void SpawnQueuePoints(int count)
@@ -113,6 +117,7 @@ namespace ZestGames
         }
 
         #region EVENT HANDLER FUNCTIONS
+        
         private void UpdateQueue(QueueSystem queueSystem)
         {
             if (queueSystem != this) return;
@@ -129,10 +134,7 @@ namespace ZestGames
                 for (int i = 0; i < AisInQueue.Count; i++)
                 {
                     Ai ai = AisInQueue[i];
-                    //ai.StateManager.GetIntoQueueState.CurrentQueuePoint.QueueIsReleased();
-                    //ai.StateManager.GetIntoQueueState.UpdateQueue(EmptyQueuePoints[0]);
                     ai.StateManager.GetIntoClubState.UpdateQueue(_queuePoints[i + 1]);
-                    // go to next queue
                 }
 
                 _updatingQueue = false;
@@ -147,6 +149,25 @@ namespace ZestGames
         #endregion
 
         #region PUBLICS
+        public void UpdateToiletQueue()
+        {
+            if (AisInQueue.Count <= 0) return;
+
+            _updatingQueue = true;
+
+            Ai firstAi = AisInQueue[0];
+            RemoveAiFromQueue(firstAi);
+            firstAi.StateManager.GetIntoToiletQueueState.CurrentQueuePoint.QueueIsReleased();
+            firstAi.StateManager.GetIntoToiletQueueState.ActivateStateAfterQueue();
+
+            for (int i = 0; i < AisInQueue.Count; i++)
+            {
+                Ai ai = AisInQueue[i];
+                ai.StateManager.GetIntoToiletQueueState.UpdateQueue(_queuePoints[i + 1]);
+            }
+
+            _updatingQueue = false;
+        }
         public QueuePoint GetQueue(Ai ai)
         {
             AddAiInQueue(ai);

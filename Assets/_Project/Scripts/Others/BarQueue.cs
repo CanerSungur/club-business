@@ -4,6 +4,9 @@ namespace ClubBusiness
 {
     public class BarQueue : QueueSystem
     {
-        
+        private void Start()
+        {
+            Init();
+        }
     }
 }

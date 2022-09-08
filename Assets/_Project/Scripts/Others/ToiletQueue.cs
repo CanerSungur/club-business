@@ -1,6 +1,8 @@
-namespace ZestGames
+using ZestGames;
+
+namespace ClubBusiness
 {
-    public class ExampleQueue : QueueSystem
+    public class ToiletQueue : QueueSystem
     {
         private void Start()
         {

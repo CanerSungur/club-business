@@ -42,25 +42,39 @@ namespace ZestGames
         {
             if (_canMakeADecision)
             {
-                if (QueueManager.BarQueue.QueueIsFull)
+                if (!ClubManager.ToiletIsAvailable)
                 {
-                    //aiStateManager.SwitchState(aiStateManager.WanderState);
-                    if (ClubManager.DanceFloorHasCapacity)
+                    if (QueueManager.ToiletQueue.QueueIsFull)
                     {
-                        aiStateManager.SwitchState(aiStateManager.DanceState);
+                        if (QueueManager.BarQueue.QueueIsFull)
+                        {
+                            //aiStateManager.SwitchState(aiStateManager.WanderState);
+                            if (ClubManager.DanceFloorHasCapacity)
+                            {
+                                aiStateManager.SwitchState(aiStateManager.DanceState);
+                            }
+                            else
+                            {
+                                if (RNG.RollDice(60))
+                                    aiStateManager.SwitchState(aiStateManager.WanderState);
+                                else
+                                    aiStateManager.SwitchState(aiStateManager.IdleState);
+                            }
+                        }
+                        else
+                        {
+                            // we can get into queue
+                            aiStateManager.SwitchState(aiStateManager.BuyDrinkState);
+                        }
                     }
                     else
                     {
-                        if (RNG.RollDice(60))
-                            aiStateManager.SwitchState(aiStateManager.WanderState);
-                        else
-                            aiStateManager.SwitchState(aiStateManager.IdleState);
+                        aiStateManager.SwitchState(aiStateManager.GetIntoToiletQueueState);
                     }
                 }
                 else
                 {
-                    // we can get into queue
-                    aiStateManager.SwitchState(aiStateManager.BuyDrinkState);
+                    aiStateManager.SwitchState(aiStateManager.GoToToiletState);
                 }
             }
         }
