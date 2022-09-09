@@ -321,7 +321,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 120413142}
-  m_LocalRotation: {x: 0.34397012, y: -3e-45, z: 1e-45, w: 0.93898064}
+  m_LocalRotation: {x: 0.34397012, y: 1e-45, z: -1e-45, w: 0.93898064}
   m_LocalPosition: {x: 0, y: 2.65, z: -3.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2484,6 +2484,36 @@ Transform:
   - {fileID: 1012645463}
   m_Father: {fileID: 1691866687}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &960395464
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 960395465}
+  m_Layer: 0
+  m_Name: ExitTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &960395465
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 960395464}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 19.2, y: 0.46, z: 10.7}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2058806671}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &975025015
 GameObject:
@@ -4738,7 +4768,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1887437988}
-  m_LocalRotation: {x: 0.3713833, y: -3e-45, z: 1e-45, w: 0.9284797}
+  m_LocalRotation: {x: 0.3713833, y: 1e-45, z: -1e-45, w: 0.9284797}
   m_LocalPosition: {x: 0, y: 22.69, z: -15.92}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -4989,7 +5019,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1987773249
 Transform:
   m_ObjectHideFlags: 0
@@ -5174,6 +5204,7 @@ Transform:
   - {fileID: 1947383206}
   - {fileID: 653086945}
   - {fileID: 24491075}
+  - {fileID: 960395465}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6827,6 +6858,10 @@ PrefabInstance:
       propertyPath: playerUpgradeCM
       value: 
       objectReference: {fileID: 120413144}
+    - target: {fileID: 2105935553845735554, guid: eb54b7f316dc5a9408617a8aafc890b8, type: 3}
+      propertyPath: exitTransform
+      value: 
+      objectReference: {fileID: 960395465}
     - target: {fileID: 2375652696458217420, guid: eb54b7f316dc5a9408617a8aafc890b8, type: 3}
       propertyPath: barQueue
       value: 

@@ -24,14 +24,28 @@ namespace ClubBusiness
 
         public override void EnterState(AiStateManager aiStateManager)
         {
-            //Debug.Log("Entered get into queue state.");
-            aiStateManager.SwitchStateType(Enums.AiStateType.GetIntoToiletQueue);
-
             if (_ai == null)
                 _ai = aiStateManager.Ai;
 
-            _reachedToQueue = _isMoving = false;
-            _currentQueuePoint = QueueManager.ToiletQueue.GetQueue(_ai);
+            _ai.ReactionCanvas.EnablePissing();
+
+            if (QueueManager.ToiletQueue.QueueIsFull)
+            {
+                // increase anger meter
+                _ai.AngerHandler.GetAngrier();
+
+                aiStateManager.WaitState.SetAttemptedState(aiStateManager.GetIntoToiletQueueState);
+                aiStateManager.SwitchState(aiStateManager.WaitState);
+            }
+            else
+            {
+                aiStateManager.SwitchStateType(Enums.AiStateType.GetIntoToiletQueue);
+
+                _reachedToQueue = _isMoving = false;
+                _currentQueuePoint = QueueManager.ToiletQueue.GetQueue(_ai);
+
+                _ai.AngerHandler.GetHappier();
+            }
         }
 
         public override void UpdateState(AiStateManager aiStateManager)

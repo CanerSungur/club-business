@@ -1,12 +1,27 @@
+using System.Collections;
 using UnityEngine;
+using ZestCore.Utility;
 using ZestGames;
 
 namespace ClubBusiness
 {
     public class ClubManager : MonoBehaviour
     {
+        [Header("-- SETUP --")]
+        [SerializeField] private Transform exitTransform;
+
+        #region FIGHTING
+        private int _maxFightAtOnceCount = 1;
+        private static readonly int fightChance = 100;
+        private readonly WaitForSeconds _waitForTriggerFightDelay = new WaitForSeconds(5f);
+        #endregion
+
+        #region PROPERTIES
         public static int ClubCapacity { get; private set; }
         public static int DanceFloorCapacity { get; private set; }
+        public static Transform ExitTransform { get; private set; }
+        public static bool CanTriggerFight => CustomerManager.CustomersOnDanceFloor.Count > 1 && RNG.RollDice(fightChance);
+        #endregion
 
         #region CONTROLS
         public static bool ClubHasCapacity => CustomerManager.CustomersInside.Count < ClubCapacity;
@@ -16,8 +31,27 @@ namespace ClubBusiness
 
         public void Init(GameManager gameManager)
         {
-            ClubCapacity = 20;
-            DanceFloorCapacity = 5;
+            ClubCapacity = 100;
+            DanceFloorCapacity = 99;
+            ExitTransform = exitTransform;
+
+            //StartCoroutine(TriggerFightCoroutine());
         }
+
+        #region COROUTINE FUNCTIONS
+        private IEnumerator TriggerFightCoroutine()
+        {
+            while (true)
+            {
+                if (CanTriggerFight)
+                {
+                    Ai randomDancingAi = CustomerManager.CustomersOnDanceFloor[Random.Range(0, CustomerManager.CustomersOnDanceFloor.Count)];
+                    randomDancingAi.StateManager.SwitchState(randomDancingAi.StateManager.AttackState);
+                }
+
+                yield return _waitForTriggerFightDelay;
+            }
+        }
+        #endregion
     }
 }

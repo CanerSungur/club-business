@@ -32,11 +32,15 @@ namespace ClubBusiness
             _reachedToToilet = _isMoving = false;
             _timer = _pissDuration;
 
+            _ai.ReactionCanvas.EnablePissing();
+
             if (ClubManager.ToiletIsAvailable)
             {
                 ToiletItem randomToilet = Toilet.EmptyToiletItems[Random.Range(0, Toilet.EmptyToiletItems.Count)];
                 randomToilet.Occupy();
                 _currentToiletItem = randomToilet;
+
+                _ai.AngerHandler.GetHappier();
             }
             else
                 Debug.Log("No available toilet!");

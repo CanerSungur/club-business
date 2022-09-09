@@ -23,6 +23,12 @@ namespace ZestGames
         public AiCollision Collision => collision == null ? collision = GetComponent<AiCollision>() : collision;
         private AiAppearanceHandler _appereanceHandler;
         public AiAppearanceHandler AppereanceHandler => _appereanceHandler == null ? _appereanceHandler = GetComponent<AiAppearanceHandler>() : _appereanceHandler;
+        private AiEffectHandler _effectHandler;
+        public AiEffectHandler EffectHandler => _effectHandler == null ? _effectHandler = GetComponent<AiEffectHandler>() : _effectHandler;
+        private AiAngerHandler _angerHandler;
+        public AiAngerHandler AngerHandler => _angerHandler == null ? _angerHandler = GetComponent<AiAngerHandler>() : _angerHandler;
+        private ReactionCanvas _reactionCanvas;
+        public ReactionCanvas ReactionCanvas => _reactionCanvas == null ? _reactionCanvas = GetComponentInChildren<ReactionCanvas>() : _reactionCanvas;
         //private IAiMovement movement;
         //public IAiMovement Movement => movement == null ? movement = GetComponent<IAiMovement>() : movement;
         #endregion
@@ -49,6 +55,9 @@ namespace ZestGames
         public bool IsDead { get; private set; }
         public Transform Target { get; private set; }
         public bool IsDancing { get; private set; }
+        public bool NeedDrink { get; private set; }
+        public bool NeedToPiss { get; private set; }
+        public bool NeedDancing { get; private set; }
         #endregion
 
         #region GETTERS
@@ -61,6 +70,8 @@ namespace ZestGames
 
         #region EVENTS
         public Action OnIdle, OnMove, OnDie, OnWin, OnLose, OnStartDancing, OnStopDancing, OnDrink, OnStartAskingForDrink, OnStopAskingForDrink, OnStartPissing, OnStopPissing, OnStartWaitingForToilet, OnStopWaitingForToilet;
+        public Action OnStartArguing, OnStopArguing, OnStartFighting, OnStopFighting;
+        public Action<Enums.AiMood> OnMoodChange;
         public Action<Transform> OnSetTarget;
         #endregion
 
@@ -76,7 +87,7 @@ namespace ZestGames
                 CustomerManager.AddCustomerInside(this);
             }
 
-            IsDead = IsDancing = false;
+            IsDead = IsDancing = NeedDrink = NeedToPiss = false;
             Target = null;
 
             CharacterTracker.AddAi(this);
@@ -84,12 +95,19 @@ namespace ZestGames
             StateManager.Init(this);
             AnimationController.Init(this);
             AppereanceHandler.Init(this);
+            EffectHandler.Init(this);
+            AngerHandler.Init(this);
+            ReactionCanvas.Init(this);
             //Movement.Init(this);
 
             OnSetTarget += SetTarget;
             OnStartDancing += StartDancing;
             OnStopDancing += StopDancing;
             OnDie += Die;
+
+            OnDrink += Drink;
+            OnStartPissing += GetIntoToilet;
+            OnStopPissing += GetOutOfToilet;
         }
 
         private void OnDisable()
@@ -102,6 +120,25 @@ namespace ZestGames
             OnStartDancing -= StartDancing;
             OnStopDancing -= StopDancing;
             OnDie -= Die;
+
+            OnDrink -= Drink;
+            OnStartPissing -= GetIntoToilet;
+            OnStopPissing -= GetOutOfToilet;
+        }
+
+        #region EVENT HANDLER FUNCTIONS
+        private void Drink()
+        {
+            NeedToPiss = true;
+            NeedDrink = false;
+        }
+        private void GetIntoToilet()
+        {
+            NeedToPiss = false;
+        }
+        private void GetOutOfToilet()
+        {
+            NeedDancing = true;
         }
         private void Die()
         {
@@ -113,11 +150,14 @@ namespace ZestGames
         private void StartDancing()
         {
             IsDancing = true;
+            NeedDancing = false;
         }
         private void StopDancing()
         {
             IsDancing = false;
+            NeedDrink = true;
         }
+        #endregion
 
         #region PUBLICS
         public void SetTarget(Transform transform)
@@ -126,6 +166,10 @@ namespace ZestGames
 
             Target = transform;
             OnMove?.Invoke();
+        }
+        public void LeftClub()
+        {
+            gameObject.SetActive(false);
         }
         #endregion
     }

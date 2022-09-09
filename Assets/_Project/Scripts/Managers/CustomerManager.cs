@@ -61,8 +61,12 @@ namespace ClubBusiness
         }
         #endregion
 
+        public static float CustomerWaitDuration { get; private set; }
+
         public void Init(GameManager gameManager)
         {
+            CustomerWaitDuration = 5f;
+
             StartCoroutine(SpawnCustomerOutsideCoroutine());
         }
 

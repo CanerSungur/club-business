@@ -11,10 +11,13 @@ namespace ClubBusiness
     {
         private Ai _ai;
         private QueuePoint _currentQueuePoint;
-        private bool _reachedToQueue;
+        private bool _reachedToQueue, _tookDrink;
 
-        public QueuePoint CurrentQueuePoint => _currentQueuePoint;
+        private float _waitTimer;
+
+        #region PROPERTIES
         public bool ReachedToQueue => _reachedToQueue;
+        #endregion
 
         #region SEQUENCE
         private Sequence _rotationSequence;
@@ -24,15 +27,31 @@ namespace ClubBusiness
 
         public override void EnterState(AiStateManager aiStateManager)
         {
-            aiStateManager.SwitchStateType(Enums.AiStateType.BuyDrink);
-
             if (_ai == null)
                 _ai = aiStateManager.Ai;
 
-            _reachedToQueue = false;
-            _currentQueuePoint = QueueManager.BarQueue.GetQueue(_ai);
+            _reachedToQueue = _tookDrink = false;
+            _waitTimer = CustomerManager.CustomerWaitDuration;
+            _ai.ReactionCanvas.EnableDrinking();
 
-            _ai.OnMove?.Invoke();
+            if (QueueManager.BarQueue.QueueIsFull)
+            {
+                // increase anger meter
+                _ai.AngerHandler.GetAngrier();
+                // continue waiting
+                aiStateManager.WaitState.SetAttemptedState(aiStateManager.BuyDrinkState);
+                aiStateManager.SwitchState(aiStateManager.WaitState);
+            }
+            else
+            {
+                aiStateManager.SwitchStateType(Enums.AiStateType.BuyDrink);
+
+                _currentQueuePoint = QueueManager.BarQueue.GetQueue(_ai);
+
+                _ai.OnMove?.Invoke();
+
+                _ai.AngerHandler.GetHappier();
+            }
         }
 
         public override void UpdateState(AiStateManager aiStateManager)
@@ -62,6 +81,18 @@ namespace ClubBusiness
                     Navigation.LookAtTarget(_ai.transform, _currentQueuePoint.transform.position);
                 }
             }
+            else
+            {
+                if (!_tookDrink)
+                {
+                    _waitTimer -= Time.deltaTime;
+                    if (_waitTimer <= 0f)
+                    {
+                        _ai.AngerHandler.GetAngrier();
+                        _waitTimer = CustomerManager.CustomerWaitDuration;
+                    }
+                }
+            }
         }
 
         #region PUBLICS
@@ -71,6 +102,7 @@ namespace ClubBusiness
             // Drink it
             _ai.OnStopAskingForDrink?.Invoke();
             _ai.OnDrink?.Invoke();
+            _tookDrink = true;
 
             //CustomerManager.RemoveCustomerOutside(_ai);
             //CustomerManager.AddCustomerInside(_ai);

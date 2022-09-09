@@ -38,44 +38,80 @@ namespace ZestGames
             }
         }
 
+        // when inside, decide to drink or dance. 40-40. 10 wander 10 idle
+        // if ai chooses to drink, then wander then toilet.
+
+        // if ai chooses to dance, then wander then drink.
+
         private void MakeDecision(AiStateManager aiStateManager)
         {
             if (_canMakeADecision)
             {
-                if (!ClubManager.ToiletIsAvailable)
+
+                if (_ai.NeedDrink)
+                    aiStateManager.SwitchState(aiStateManager.BuyDrinkState);
+                else if (_ai.NeedDancing)
+                    aiStateManager.SwitchState(aiStateManager.DanceState);
+                else if (_ai.NeedToPiss)
                 {
-                    if (QueueManager.ToiletQueue.QueueIsFull)
-                    {
-                        if (QueueManager.BarQueue.QueueIsFull)
-                        {
-                            //aiStateManager.SwitchState(aiStateManager.WanderState);
-                            if (ClubManager.DanceFloorHasCapacity)
-                            {
-                                aiStateManager.SwitchState(aiStateManager.DanceState);
-                            }
-                            else
-                            {
-                                if (RNG.RollDice(60))
-                                    aiStateManager.SwitchState(aiStateManager.WanderState);
-                                else
-                                    aiStateManager.SwitchState(aiStateManager.IdleState);
-                            }
-                        }
-                        else
-                        {
-                            // we can get into queue
-                            aiStateManager.SwitchState(aiStateManager.BuyDrinkState);
-                        }
-                    }
+                    if (ClubManager.ToiletIsAvailable)
+                        aiStateManager.SwitchState(aiStateManager.GoToToiletState);
                     else
-                    {
                         aiStateManager.SwitchState(aiStateManager.GetIntoToiletQueueState);
-                    }
                 }
                 else
                 {
-                    aiStateManager.SwitchState(aiStateManager.GoToToiletState);
+                    if (RNG.RollDice(10))
+                        aiStateManager.SwitchState(aiStateManager.IdleState);
+                    else
+                    {
+                        if (RNG.RollDice(10))
+                            aiStateManager.SwitchState(aiStateManager.WanderState);
+                        else
+                        {
+                            if (RNG.RollDice(50))
+                                aiStateManager.SwitchState(aiStateManager.DanceState);
+                            else
+                                aiStateManager.SwitchState(aiStateManager.BuyDrinkState);
+                        }
+                    }
                 }
+
+
+                //    if (!ClubManager.ToiletIsAvailable)
+                //    {
+                //        if (QueueManager.ToiletQueue.QueueIsFull)
+                //        {
+                //            if (QueueManager.BarQueue.QueueIsFull)
+                //            {
+                //                //aiStateManager.SwitchState(aiStateManager.WanderState);
+                //                if (ClubManager.DanceFloorHasCapacity)
+                //                {
+                //                    aiStateManager.SwitchState(aiStateManager.DanceState);
+                //                }
+                //                else
+                //                {
+                //                    if (RNG.RollDice(60))
+                //                        aiStateManager.SwitchState(aiStateManager.WanderState);
+                //                    else
+                //                        aiStateManager.SwitchState(aiStateManager.IdleState);
+                //                }
+                //            }
+                //            else
+                //            {
+                //                // we can get into queue
+                //                aiStateManager.SwitchState(aiStateManager.BuyDrinkState);
+                //            }
+                //        }
+                //        else
+                //        {
+                //            aiStateManager.SwitchState(aiStateManager.GetIntoToiletQueueState);
+                //        }
+                //    }
+                //    else
+                //    {
+                //        aiStateManager.SwitchState(aiStateManager.GoToToiletState);
+                //    }
             }
         }
     }

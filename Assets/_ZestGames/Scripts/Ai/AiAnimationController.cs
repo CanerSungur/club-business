@@ -1,4 +1,5 @@
 using UnityEngine;
+using ZestCore.Utility;
 
 namespace ZestGames
 {
@@ -103,7 +104,7 @@ namespace ZestGames
         }
         public void DrinkingFinished()
         {
-            _ai.StateManager.BuyDrinkState.FinishDrinking();
+            Delayer.DoActionAfterDelay(this, 1f, () => _ai.StateManager.BuyDrinkState.FinishDrinking());
         }
         #endregion
     }

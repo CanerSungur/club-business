@@ -16,17 +16,32 @@ namespace ClubBusiness
 
         public override void EnterState(AiStateManager aiStateManager)
         {
-            aiStateManager.SwitchStateType(Enums.AiStateType.Dance);
-
             if (_ai == null)
                 _ai = aiStateManager.Ai;
 
-            _dancingPosition = AreaManager.GetRandomDanceAreaPosition();
-            _reachedToDancingPosition = false;
-            _timer = _danceDuration;
-            _ai.OnMove?.Invoke();
+            _ai.ReactionCanvas.EnableDancing();
 
-            CustomerManager.AddCustomerOnDanceFloor(_ai);
+            if (ClubManager.DanceFloorHasCapacity)
+            {
+                aiStateManager.SwitchStateType(Enums.AiStateType.Dance);
+
+                _dancingPosition = AreaManager.GetRandomDanceAreaPosition();
+                _reachedToDancingPosition = false;
+                _timer = _danceDuration;
+                _ai.OnMove?.Invoke();
+
+                CustomerManager.AddCustomerOnDanceFloor(_ai);
+
+                _ai.AngerHandler.GetHappier();
+            }
+            else
+            {
+                // increase anger meter.
+                _ai.AngerHandler.GetAngrier();
+
+                aiStateManager.WaitState.SetAttemptedState(aiStateManager.DanceState);
+                aiStateManager.SwitchState(aiStateManager.WaitState);
+            }
         }
 
         public override void UpdateState(AiStateManager aiStateManager)
