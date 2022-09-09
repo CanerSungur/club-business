@@ -9,7 +9,7 @@ namespace ClubBusiness
     {
         private Player _player;
         private Transform _playerMeshTransform;
-        private bool _startRotating;
+        private bool _startRotatingForGateQueue, _startRotatingForBartending;
         private Quaternion _targetRotation;
 
         #region SEQUENCE
@@ -26,7 +26,7 @@ namespace ClubBusiness
                 _playerMeshTransform = transform.GetChild(0);
             }
 
-            _startRotating = false;
+            _startRotatingForGateQueue = _startRotatingForBartending = false;
 
             PlayerEvents.OnStartLettingPeopleIn += StartLettingPeopleIn;
             PlayerEvents.OnStopLettingPeopleIn += StopLettingPeopleIn;
@@ -46,32 +46,33 @@ namespace ClubBusiness
 
         private void Update()
         {
-            if (_startRotating)
+            if (_startRotatingForGateQueue || _startRotatingForBartending)
             {
-                _playerMeshTransform.rotation = Quaternion.Lerp(_playerMeshTransform.rotation, _targetRotation , 2f * Time.deltaTime);
+                _playerMeshTransform.rotation = Quaternion.Lerp(_playerMeshTransform.rotation, _targetRotation, 5f * Time.deltaTime);
+                //_playerMeshTransform.rotation = _targetRotation;
             }
         }
 
         #region EVENT HANDLER FUNCTIONS
         private void StartLettingPeopleIn()
         {
-            _startRotating = true;
+            _startRotatingForGateQueue = true;
             _targetRotation = Quaternion.Euler(0f, 90f, 0f);
             //StartRotateSequence(new Vector3(0f, 90f, 0f), _rotateDuration);
         }
         private void StopLettingPeopleIn()
         {
-            _startRotating = false;
+            _startRotatingForGateQueue = false;
             StartRotateSequence(Vector3.zero, _rotateDuration * 0.25f);
         }
         private void StartFillingDrinks()
         {
-            _startRotating = true;
+            _startRotatingForBartending = true;
             _targetRotation = Quaternion.Euler(0f, 90f, 0f);
         }
         private void StopFillingDrinks()
         {
-            _startRotating = false;
+            _startRotatingForBartending = false;
             StartRotateSequence(Vector3.zero, _rotateDuration * 0.25f);
         }
         #endregion

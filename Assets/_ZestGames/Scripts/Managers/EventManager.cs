@@ -5,17 +5,19 @@ namespace ZestGames
 {
     public static class EventManager { }
 
-    public static class GameEvents 
+    public static class GameEvents
     {
         public static Action OnGameStart, OnLevelSuccess, OnLevelFail, OnChangePhase;
         public static Action<Enums.GameEnd> OnGameEnd, OnChangeScene;
     }
 
-    public static class PlayerEvents 
+    public static class PlayerEvents
     {
         public static Action OnMove, OnIdle, OnDie, OnWin, OnLose, OnCheer, OnStopSpendingMoney;
         public static Action OnSetCurrentMovementSpeed, OnSetCurrentMoneyValue;
         public static Action OnOpenedUpgradeCanvas, OnClosedUpgradeCanvas;
+        public static Action OnEmptyNextInGateQueue;
+        public static Action<Ai> OnEmptyNextInBarQueue, OnThrowADrink;
         public static Action<QueueSystem> OnEmptyNextInQueue;
         public static Action OnStartLettingPeopleIn, OnStopLettingPeopleIn, OnStartFillingDrinks, OnStopFillingDrinks, OnStartCleaning, OnStopCleaning, OnStartBreakingUpFight, OnStopBreakingUpFight;
     }
@@ -36,7 +38,7 @@ namespace ZestGames
     {
         public static Action<float> OnCollect, OnSpend;
     }
-    
+
     public static class InputEvents
     {
         public static Action OnTapHappened, OnTouchStarted, OnTouchStopped;

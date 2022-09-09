@@ -69,7 +69,7 @@ namespace ZestGames
                 if (_queueSystem.QueueType == Enums.QueueType.Gate)
                 {
                     if (CanTakeSomeoneIn)
-                        player.TimerForAction.StartFilling(DataManager.LetInDuration, () => PlayerEvents.OnEmptyNextInQueue?.Invoke(_queueSystem));
+                        player.TimerForAction.StartFilling(DataManager.LetInDuration, () => PlayerEvents.OnEmptyNextInGateQueue?.Invoke());
 
                     if (!ClubManager.ClubHasCapacity)
                         Debug.Log("NO ROOM INSIDE!");
@@ -77,7 +77,12 @@ namespace ZestGames
                 else if (_queueSystem.QueueType == Enums.QueueType.Bar)
                 {
                     if (CanGiveDrink)
-                        player.TimerForAction.StartFilling(DataManager.FillDrinkDuration, () => PlayerEvents.OnEmptyNextInQueue?.Invoke(_queueSystem));
+                    {
+                        //player.TimerForAction.StartFilling(DataManager.FillDrinkDuration, () => PlayerEvents.OnEmptyNextInQueue?.Invoke(_queueSystem));
+                        Ai firstAi = _queueSystem.AisInQueue[0];
+                        player.TimerForAction.StartFilling(DataManager.FillDrinkDuration, () => PlayerEvents.OnThrowADrink?.Invoke(firstAi));
+                        _queueSystem.RemoveAiFromQueue(firstAi);
+                    }
 
                     if (_queueSystem.QueueIsFull)
                         Debug.Log("NO ROOM AT THE BAR!");

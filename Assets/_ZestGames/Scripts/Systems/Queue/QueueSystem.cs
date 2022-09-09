@@ -70,7 +70,9 @@ namespace ZestGames
 
         private void OnDisable()
         {
-            PlayerEvents.OnEmptyNextInQueue -= UpdateQueue;
+            //PlayerEvents.OnEmptyNextInQueue -= UpdateQueue;
+            PlayerEvents.OnEmptyNextInGateQueue -= UpdateGateQueue;
+            PlayerEvents.OnEmptyNextInBarQueue -= UpdateBarQueue;
         }
 
         protected virtual void Init() 
@@ -89,7 +91,9 @@ namespace ZestGames
             else
                 InitQueuePoints();
 
-            PlayerEvents.OnEmptyNextInQueue += UpdateQueue;
+            //PlayerEvents.OnEmptyNextInQueue += UpdateQueue;
+            PlayerEvents.OnEmptyNextInGateQueue += UpdateGateQueue;
+            PlayerEvents.OnEmptyNextInBarQueue += UpdateBarQueue;
         }
 
         private void SpawnQueuePoints(int count)
@@ -117,35 +121,61 @@ namespace ZestGames
         }
 
         #region EVENT HANDLER FUNCTIONS
-        
-        private void UpdateQueue(QueueSystem queueSystem)
+        private void UpdateGateQueue()
         {
-            if (queueSystem != this) return;
+            if (queueType != Enums.QueueType.Gate) return;
 
-            if (reFormationWhenActivated)
+            _updatingQueue = true;
+
+            Ai firstAi = AisInQueue[0];
+            RemoveAiFromQueue(firstAi);
+            firstAi.StateManager.GetIntoClubState.CurrentQueuePoint.QueueIsReleased();
+            firstAi.StateManager.GetIntoClubState.ActivateStateAfterQueue();
+
+            for (int i = 0; i < AisInQueue.Count; i++)
             {
-                _updatingQueue = true;
-
-                Ai firstAi = AisInQueue[0];
-                RemoveAiFromQueue(firstAi);
-                firstAi.StateManager.GetIntoClubState.CurrentQueuePoint.QueueIsReleased();
-                firstAi.StateManager.GetIntoClubState.ActivateStateAfterQueue();
-
-                for (int i = 0; i < AisInQueue.Count; i++)
-                {
-                    Ai ai = AisInQueue[i];
-                    ai.StateManager.GetIntoClubState.UpdateQueue(_queuePoints[i + 1]);
-                }
-
-                _updatingQueue = false;
+                Ai ai = AisInQueue[i];
+                ai.StateManager.GetIntoClubState.UpdateQueue(_queuePoints[i + 1]);
             }
-            else
-            {
-                Ai firstAi = AisInQueue[0];
-                RemoveAiFromQueue(firstAi);
-                firstAi.StateManager.BuyDrinkState.ActivateStateAfterQueue();
-            }
+
+            _updatingQueue = false;
         }
+        private void UpdateBarQueue(Ai ai)
+        {
+            if (queueType != Enums.QueueType.Bar) return;
+            //Ai firstAi = AisInQueue[0];
+            //RemoveAiFromQueue(firstAi);
+            ai.StateManager.BuyDrinkState.ActivateStateAfterQueue();
+        }
+
+        //private void UpdateQueue(QueueSystem queueSystem)
+        //{
+        //    if (queueSystem != this) return;
+
+        //    if (reFormationWhenActivated)
+        //    {
+        //        _updatingQueue = true;
+
+        //        Ai firstAi = AisInQueue[0];
+        //        RemoveAiFromQueue(firstAi);
+        //        firstAi.StateManager.GetIntoClubState.CurrentQueuePoint.QueueIsReleased();
+        //        firstAi.StateManager.GetIntoClubState.ActivateStateAfterQueue();
+
+        //        for (int i = 0; i < AisInQueue.Count; i++)
+        //        {
+        //            Ai ai = AisInQueue[i];
+        //            ai.StateManager.GetIntoClubState.UpdateQueue(_queuePoints[i + 1]);
+        //        }
+
+        //        _updatingQueue = false;
+        //    }
+        //    else
+        //    {
+        //        Ai firstAi = AisInQueue[0];
+        //        RemoveAiFromQueue(firstAi);
+        //        firstAi.StateManager.BuyDrinkState.ActivateStateAfterQueue();
+        //    }
+        //}
         #endregion
 
         #region PUBLICS

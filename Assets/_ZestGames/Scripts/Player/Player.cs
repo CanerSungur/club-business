@@ -33,6 +33,8 @@ namespace ZestGames
         public PlayerAudio AudioHandler => _audioHandler == null ? _audioHandler = GetComponent<PlayerAudio>() : _audioHandler;
         private PlayerStateController _stateController;
         public PlayerStateController StateController => _stateController == null ? _stateController = GetComponent<PlayerStateController>() : _stateController;
+        private PlayerDrinkThrower _drinkThrower;
+        public PlayerDrinkThrower DrinkThrower => _drinkThrower == null ? _drinkThrower = GetComponent<PlayerDrinkThrower>() : _drinkThrower;
         #endregion
 
         #region PROPERTIES
@@ -60,6 +62,7 @@ namespace ZestGames
             MoneyHandler.Init(this);
             AudioHandler.Init(this);
             StateController.Init(this);
+            DrinkThrower.Init(this);
             timerForAction.Init();
 
             PlayerUpgradeEvents.OnOpenCanvas += HandleUpgradeStart;

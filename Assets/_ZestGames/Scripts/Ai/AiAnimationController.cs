@@ -104,7 +104,10 @@ namespace ZestGames
         }
         public void DrinkingFinished()
         {
-            Delayer.DoActionAfterDelay(this, 1f, () => _ai.StateManager.BuyDrinkState.FinishDrinking());
+            Delayer.DoActionAfterDelay(this, 1f, () => {
+                _ai.EffectHandler.DisableBeer();
+                _ai.StateManager.BuyDrinkState.FinishDrinking();
+            });
         }
         #endregion
     }
