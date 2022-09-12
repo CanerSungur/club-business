@@ -48,4 +48,13 @@ namespace ZestGames
     {
         public static Action OnPlayCollectMoney, OnPlaySpendMoney;
     }
+
+    public static class GateEvents
+    {
+        public static Action OnBodyguardHired, OnSetCurrentBodyguardStamina, OnSetCurrentBodyguardSpeed;
+    }
+    public static class GateUpgradeEvents
+    {
+        public static Action OnOpenCanvas, OnCloseCanvas, OnUpdateUpgradeTexts, OnUpgradeBodyguardHire, OnUpgradeBodyguardStamina, OnUpgradeBodyguardSpeed;
+    }
 }

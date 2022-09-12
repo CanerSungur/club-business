@@ -31,7 +31,7 @@ namespace ZestGames
                 _ai = aiStateManager.Ai;
 
             _reachedToQueue = _isMoving = false;
-            _currentQueuePoint = QueueManager.ExampleQueue.GetQueue(_ai);
+            _currentQueuePoint = QueueManager.GateQueue.GetQueue(_ai);
         }
 
         public override void UpdateState(AiStateManager aiStateManager)

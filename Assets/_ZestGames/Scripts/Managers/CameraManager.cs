@@ -35,16 +35,16 @@ namespace ZestGames
         private void Start()
         {
             GameEvents.OnGameStart += () => gameplayCM.Priority = 3;
-            PlayerUpgradeEvents.OnOpenCanvas += () => playerUpgradeCM.Priority = 4;
-            PlayerUpgradeEvents.OnCloseCanvas += () => playerUpgradeCM.Priority = 0;
+            PlayerEvents.OnOpenedUpgradeCanvas += () => playerUpgradeCM.Priority = 4;
+            PlayerEvents.OnClosedUpgradeCanvas += () => playerUpgradeCM.Priority = 0;
             OnShakeCam += () => _shakeStarted = true;
         }
 
         private void OnDisable()
         {
             GameEvents.OnGameStart -= () => gameplayCM.Priority = 3;
-            PlayerUpgradeEvents.OnOpenCanvas -= () => playerUpgradeCM.Priority = 4;
-            PlayerUpgradeEvents.OnCloseCanvas -= () => playerUpgradeCM.Priority = 0;
+            PlayerEvents.OnOpenedUpgradeCanvas -= () => playerUpgradeCM.Priority = 4;
+            PlayerEvents.OnClosedUpgradeCanvas -= () => playerUpgradeCM.Priority = 0;
             OnShakeCam -= () => _shakeStarted = true;
         }
 

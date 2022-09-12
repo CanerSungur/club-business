@@ -1,12 +1,14 @@
-namespace ZestGames
+using ZestGames;
+
+namespace ClubBusiness
 {
-    public class UpgradeArea : UpgradeAreaBase
+    public class GateUpgradeArea : UpgradeAreaBase
     {
         public override void OpenUpgradeCanvas()
         {
             if (!UpgradeCanvas.IsOpen)
             {
-                PlayerUpgradeEvents.OnOpenCanvas?.Invoke();
+                GateUpgradeEvents.OnOpenCanvas?.Invoke();
                 PlayerEvents.OnOpenedUpgradeCanvas?.Invoke();
             }
         }
@@ -14,7 +16,7 @@ namespace ZestGames
         public override void CloseUpgradeCanvas()
         {
             if (UpgradeCanvas.IsOpen)
-                PlayerUpgradeEvents.OnCloseCanvas?.Invoke();
+                GateUpgradeEvents.OnCloseCanvas?.Invoke();
         }
     }
 }

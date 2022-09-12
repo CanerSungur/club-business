@@ -135,8 +135,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _currentType: 0
-  movementSpeed: {fileID: 7580546519640707447}
-  moneyValue: {fileID: 7580546517941803738}
+  hireBodyguard: {fileID: 7580546517941803738}
+  bodyguardStamina: {fileID: 7580546519640707447}
 --- !u!1 &7580546517908661859
 GameObject:
   m_ObjectHideFlags: 0
@@ -2289,7 +2289,7 @@ RectTransform:
   m_GameObject: {fileID: 7580546519683265384}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0, z: 1}
   m_Children:
   - {fileID: 7580546519092225690}
   - {fileID: 7580546519013244489}

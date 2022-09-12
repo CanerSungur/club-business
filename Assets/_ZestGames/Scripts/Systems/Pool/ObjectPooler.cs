@@ -51,7 +51,9 @@ namespace ZestGames
             }
         }
 
+#pragma warning disable CS8632 // Boþ deðer atanabilir baþvuru türleri için ek açýklama kodda yalnýzca bir '#nullable' ek açýklama baðlamý içinde kullanýlmalýdýr.
         public GameObject SpawnFromPool(Enums.PoolStamp poolStamp, Vector3 position, Quaternion rotation, Transform? parent = null)
+#pragma warning restore CS8632 // Boþ deðer atanabilir baþvuru türleri için ek açýklama kodda yalnýzca bir '#nullable' ek açýklama baðlamý içinde kullanýlmalýdýr.
         {
             if (!PoolDictionary.ContainsKey(poolStamp))
             {

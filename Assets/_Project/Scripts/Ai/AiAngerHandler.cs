@@ -47,7 +47,7 @@ namespace ClubBusiness
 
             Enums.AiMood previousMood = _currentMood;
             UpdateMood();
-            if (previousMood != _currentMood)
+            if (_ai != null && previousMood != _currentMood)
                 _ai.OnMoodChange?.Invoke(_currentMood);
 
 
@@ -64,7 +64,7 @@ namespace ClubBusiness
 
             Enums.AiMood previousMood = _currentMood;
             UpdateMood();
-            if (previousMood != _currentMood)
+            if (_ai != null && previousMood != _currentMood)
                 _ai.OnMoodChange?.Invoke(_currentMood);
 
             if (_currentMoodRate >= _happinessLimit)

@@ -106,6 +106,7 @@ MonoBehaviour:
   levelSuccess: {fileID: 0}
   settings: {fileID: 0}
   upgradeCanvas: {fileID: 0}
+  gateUpgradeCanvas: {fileID: 0}
   successScreenDelay: 1
   failScreenDelay: 1
 --- !u!114 &1124688366865923144
@@ -135,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5b5cc6b2359e6748a29857ccb9e383c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exampleQueue: {fileID: 0}
+  gateQueue: {fileID: 0}
   barQueue: {fileID: 0}
   toiletQueue: {fileID: 0}
 --- !u!114 &8118947795600113794

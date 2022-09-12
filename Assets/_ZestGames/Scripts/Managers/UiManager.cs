@@ -1,3 +1,4 @@
+using ClubBusiness;
 using UnityEngine;
 using ZestCore.Utility;
 
@@ -14,6 +15,7 @@ namespace ZestGames
         [SerializeField] private LevelSuccess levelSuccess;
         [SerializeField] private SettingsUi settings;
         [SerializeField] private UpgradeCanvas upgradeCanvas;
+        [SerializeField] private GateUpgradeCanvas gateUpgradeCanvas;
 
         [Header("-- UI DELAY SETUP --")]
         [SerializeField, Tooltip("The delay in seconds between the game is won and the win screen is loaded.")]
@@ -29,6 +31,7 @@ namespace ZestGames
             levelFail.Init(this);
             levelSuccess.Init(this);
             upgradeCanvas.Init(this);
+            gateUpgradeCanvas.Init(this);
 
             if (upgradeCanvas.CurrentType == UpgradeCanvas.Type.Incremental)
                 PlayerUpgradeEvents.OnOpenCanvas?.Invoke();
