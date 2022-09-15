@@ -11,7 +11,7 @@ namespace ClubBusiness
         #region STATES
         public BodyguardWaitForCustomerState WaitForCustomerState = new BodyguardWaitForCustomerState();
         public BodyguardLetCustomerInsideState LetCustomerInsideState = new BodyguardLetCustomerInsideState();
-        public BodyguardWasteTimeState WaitTimeState = new BodyguardWasteTimeState();
+        public BodyguardWasteTimeState WasteTimeState = new BodyguardWasteTimeState();
         #endregion
 
         public Bodyguard Bodyguard => _bodyguard;
@@ -21,13 +21,27 @@ namespace ClubBusiness
             if (_bodyguard == null)
                 _bodyguard = bodyguard;
 
-            _currentState = WaitForCustomerState;
-            _currentState.EnterState(this);
+            GameEvents.OnGameStart += () =>
+            {
+                _currentState = WaitForCustomerState;
+                _currentState.EnterState(this);
+            };
+        }
+
+        private void OnDisable()
+        {
+            if (_bodyguard == null) return;
+
+            GameEvents.OnGameStart -= () =>
+            {
+                _currentState = WaitForCustomerState;
+                _currentState.EnterState(this);
+            };
         }
 
         private void Update()
         {
-            if (_bodyguard == null) return;
+            if (_bodyguard == null || GameManager.GameState != Enums.GameState.Started) return;
             _currentState.UpdateState(this);
         }
 

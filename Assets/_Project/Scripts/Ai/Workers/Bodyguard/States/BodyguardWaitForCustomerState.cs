@@ -6,7 +6,8 @@ namespace ClubBusiness
     public class BodyguardWaitForCustomerState : BodyguardBaseState
     {
         private Bodyguard _bodyguard;
-        private float _currentStamina;
+        private float _timer;
+        private float _counter = 3f;
 
         public override void EnterState(BodyguardStateManager bodyguardStateManager)
         {
@@ -15,27 +16,25 @@ namespace ClubBusiness
             if (_bodyguard == null)
                 _bodyguard = bodyguardStateManager.Bodyguard;
 
-            if (_bodyguard.IsWastingTime)
-            {
-                _bodyguard.OnWaitForCustomer?.Invoke();
-                _currentStamina = Gate.BodyguardStamina;
-            }
+            _bodyguard.OnWaitForCustomer?.Invoke();
+
+            _timer = _counter;
         }
 
         public override void ExitState(BodyguardStateManager bodyguardStateManager)
         {
-            
+
         }
 
         public override void UpdateState(BodyguardStateManager bodyguardStateManager)
         {
             if (!_bodyguard.IsWastingTime)
             {
-                _currentStamina -= Time.deltaTime;
-
-                if (_currentStamina <= 0f)
+                _timer -= Time.deltaTime;
+                if (_timer <= 0f && QueueManager.GateQueue.QueueActivator.CanBodyguardTakeSomeoneIn)
                 {
-                    _bodyguard.OnWasteTime?.Invoke();
+                    bodyguardStateManager.SwitchState(bodyguardStateManager.LetCustomerInsideState);
+                    _timer = _counter;
                 }
             }
         }

@@ -31,7 +31,7 @@ namespace ZestGames
             levelFail.Init(this);
             levelSuccess.Init(this);
             upgradeCanvas.Init(this);
-            gateUpgradeCanvas.Init(this);
+            //gateUpgradeCanvas.Init(this);
 
             if (upgradeCanvas.CurrentType == UpgradeCanvas.Type.Incremental)
                 PlayerUpgradeEvents.OnOpenCanvas?.Invoke();

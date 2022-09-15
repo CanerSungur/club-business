@@ -1,6 +1,7 @@
 using ClubBusiness;
 using System.Collections;
 using UnityEngine;
+using ZestCore.Utility;
 
 namespace ZestGames
 {
@@ -14,7 +15,9 @@ namespace ZestGames
 
         #region PROPERTIES
         public bool PlayerIsInArea { get; private set; }
+        public bool CanPlayerActivateQueue { get; private set; }
         public QueueSystem QueueSystem => _queueSystem;
+        public bool CanBodyguardTakeSomeoneIn => ClubManager.ClubHasCapacity && _queueSystem.EmptyQueuePoints.Count < _queueSystem.Capacity && _queueSystem.AisInQueue.Count > 0 && _queueSystem.AisInQueue[0].StateManager.GetIntoClubState.ReachedToQueue;
         public bool CanTakeSomeoneIn => ClubManager.ClubHasCapacity && _player != null && _queueSystem.EmptyQueuePoints.Count < _queueSystem.Capacity && _queueSystem.AisInQueue.Count > 0 && _queueSystem.AisInQueue[0].StateManager.GetIntoClubState.ReachedToQueue && !_player.TimerForAction.IsFilling;
         public bool CanGiveDrink => _player != null && _queueSystem.EmptyQueuePoints.Count < _queueSystem.Capacity && _queueSystem.AisInQueue.Count > 0 && _queueSystem.AisInQueue[0].StateManager.BuyDrinkState.ReachedToQueue && !_player.TimerForAction.IsFilling;
         #endregion
@@ -24,9 +27,24 @@ namespace ZestGames
             if (_queueSystem == null)
                 _queueSystem = queueSystem;
 
+            CanPlayerActivateQueue = true;
             PlayerIsInArea = false;
             _emptyCoroutine = null;
+
+            Delayer.DoActionAfterDelay(this, 0.5f, CheckForPlayerActivation);
         }
+
+        #region EVENT HANDLER FUNCTIONS
+        private void CheckForPlayerActivation()
+        {
+            if (_queueSystem.QueueType == Enums.QueueType.Gate && Gate.BodyguardHired)
+                CanPlayerActivateQueue = false;
+            else if (_queueSystem.QueueType == Enums.QueueType.Bar)
+            {
+                
+            }
+        }
+        #endregion
 
         #region PUBLICS
         public void StartEmptyingQueue(Player player)

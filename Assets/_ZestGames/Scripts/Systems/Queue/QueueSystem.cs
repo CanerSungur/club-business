@@ -28,6 +28,7 @@ namespace ZestGames
         #endregion
 
         #region PROPERTIES
+        public QueueActivator QueueActivator => _queueActivator;
         public bool QueueIsFull => EmptyQueuePoints.Count == 0 && !_updatingQueue;
         public int Capacity => capacity;
         public Enums.QueueType QueueType => queueType;
@@ -65,7 +66,7 @@ namespace ZestGames
         #endregion
 
         #region EVENTS
-        public Action OnPlayerEntered, OnPlayerExited;
+        public Action OnPlayerEntered, OnPlayerExited, OnAiIsWorking, OnAiIsNotWorking;
         #endregion
 
         private void OnDisable()

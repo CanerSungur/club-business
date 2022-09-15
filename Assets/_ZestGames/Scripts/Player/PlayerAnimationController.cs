@@ -18,6 +18,7 @@ namespace ZestGames
         private readonly int _cheerIndexID = Animator.StringToHash("CheerIndex");
         private readonly int _letInID = Animator.StringToHash("LetIn");
         private readonly int _bartendingID = Animator.StringToHash("Bartending");
+        private readonly int _warnWorkerID = Animator.StringToHash("WarnWorker");
         #endregion
 
         public void Init(Player player)
@@ -40,6 +41,7 @@ namespace ZestGames
             PlayerEvents.OnStopLettingPeopleIn += StopLettingIn;
             PlayerEvents.OnStartFillingDrinks += StartBartending;
             PlayerEvents.OnStopFillingDrinks += StopBartending;
+            PlayerEvents.OnWarnWorker += WarnWorker;
         }
 
         private void OnDisable()
@@ -56,8 +58,13 @@ namespace ZestGames
             PlayerEvents.OnStopLettingPeopleIn -= StopLettingIn;
             PlayerEvents.OnStartFillingDrinks -= StartBartending;
             PlayerEvents.OnStopFillingDrinks -= StopBartending;
+            PlayerEvents.OnWarnWorker -= WarnWorker;
         }
 
+        private void WarnWorker()
+        {
+            _animator.SetTrigger(_warnWorkerID);
+        }
         private void StartBartending()
         {
             _animator.SetBool(_bartendingID, true);

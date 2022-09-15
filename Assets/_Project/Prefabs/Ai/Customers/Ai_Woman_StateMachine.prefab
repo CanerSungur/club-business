@@ -742,7 +742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   materials:
   - {fileID: 2100000, guid: 27ad6a1442739394a84f415eb1e93f7c, type: 2}
-  - {fileID: 2100000, guid: b0bbe7712befa6f4aaa1bdaedd584623, type: 2}
+  - {fileID: 2100000, guid: 08ef66e55e02bf3458b0827bc699bff8, type: 2}
   meshRenderer: {fileID: 4956729464444084735}
 --- !u!114 &2109841032097923949
 MonoBehaviour:

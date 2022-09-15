@@ -8,10 +8,10 @@ namespace ClubBusiness
     public class CustomerManager : MonoBehaviour
     {
         [Header("-- SETUP --")]
-        [SerializeField] private int customersOutsideMaxCount = 10;
-        [SerializeField] private int customersInsideMaxCount = 20;
         [SerializeField] private Transform spawnTransform;
-
+        private int _customersOutsideMaxCount = 10;
+        private int _customersInsideMaxCount = 20;
+        
         #region SPAWN SETUP
         private readonly WaitForSeconds _waitForSpawnDelay = new WaitForSeconds(3f);
         #endregion
@@ -66,6 +66,7 @@ namespace ClubBusiness
         public void Init(GameManager gameManager)
         {
             CustomerWaitDuration = 5f;
+            _customersOutsideMaxCount = QueueManager.GateQueue.Capacity;
 
             StartCoroutine(SpawnCustomerOutsideCoroutine());
         }
@@ -75,7 +76,7 @@ namespace ClubBusiness
         {
             while (true)
             {
-                if (CustomersOutside.Count < customersOutsideMaxCount && GameManager.GameState == Enums.GameState.Started)
+                if (CustomersOutside.Count < _customersOutsideMaxCount && GameManager.GameState == Enums.GameState.Started)
                 {
                     Ai customerOutside = ObjectPooler.Instance.SpawnFromPool(Enums.PoolStamp.Customer, spawnTransform.position, Quaternion.identity).GetComponent<Ai>();
                     customerOutside.Init(this, Enums.AiLocation.Outside);

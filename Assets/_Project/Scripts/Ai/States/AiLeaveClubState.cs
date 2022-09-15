@@ -15,9 +15,24 @@ namespace ClubBusiness
             if (_ai == null)
                 _ai = aiStateManager.Ai;
 
+            if (_ai.StateManager.CurrentStateType ==  Enums.AiStateType.BuyDrink)
+            {
+                QueueManager.BarQueue.RemoveAiFromQueue(_ai);
+                _ai.StateManager.BuyDrinkState.CurrentQueuePoint.QueueIsReleased();
+            }
+            else if (_ai.StateManager.CurrentStateType == Enums.AiStateType.GetIntoToiletQueue)
+            {
+                QueueManager.ToiletQueue.RemoveAiFromQueue(_ai);
+                _ai.StateManager.GetIntoToiletQueueState.CurrentQueuePoint.QueueIsReleased();
+            }
+            
+
             aiStateManager.SwitchStateType(Enums.AiStateType.Leaving);
             _reached = false;
             _exitPosition = ClubManager.ExitTransform.position;
+
+            
+
 
             _ai.OnMove?.Invoke();
         }

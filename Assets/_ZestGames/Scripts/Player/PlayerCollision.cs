@@ -1,3 +1,4 @@
+using ClubBusiness;
 using UnityEngine;
 
 namespace ZestGames
@@ -16,7 +17,7 @@ namespace ZestGames
             if (other.TryGetComponent(out UpgradeAreaBase upgradeArea) && !upgradeArea.PlayerIsInArea)
                 upgradeArea.StartOpening();
 
-            if (other.TryGetComponent(out QueueActivator queueActivator) && !queueActivator.PlayerIsInArea)
+            if (other.TryGetComponent(out QueueActivator queueActivator) && !queueActivator.PlayerIsInArea && queueActivator.CanPlayerActivateQueue)
             {
                 queueActivator.StartEmptyingQueue(_player);
                 if (queueActivator.QueueSystem.QueueType == Enums.QueueType.Gate)
@@ -30,6 +31,12 @@ namespace ZestGames
             {
                 examplePoint.PlayerIsInArea = true;
                 _player.MoneyHandler.StartSpending(examplePoint);
+            }
+
+            if (other.TryGetComponent(out BodyguardTrigger bodyguardTrigger) && bodyguardTrigger. Bodyguard.IsWastingTime)
+            {
+                PlayerEvents.OnWarnWorker?.Invoke();
+                bodyguardTrigger.Bodyguard.OnGetWarned?.Invoke();
             }
         }
 

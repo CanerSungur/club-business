@@ -17,6 +17,7 @@ namespace ClubBusiness
 
         #region PROPERTIES
         public bool ReachedToQueue => _reachedToQueue;
+        public QueuePoint CurrentQueuePoint => _currentQueuePoint;
         #endregion
 
         #region SEQUENCE

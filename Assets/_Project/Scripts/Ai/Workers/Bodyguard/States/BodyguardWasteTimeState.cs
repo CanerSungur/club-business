@@ -14,18 +14,17 @@ namespace ClubBusiness
             if (_bodyguard == null)
                 _bodyguard = bodyguardtateManager.Bodyguard;
 
-            if (!_bodyguard.IsWastingTime)
-                _bodyguard.OnWasteTime?.Invoke();
+            _bodyguard.OnWasteTime?.Invoke();
         }
 
         public override void ExitState(BodyguardStateManager bodyguardtateManager)
         {
-            
+
         }
 
         public override void UpdateState(BodyguardStateManager bodyguardtateManager)
         {
-            
+
         }
     }
 }

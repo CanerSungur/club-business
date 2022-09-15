@@ -1,17 +1,24 @@
 using System;
 using UnityEngine;
+using ZestGames;
 
 namespace ClubBusiness
 {
     public class Bodyguard : MonoBehaviour
     {
         private bool _initialized = false;
+        private float _currentStamina;
+
+        [Header("-- SETUP --")]
+        [SerializeField] private Animator sleepCanvasAnimator;
 
         #region SCRIPT REFERENCES
         private BodyguardAnimationController _animationController;
         public BodyguardAnimationController AnimationController => _animationController == null ? _animationController = GetComponent<BodyguardAnimationController>() : _animationController;
         private BodyguardStateManager _stateManager;
         public BodyguardStateManager StateManager => _stateManager == null ? _stateManager = GetComponent<BodyguardStateManager>() : _stateManager;
+        private BodyguardTrigger _trigger;
+        public BodyguardTrigger Trigger => _trigger == null ? _trigger = GetComponentInChildren<BodyguardTrigger>() : _trigger;
         #endregion
 
         #region EVENTS
@@ -22,41 +29,62 @@ namespace ClubBusiness
         public bool IsWastingTime { get; private set; }
         #endregion
 
-        public void Init()
+        public void Init(Gate gate)
         {
             _initialized = true;
+            _currentStamina = Gate.BodyguardStamina;
 
             IsWastingTime = false;
 
             AnimationController.Init(this);
             StateManager.Init(this);
+            Trigger.Init(this);
 
+            OnLetIn += LetCustomerIn;
             OnWaitForCustomer += WaitForCustomers;
             OnWasteTime += WasteTime;
             OnGetWarned += GetWarned;
+
+            PlayerEvents.OnBodyguardIsActive?.Invoke();
         }
 
         private void OnDisable()
         {
             if (!_initialized) return;
 
+            OnLetIn -= LetCustomerIn;
             OnWaitForCustomer -= WaitForCustomers;
             OnWasteTime -= WasteTime;
             OnGetWarned -= GetWarned;
         }
 
         #region EVENT HANDLER FUNCTIONS
+        private void LetCustomerIn()
+        {
+            _currentStamina -= 5f;
+
+            if (_currentStamina <= 0)
+                IsWastingTime = true;
+            else
+                IsWastingTime = false;
+        }
         private void WaitForCustomers()
         {
-            IsWastingTime = false;
+            //IsWastingTime = false;
+            QueueManager.GateQueue.OnAiIsWorking?.Invoke();
+            sleepCanvasAnimator.SetBool("Open", false);
         }
         private void WasteTime()
         {
-            IsWastingTime = true;
+            //IsWastingTime = true;
+            QueueManager.GateQueue.OnAiIsNotWorking?.Invoke();
+            sleepCanvasAnimator.SetBool("Open", true);
         }
         private void GetWarned()
         {
-            //StateManager.SwitchState(StateManager.WaitForCustomerState);
+            IsWastingTime = false;
+            _currentStamina = Gate.BodyguardStamina;
+            StateManager.SwitchState(StateManager.WaitForCustomerState);
         }
         #endregion
     }

@@ -19,6 +19,8 @@ namespace ClubBusiness
 
             _queueSystem.OnPlayerEntered += Enable;
             _queueSystem.OnPlayerExited += Disable;
+            _queueSystem.OnAiIsWorking += Enable;
+            _queueSystem.OnAiIsNotWorking += Disable;
         }
 
         private void OnDisable()
@@ -27,6 +29,8 @@ namespace ClubBusiness
 
             _queueSystem.OnPlayerEntered -= Enable;
             _queueSystem.OnPlayerExited -= Disable;
+            _queueSystem.OnAiIsWorking -= Enable;
+            _queueSystem.OnAiIsNotWorking -= Disable;
         }
 
         private void Enable() => _animator.SetBool(_enableID, true);
