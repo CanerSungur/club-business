@@ -17,5 +17,9 @@ namespace ClubBusiness
         {
             
         }
+        public void FixToiletHappened()
+        {
+            _animationController.Player.FixedToiletItem.OnFix?.Invoke();
+        }
     }
 }

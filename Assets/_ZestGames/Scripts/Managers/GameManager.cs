@@ -7,6 +7,9 @@ namespace ZestGames
 {
     public class GameManager : MonoBehaviour
     {
+        [Header("-- TESTING --")]
+        [SerializeField, Range(0f, 5f)] private float gameSpeed = 1f;
+
         public static Enums.GameState GameState { get; private set; }
         public static Enums.GameEnd GameEnd { get; private set; }
 
@@ -22,6 +25,9 @@ namespace ZestGames
 
         private void Init()
         {
+            DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(1250, 50);
+            Application.targetFrameRate = 240;
+
             GameState = Enums.GameState.WaitingToStart;
             GameEnd = Enums.GameEnd.None;
 
@@ -63,6 +69,13 @@ namespace ZestGames
             GameEvents.OnGameEnd -= HandleGameEnd;
 
             DOTween.KillAll();
+        }
+
+        private void Update()
+        {
+#if UNITY_EDITOR
+            Time.timeScale = gameSpeed;
+#endif
         }
 
         private void HandleGameStart()

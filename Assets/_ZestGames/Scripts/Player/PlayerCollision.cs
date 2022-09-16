@@ -44,6 +44,13 @@ namespace ZestGames
                 PlayerEvents.OnWarnWorker?.Invoke();
                 bartenderTrigger.Bartender.OnGetWarned?.Invoke();
             }
+
+            if (other.TryGetComponent(out ToiletItem toiletItem) && toiletItem.IsBroken && !toiletItem.PlayerIsInArea && _player.FixedToiletItem == null)
+            {
+                toiletItem.PlayerIsInArea = true;
+                _player.FixedToiletItem = toiletItem;
+                PlayerEvents.OnStartFixingToilet?.Invoke(toiletItem);
+            }
         }
 
         private void OnTriggerExit(Collider other)
@@ -65,6 +72,13 @@ namespace ZestGames
             {
                 examplePoint.PlayerIsInArea = false;
                 _player.MoneyHandler.StopSpending();
+            }
+
+            if (other.TryGetComponent(out ToiletItem toiletItem) && toiletItem.PlayerIsInArea && _player.FixedToiletItem == toiletItem)
+            {
+                toiletItem.PlayerIsInArea = false;
+                _player.FixedToiletItem = null;
+                PlayerEvents.OnStopFixingToilet?.Invoke();
             }
         }
     }

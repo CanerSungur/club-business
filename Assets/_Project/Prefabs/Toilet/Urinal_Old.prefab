@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3456948719831565162}
   - component: {fileID: 3456948719831565167}
   m_Layer: 0
-  m_Name: Urinal
+  m_Name: Urinal_Old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,3 +1,4 @@
+using ClubBusiness;
 using System;
 using UnityEngine;
 
@@ -20,6 +21,8 @@ namespace ZestGames
         public static Action<Ai> OnEmptyNextInBarQueue, OnThrowADrink;
         public static Action OnStartLettingPeopleIn, OnStopLettingPeopleIn, OnStartFillingDrinks, OnStopFillingDrinks, OnStartCleaning, OnStopCleaning, OnStartBreakingUpFight, OnStopBreakingUpFight;
         public static Action OnBodyguardIsActive, OnCleanerIsActive, OnBartenderIsActive;
+        public static Action<ToiletItem> OnStartFixingToilet;
+        public static Action OnStopFixingToilet;
     }
 
     public static class PlayerUpgradeEvents

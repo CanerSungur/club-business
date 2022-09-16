@@ -38,6 +38,7 @@ namespace ZestGames
         #endregion
 
         #region PROPERTIES
+        public ToiletItem FixedToiletItem { get; set; }
         public bool IsDead { get; private set; }
         public bool IsUpgrading { get; private set; }
         public bool IsGrounded => Physics.Raycast(Collider.bounds.center, Vector3.down, Collider.bounds.extents.y + 0.01f, walkableLayer);
@@ -54,6 +55,7 @@ namespace ZestGames
         {
             CharacterTracker.SetPlayerTransform(transform);
             IsDead = IsUpgrading = false;
+            FixedToiletItem = null;
 
             InputHandler.Init(this);
             PlayerMovement.Init(this);

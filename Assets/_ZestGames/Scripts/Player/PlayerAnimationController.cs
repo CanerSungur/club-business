@@ -19,7 +19,11 @@ namespace ZestGames
         private readonly int _letInID = Animator.StringToHash("LetIn");
         private readonly int _bartendingID = Animator.StringToHash("Bartending");
         private readonly int _warnWorkerID = Animator.StringToHash("WarnWorker");
+        private readonly int _startFixingToiletID = Animator.StringToHash("StartFixingToilet");
+        private readonly int _stopFixingToiletID = Animator.StringToHash("StopFixingToilet");
         #endregion
+
+        public Player Player => _player;
 
         public void Init(Player player)
         {
@@ -42,6 +46,8 @@ namespace ZestGames
             PlayerEvents.OnStartFillingDrinks += StartBartending;
             PlayerEvents.OnStopFillingDrinks += StopBartending;
             PlayerEvents.OnWarnWorker += WarnWorker;
+            PlayerEvents.OnStartFixingToilet += StartFixingToilet;
+            PlayerEvents.OnStopFixingToilet += StopFixingToilet;
         }
 
         private void OnDisable()
@@ -59,8 +65,18 @@ namespace ZestGames
             PlayerEvents.OnStartFillingDrinks -= StartBartending;
             PlayerEvents.OnStopFillingDrinks -= StopBartending;
             PlayerEvents.OnWarnWorker -= WarnWorker;
+            PlayerEvents.OnStartFixingToilet -= StartFixingToilet;
+            PlayerEvents.OnStopFixingToilet -= StopFixingToilet;
         }
 
+        private void StartFixingToilet(ToiletItem toiletItem)
+        {
+            _animator.SetTrigger(_startFixingToiletID);
+        }
+        private void StopFixingToilet()
+        {
+            _animator.SetTrigger(_stopFixingToiletID);
+        }
         private void WarnWorker()
         {
             _animator.SetTrigger(_warnWorkerID);
