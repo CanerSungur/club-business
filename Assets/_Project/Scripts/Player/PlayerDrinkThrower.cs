@@ -31,7 +31,7 @@ namespace ClubBusiness
         private void ThrowADrink(Ai ai)
         {
             Beer beer = ObjectPooler.Instance.SpawnFromPool(Enums.PoolStamp.Beer, Bar.BeerSpawnTransform.position, Quaternion.identity).GetComponent<Beer>();
-            beer.Init(this, ai);
+            beer.Init(ai);
         }
 
         #region DOTWEEN FUNCTIONS

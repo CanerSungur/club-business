@@ -20,6 +20,7 @@ namespace ZestGames
         public bool CanBodyguardTakeSomeoneIn => ClubManager.ClubHasCapacity && _queueSystem.EmptyQueuePoints.Count < _queueSystem.Capacity && _queueSystem.AisInQueue.Count > 0 && _queueSystem.AisInQueue[0].StateManager.GetIntoClubState.ReachedToQueue;
         public bool CanTakeSomeoneIn => ClubManager.ClubHasCapacity && _player != null && _queueSystem.EmptyQueuePoints.Count < _queueSystem.Capacity && _queueSystem.AisInQueue.Count > 0 && _queueSystem.AisInQueue[0].StateManager.GetIntoClubState.ReachedToQueue && !_player.TimerForAction.IsFilling;
         public bool CanGiveDrink => _player != null && _queueSystem.EmptyQueuePoints.Count < _queueSystem.Capacity && _queueSystem.AisInQueue.Count > 0 && _queueSystem.AisInQueue[0].StateManager.BuyDrinkState.ReachedToQueue && !_player.TimerForAction.IsFilling;
+        public bool CanBartenderGiveDrink => _queueSystem.EmptyQueuePoints.Count < _queueSystem.Capacity && _queueSystem.AisInQueue.Count > 0 && _queueSystem.AisInQueue[0].StateManager.BuyDrinkState.ReachedToQueue;
         #endregion
 
         public void Init(QueueSystem queueSystem)
@@ -32,6 +33,17 @@ namespace ZestGames
             _emptyCoroutine = null;
 
             Delayer.DoActionAfterDelay(this, 0.5f, CheckForPlayerActivation);
+            
+            GateUpgradeEvents.OnUpgradeBodyguardHire += CheckForPlayerActivation;
+            BarUpgradeEvents.OnUpgradeBartenderHire += CheckForPlayerActivation;
+        }
+
+        private void OnDisable()
+        {
+            if (_queueSystem == null) return;
+
+            GateUpgradeEvents.OnUpgradeBodyguardHire -= CheckForPlayerActivation;
+            BarUpgradeEvents.OnUpgradeBartenderHire -= CheckForPlayerActivation;
         }
 
         #region EVENT HANDLER FUNCTIONS
@@ -39,10 +51,8 @@ namespace ZestGames
         {
             if (_queueSystem.QueueType == Enums.QueueType.Gate && Gate.BodyguardHired)
                 CanPlayerActivateQueue = false;
-            else if (_queueSystem.QueueType == Enums.QueueType.Bar)
-            {
-                
-            }
+            else if (_queueSystem.QueueType == Enums.QueueType.Bar && Bar.BartenderHired)
+                CanPlayerActivateQueue = false;
         }
         #endregion
 

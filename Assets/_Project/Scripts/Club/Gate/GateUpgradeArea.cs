@@ -6,7 +6,7 @@ namespace ClubBusiness
     {
         public override void OpenUpgradeCanvas()
         {
-            if (!UpgradeCanvas.IsOpen)
+            if (!GateUpgradeCanvas.IsOpen)
             {
                 GateUpgradeEvents.OnOpenCanvas?.Invoke();
                 PlayerEvents.OnOpenedUpgradeCanvas?.Invoke();
@@ -15,8 +15,11 @@ namespace ClubBusiness
 
         public override void CloseUpgradeCanvas()
         {
-            if (UpgradeCanvas.IsOpen)
+            if (GateUpgradeCanvas.IsOpen)
+            {
                 GateUpgradeEvents.OnCloseCanvas?.Invoke();
+                PlayerEvents.OnClosedUpgradeCanvas?.Invoke();
+            }
         }
     }
 }

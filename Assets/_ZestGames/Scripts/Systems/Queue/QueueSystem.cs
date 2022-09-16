@@ -146,6 +146,7 @@ namespace ZestGames
             if (queueType != Enums.QueueType.Bar) return;
             //Ai firstAi = AisInQueue[0];
             //RemoveAiFromQueue(firstAi);
+            RemoveAiFromQueue(ai);
             ai.StateManager.BuyDrinkState.ActivateStateAfterQueue();
         }
 

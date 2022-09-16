@@ -1,6 +1,4 @@
 
-using ZestGames;
-
 namespace ClubBusiness
 {
     public abstract class BodyguardBaseState

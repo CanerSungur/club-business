@@ -23,6 +23,7 @@ namespace ZestGames
         private readonly int _waitForToiletID = Animator.StringToHash("WaitForToilet");
         private readonly int _startPissingID = Animator.StringToHash("StartPissing");
         private readonly int _stopPissingID = Animator.StringToHash("StopPissing");
+        private readonly int _standUpID = Animator.StringToHash("StandUp");
         #endregion
 
         public void Init(Ai ai)
@@ -47,6 +48,7 @@ namespace ZestGames
             _ai.OnStopPissing += StopPissing;
             _ai.OnStartWaitingForToilet += StartWaitingForToilet;
             _ai.OnStopWaitingForToilet += StopWaitingForToilet;
+            _ai.OnStandUp += StandUp;
         }
 
         private void OnDisable()
@@ -67,8 +69,10 @@ namespace ZestGames
             _ai.OnStopPissing -= StopPissing;
             _ai.OnStartWaitingForToilet -= StartWaitingForToilet;
             _ai.OnStopWaitingForToilet -= StopWaitingForToilet;
+            _ai.OnStandUp -= StandUp;
         }
 
+        private void StandUp() => _animator.SetTrigger(_standUpID);
         private void StartPissing() => _animator.SetTrigger(_startPissingID);
         private void StopPissing() => _animator.SetTrigger(_stopPissingID);
         private void StartWaitingForToilet() => _animator.SetBool(_waitForToiletID, true);
@@ -105,6 +109,8 @@ namespace ZestGames
         public void DrinkingFinished()
         {
             Delayer.DoActionAfterDelay(this, 1f, () => {
+                _ai.OnStandUp?.Invoke();
+                _ai.Rigidbody.isKinematic = false;
                 _ai.EffectHandler.DisableBeer();
                 _ai.StateManager.BuyDrinkState.FinishDrinking();
             });

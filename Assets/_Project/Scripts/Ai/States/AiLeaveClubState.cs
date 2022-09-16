@@ -25,14 +25,10 @@ namespace ClubBusiness
                 QueueManager.ToiletQueue.RemoveAiFromQueue(_ai);
                 _ai.StateManager.GetIntoToiletQueueState.CurrentQueuePoint.QueueIsReleased();
             }
-            
 
             aiStateManager.SwitchStateType(Enums.AiStateType.Leaving);
             _reached = false;
             _exitPosition = ClubManager.ExitTransform.position;
-
-            
-
 
             _ai.OnMove?.Invoke();
         }

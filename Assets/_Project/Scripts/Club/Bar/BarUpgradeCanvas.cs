@@ -1,0 +1,173 @@
+using UnityEngine;
+using ZestGames;
+
+namespace ClubBusiness
+{
+    public class BarUpgradeCanvas : MonoBehaviour
+    {
+        public enum Type { Idle, Incremental }
+        [SerializeField] private Type _currentType;
+        public Type CurrentType => _currentType;
+
+        private CustomButton _closeButton, _emptySpaceButton;
+        public static bool IsOpen { get; private set; }
+
+        #region ANIMATION
+        private Animator _animator;
+        private readonly int _openID = Animator.StringToHash("Open");
+        private readonly int _closeID = Animator.StringToHash("Close");
+        #endregion
+
+        [Header("-- STAMINA SETUP --")]
+        [SerializeField] private UpgradeCanvasItem bartenderHire;
+        [SerializeField] private UpgradeCanvasItem bartenderStamina;
+        [SerializeField] private UpgradeCanvasItem bartenderSpeed;
+
+        public void Init(Bar bar)
+        {
+            if (_animator == null)
+            {
+                _animator = GetComponent<Animator>();
+                if (_currentType == Type.Idle)
+                {
+                    _closeButton = transform.GetChild(0).GetChild(0).GetComponent<CustomButton>();
+                    _emptySpaceButton = transform.GetChild(1).GetComponent<CustomButton>();
+                }
+
+                bartenderHire.Init();
+                bartenderStamina.Init();
+                bartenderSpeed.Init();
+            }
+
+            //Delayer.DoActionAfterDelay(this, 0.5f, UpdateTexts);
+            UpdateTexts();
+
+            IsOpen = false;
+
+            if (_currentType == Type.Idle)
+            {
+                _closeButton.onClick.AddListener(CloseCanvasClicked);
+                _emptySpaceButton.onClick.AddListener(CloseCanvasClicked);
+            }
+
+            bartenderHire.Button.onClick.AddListener(BartenderHireUpgradeClicked);
+            bartenderStamina.Button.onClick.AddListener(BartenderStaminaUpgradeClicked);
+            bartenderSpeed.Button.onClick.AddListener(BartenderSpeedUpgradeClicked);
+
+            BarUpgradeEvents.OnUpdateUpgradeTexts += UpdateTexts;
+
+            BarUpgradeEvents.OnOpenCanvas += EnableCanvas;
+            BarUpgradeEvents.OnCloseCanvas += DisableCanvas;
+        }
+
+        private void OnDisable()
+        {
+            if (_currentType == Type.Idle)
+            {
+                _closeButton.onClick.RemoveListener(CloseCanvasClicked);
+                _emptySpaceButton.onClick.RemoveListener(CloseCanvasClicked);
+            }
+
+            bartenderHire.Button.onClick.RemoveListener(BartenderHireUpgradeClicked);
+            bartenderStamina.Button.onClick.RemoveListener(BartenderStaminaUpgradeClicked);
+            bartenderSpeed.Button.onClick.RemoveListener(BartenderSpeedUpgradeClicked);
+
+            BarUpgradeEvents.OnUpdateUpgradeTexts -= UpdateTexts;
+
+            BarUpgradeEvents.OnOpenCanvas -= EnableCanvas;
+            BarUpgradeEvents.OnCloseCanvas -= DisableCanvas;
+        }
+
+        #region UPDATERS
+        private void UpdateTexts()
+        {
+            #region BARTENDER HIRE
+            if (Bar.BartenderHired)
+            {
+                bartenderHire.Button.gameObject.SetActive(false);
+                bartenderHire.LevelText.text = "ALREADY HIRED!";
+            }
+            else
+            {
+                bartenderHire.Button.gameObject.SetActive(true);
+                bartenderHire.LevelText.text = "";
+                bartenderHire.CostText.text = Bar.BartenderHiredCost.ToString();
+            }
+            #endregion
+
+            if (_currentType == Type.Idle)
+                bartenderStamina.LevelText.text = $"Level {Bar.BartenderStaminaLevel}";
+            else
+                bartenderStamina.LevelText.text = Bar.BartenderStaminaLevel.ToString();
+
+            bartenderStamina.CostText.text = Bar.BartenderStaminaCost.ToString();
+
+            if (_currentType == Type.Idle)
+                bartenderSpeed.LevelText.text = $"Level {Bar.BartenderSpeedLevel}";
+            else
+                bartenderSpeed.LevelText.text = Bar.BartenderSpeedLevel.ToString();
+
+            bartenderSpeed.CostText.text = Bar.BartenderSpeedCost.ToString();
+
+            CheckForMoneySufficiency();
+        }
+
+        private void CheckForMoneySufficiency()
+        {
+            bartenderHire.Button.interactable = DataManager.TotalMoney >= Bar.BartenderHiredCost && !Bar.BartenderHired;
+            bartenderStamina.Button.interactable = DataManager.TotalMoney >= Bar.BartenderStaminaCost && Bar.BartenderHired;
+            bartenderSpeed.Button.interactable = DataManager.TotalMoney >= Bar.BartenderSpeedCost && Bar.BartenderHired;
+        }
+        #endregion
+
+        #region UPGRADE FUNCTIONS
+        private void CloseCanvas()
+        {
+            BarUpgradeEvents.OnCloseCanvas?.Invoke();
+            PlayerEvents.OnClosedUpgradeCanvas?.Invoke();
+        }
+        private void UpgradeBartenderHire() => BarUpgradeEvents.OnUpgradeBartenderHire?.Invoke();
+        private void UpgradeBartenderStamina() => BarUpgradeEvents.OnUpgradeBartenderStamina?.Invoke();
+        private void UpgradeBartenderSpeed() => BarUpgradeEvents.OnUpgradeBartenderSpeed?.Invoke();
+        #endregion
+
+        #region CLICK TRIGGER FUNCTIONS
+        private void CloseCanvasClicked()
+        {
+            if (_currentType == Type.Idle)
+            {
+                _closeButton.interactable = _emptySpaceButton.interactable = false;
+                _closeButton.TriggerClick(CloseCanvas);
+            }
+        }
+        private void BartenderHireUpgradeClicked() => bartenderHire.Button.TriggerClick(UpgradeBartenderHire);
+        private void BartenderStaminaUpgradeClicked() => bartenderStamina.Button.TriggerClick(UpgradeBartenderStamina);
+        private void BartenderSpeedUpgradeClicked() => bartenderSpeed.Button.TriggerClick(UpgradeBartenderSpeed);
+        #endregion
+
+        #region ANIMATOR FUNCTIONS
+        private void EnableCanvas()
+        {
+            AudioHandler.PlayAudio(Enums.AudioType.UpgradeMenu);
+
+            if (_currentType == Type.Idle)
+                _closeButton.interactable = _emptySpaceButton.interactable = true;
+
+            _animator.SetTrigger(_openID);
+            IsOpen = true;
+
+            CheckForMoneySufficiency();
+        }
+        private void DisableCanvas()
+        {
+            AudioHandler.PlayAudio(Enums.AudioType.UpgradeMenu);
+
+            if (_currentType == Type.Idle)
+                _closeButton.interactable = _emptySpaceButton.interactable = false;
+
+            _animator.SetTrigger(_closeID);
+            IsOpen = false;
+        }
+        #endregion
+    }
+}

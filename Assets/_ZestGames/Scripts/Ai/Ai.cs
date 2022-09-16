@@ -29,6 +29,8 @@ namespace ZestGames
         public AiAngerHandler AngerHandler => _angerHandler == null ? _angerHandler = GetComponent<AiAngerHandler>() : _angerHandler;
         private ReactionCanvas _reactionCanvas;
         public ReactionCanvas ReactionCanvas => _reactionCanvas == null ? _reactionCanvas = GetComponentInChildren<ReactionCanvas>() : _reactionCanvas;
+        private AiMoneyHandler _moneyHandler;
+        public AiMoneyHandler MoneyHandler => _moneyHandler == null ? _moneyHandler = GetComponent<AiMoneyHandler>() : _moneyHandler;
         //private IAiMovement movement;
         //public IAiMovement Movement => movement == null ? movement = GetComponent<IAiMovement>() : movement;
         #endregion
@@ -69,7 +71,7 @@ namespace ZestGames
         #endregion
 
         #region EVENTS
-        public Action OnIdle, OnMove, OnDie, OnWin, OnLose, OnStartDancing, OnStopDancing, OnDrink, OnStartAskingForDrink, OnStopAskingForDrink, OnStartPissing, OnStopPissing, OnStartWaitingForToilet, OnStopWaitingForToilet;
+        public Action OnIdle, OnMove, OnDie, OnWin, OnLose, OnStartDancing, OnStopDancing, OnDrink, OnStartAskingForDrink, OnStopAskingForDrink, OnStartPissing, OnStopPissing, OnStartWaitingForToilet, OnStopWaitingForToilet, OnStandUp;
         public Action OnStartArguing, OnStopArguing, OnStartFighting, OnStopFighting;
         public Action<Enums.AiMood> OnMoodChange;
         public Action<Transform> OnSetTarget;
@@ -98,6 +100,7 @@ namespace ZestGames
             EffectHandler.Init(this);
             AngerHandler.Init(this);
             ReactionCanvas.Init(this);
+            MoneyHandler.Init(this);
             //Movement.Init(this);
 
             OnSetTarget += SetTarget;

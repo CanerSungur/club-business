@@ -1,5 +1,4 @@
 using UnityEngine;
-using ZestCore.Utility;
 using ZestGames;
 
 namespace ClubBusiness
@@ -26,7 +25,7 @@ namespace ClubBusiness
 
         public void Init(Gate gate)
         {
-            if (!_animator)
+            if (_animator == null)
             {
                 _animator = GetComponent<Animator>();
                 if (_currentType == Type.Idle)

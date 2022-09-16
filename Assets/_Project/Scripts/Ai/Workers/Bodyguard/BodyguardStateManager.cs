@@ -21,27 +21,13 @@ namespace ClubBusiness
             if (_bodyguard == null)
                 _bodyguard = bodyguard;
 
-            GameEvents.OnGameStart += () =>
-            {
-                _currentState = WaitForCustomerState;
-                _currentState.EnterState(this);
-            };
-        }
-
-        private void OnDisable()
-        {
-            if (_bodyguard == null) return;
-
-            GameEvents.OnGameStart -= () =>
-            {
-                _currentState = WaitForCustomerState;
-                _currentState.EnterState(this);
-            };
+            _currentState = WaitForCustomerState;
+            _currentState.EnterState(this);
         }
 
         private void Update()
         {
-            if (_bodyguard == null || GameManager.GameState != Enums.GameState.Started) return;
+            if (_currentState == null || _bodyguard == null || GameManager.GameState != Enums.GameState.Started) return;
             _currentState.UpdateState(this);
         }
 

@@ -33,10 +33,16 @@ namespace ZestGames
                 _player.MoneyHandler.StartSpending(examplePoint);
             }
 
-            if (other.TryGetComponent(out BodyguardTrigger bodyguardTrigger) && bodyguardTrigger. Bodyguard.IsWastingTime)
+            if (other.TryGetComponent(out BodyguardTrigger bodyguardTrigger) && bodyguardTrigger.Bodyguard.IsWastingTime)
             {
                 PlayerEvents.OnWarnWorker?.Invoke();
                 bodyguardTrigger.Bodyguard.OnGetWarned?.Invoke();
+            }
+
+            if (other.TryGetComponent(out BartenderTrigger bartenderTrigger) && bartenderTrigger.Bartender.IsWastingTime)
+            {
+                PlayerEvents.OnWarnWorker?.Invoke();
+                bartenderTrigger.Bartender.OnGetWarned?.Invoke();
             }
         }
 

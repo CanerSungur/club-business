@@ -15,7 +15,7 @@ namespace ClubBusiness
         private Guid _throwSequenceID;
         #endregion
 
-        public void Init(PlayerDrinkThrower playerDrinkThrower, Ai targetAi)
+        public void Init(Ai targetAi)
         {
             transform.position = Bar.BeerSpawnTransform.position;
             _targetAi = targetAi;

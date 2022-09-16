@@ -57,4 +57,13 @@ namespace ZestGames
     {
         public static Action OnOpenCanvas, OnCloseCanvas, OnUpdateUpgradeTexts, OnUpgradeBodyguardHire, OnUpgradeBodyguardStamina, OnUpgradeBodyguardSpeed;
     }
+
+    public static class BarEvents
+    {
+        public static Action OnBartenderHired, OnSetCurrentBartenderStamina, OnSetCurrentBartenderSpeed;
+    }
+    public static class BarUpgradeEvents
+    {
+        public static Action OnOpenCanvas, OnCloseCanvas, OnUpdateUpgradeTexts, OnUpgradeBartenderHire, OnUpgradeBartenderStamina, OnUpgradeBartenderSpeed;
+    }
 }

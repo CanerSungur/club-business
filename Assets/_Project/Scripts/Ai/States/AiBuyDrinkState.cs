@@ -21,9 +21,11 @@ namespace ClubBusiness
         #endregion
 
         #region SEQUENCE
-        private Sequence _rotationSequence;
-        private Guid _rotationSequenceID;
+        private Sequence _sittingSequence;
+        private Guid _sittingSequenceID;
         private readonly Vector3 _rotation = new Vector3(0f, -90f, 0f);
+        private readonly float _sitHeight = 1.25f;
+        private float _currentHeight;
         #endregion
 
         public override void EnterState(AiStateManager aiStateManager)
@@ -70,7 +72,7 @@ namespace ClubBusiness
                 if (Operation.IsTargetReached(_ai.transform, _currentQueuePoint.transform.position, 0.002f))
                 {
                     _reachedToQueue = true;
-                    StartRotationSequence();
+                    StartSittingSequence();
 
                     // start asking for drink animation
                     _ai.OnIdle?.Invoke();
@@ -100,6 +102,7 @@ namespace ClubBusiness
         public void ActivateStateAfterQueue()
         {
             // Take drink
+            _ai.MoneyHandler.StartSpawningDrinkingMoney();
             // Drink it
             _ai.OnStopAskingForDrink?.Invoke();
             _ai.OnDrink?.Invoke();
@@ -116,28 +119,30 @@ namespace ClubBusiness
         }
         #endregion
 
-        private void StartRotationSequence()
+        private void StartSittingSequence()
         {
-            CreateRotationSequence();
-            _rotationSequence.Play();
+            _ai.Rigidbody.isKinematic = true;
+            CreateSittingSequence();
+            _sittingSequence.Play();
         }
 
         #region DOTWEEN FUNCTIONS
-        private void CreateRotationSequence()
+        private void CreateSittingSequence()
         {
-            if (_rotationSequence == null)
+            if (_sittingSequence == null)
             {
-                _rotationSequence = DOTween.Sequence();
-                _rotationSequenceID = Guid.NewGuid();
-                _rotationSequence.id = _rotationSequenceID;
+                _sittingSequence = DOTween.Sequence();
+                _sittingSequenceID = Guid.NewGuid();
+                _sittingSequence.id = _sittingSequenceID;
 
-                _rotationSequence.Append(_ai.transform.DORotate(_rotation, 1f)).OnComplete(() => DeleteRotationSequence());
+                _sittingSequence.Append(_ai.transform.DORotate(_rotation, 1f))
+                    .Join(_ai.transform.DOLocalMoveY(_sitHeight, 1f)).OnComplete(() => DeleteSittingSequence());
             }
         }
-        private void DeleteRotationSequence()
+        private void DeleteSittingSequence()
         {
-            DOTween.Kill(_rotationSequenceID);
-            _rotationSequence = null;
+            DOTween.Kill(_sittingSequenceID);
+            _sittingSequence = null;
         }
         #endregion
     }
