@@ -40,7 +40,7 @@ namespace ClubBusiness
             _toiletItem.OnFix -= Fix;
         }
 
-        private void CompleteFixing()
+        public void CompleteFixing()
         {
             _toiletItem.OnFixCompleted?.Invoke();
             liquidPuddle.gameObject.SetActive(false);

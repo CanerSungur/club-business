@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using ZestGames;
+using DG.Tweening;
 
 namespace ClubBusiness
 {
@@ -44,8 +45,13 @@ namespace ClubBusiness
             OnWaitForCustomer += WaitForCustomers;
             OnWasteTime += WasteTime;
             OnGetWarned += GetWarned;
+            
+            GateEvents.OnSetCurrentBodyguardStamina += UpdateStamina;
+            //GateEvents.OnSetCurrentBodyguardSpeed += UpdateSpeed;
 
             PlayerEvents.OnBodyguardIsActive?.Invoke();
+
+            Bounce();
         }
 
         private void OnDisable()
@@ -56,12 +62,20 @@ namespace ClubBusiness
             OnWaitForCustomer -= WaitForCustomers;
             OnWasteTime -= WasteTime;
             OnGetWarned -= GetWarned;
+
+            GateEvents.OnSetCurrentBodyguardStamina -= UpdateStamina;
+            //GateEvents.OnSetCurrentBodyguardSpeed -= UpdateSpeed;
+
+            transform.DOKill();
         }
 
+        private void Bounce() => transform.DOShakeScale(1f, 0.25f);
+
         #region EVENT HANDLER FUNCTIONS
+        private void UpdateStamina() => OnGetWarned?.Invoke();
         private void LetCustomerIn()
         {
-            _currentStamina -= 5f;
+            _currentStamina--;
 
             if (_currentStamina <= 0)
                 IsWastingTime = true;

@@ -1,21 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace ClubBusiness
 {
-    public class CleanerBaseState : MonoBehaviour
+    public abstract class CleanerBaseState
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
+        public abstract void EnterState(CleanerStateManager cleanerStateManager);
+        public abstract void UpdateState(CleanerStateManager cleanerStateManager);
+        public abstract void ExitState(CleanerStateManager cleanerStateManager);
     }
 }

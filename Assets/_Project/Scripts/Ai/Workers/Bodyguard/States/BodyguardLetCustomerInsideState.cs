@@ -6,7 +6,7 @@ namespace ClubBusiness
     public class BodyguardLetCustomerInsideState : BodyguardBaseState
     {
         private Bodyguard _bodyguard;
-        private float _timer, _letInTimer;
+        private float _timer;
         private bool _canLetIn;
 
         public override void EnterState(BodyguardStateManager bodyguardStateManager)
@@ -15,7 +15,7 @@ namespace ClubBusiness
             if (_bodyguard == null)
                 _bodyguard = bodyguardStateManager.Bodyguard;
 
-            _timer = _letInTimer = 2f;
+            _timer = Gate.BodyguardLetInDuration;
             _canLetIn = false;
         }
 
@@ -31,7 +31,7 @@ namespace ClubBusiness
                 _timer -= Time.deltaTime;
                 if (_timer <= 0f)
                 {
-                    _timer = _letInTimer;
+                    _timer = Gate.BodyguardLetInDuration;
                     _canLetIn = true;
                     LetCustomerIn();
                 }

@@ -10,6 +10,11 @@ namespace ClubBusiness
         [SerializeField] private Bodyguard bodyguard;
         [SerializeField] private GateUpgradeCanvas gateUpgradeCanvas;
 
+        #region UPGRADE LEVEL CAP
+        public static int BodyguardStaminaLevelCap { get; private set; }
+        public static int BodyguardLetInDurationLevelCap { get; private set; }
+        #endregion
+
         public static bool BodyguardHired { get; private set; }
         public static int BodyguardHiredCost { get; private set; }
         // ##########
@@ -17,25 +22,27 @@ namespace ClubBusiness
         public static int BodyguardStaminaLevel { get; private set; }
         public static int BodyguardStaminaCost => (int)(_upgradeCost * Mathf.Pow(_upgradeCostIncreaseRate, BodyguardStaminaLevel));
         // ##########
-        public static float BodyguardSpeed { get; private set; }
-        public static int BodyguardSpeedLevel { get; private set; }
-        public static int BodyguardSpeedCost => (int)(_upgradeCost * Mathf.Pow(_upgradeCostIncreaseRate, BodyguardSpeedLevel));
+        public static float BodyguardLetInDuration { get; private set; } // level 30 max.
+        public static int BodyguardLetInDurationLevel { get; private set; } // level 15 max.
+        public static int BodyguardLetInDurationCost => (int)(_upgradeCost * Mathf.Pow(_upgradeCostIncreaseRate, BodyguardLetInDurationLevel));
 
         // cost data
         private static readonly int _upgradeCost = 30;
-        private static readonly float _upgradeCostIncreaseRate = 1.2f;
+        private static readonly float _upgradeCostIncreaseRate = 1.3f;
 
         // core data
-        private readonly float _coreBodyguardStamina = 20f;
-        private readonly float _coreBodyguardSpeed = 3f;
+        private readonly float _coreBodyguardStamina = 5f;
+        private readonly float _coreBodyguardLetInDuration = 5f;
 
         // increment data
-        private readonly float _bodyguardStaminaIncrement = 5f;
-        private readonly float _bodyguardSpeedIncrement = 0.5f;
+        private readonly float _bodyguardStaminaIncrement = 1f;
+        private readonly float _bodyguardLetInDurationDecrease = 0.28f;
 
         public void Start()
         {
             BodyguardHiredCost = 500;
+            BodyguardStaminaLevelCap = 30;
+            BodyguardLetInDurationLevelCap = 15;
 
             LoadData();
             
@@ -97,7 +104,7 @@ namespace ClubBusiness
         }
         private void UpdateBodyguardSpeed()
         {
-            BodyguardSpeed = _coreBodyguardSpeed + _bodyguardSpeedIncrement * (BodyguardSpeedLevel - 1);
+            BodyguardLetInDuration = _coreBodyguardLetInDuration - _bodyguardLetInDurationDecrease * (BodyguardLetInDurationLevel - 1);
             GateEvents.OnSetCurrentBodyguardSpeed?.Invoke();
         }
         #endregion
@@ -127,10 +134,10 @@ namespace ClubBusiness
         }
         private void IncreaseBodyguardSpeedLevel()
         {
-            if (DataManager.TotalMoney >= BodyguardSpeedCost)
+            if (DataManager.TotalMoney >= BodyguardLetInDurationCost)
             {
-                CollectableEvents.OnSpend?.Invoke(BodyguardSpeedCost);
-                BodyguardSpeedLevel++;
+                CollectableEvents.OnSpend?.Invoke(BodyguardLetInDurationCost);
+                BodyguardLetInDurationLevel++;
                 GateUpgradeEvents.OnUpdateUpgradeTexts?.Invoke();
                 UiEvents.OnUpdateCollectableText?.Invoke(DataManager.TotalMoney);
             }
@@ -142,13 +149,13 @@ namespace ClubBusiness
         {
             BodyguardHired = PlayerPrefs.GetInt("BodyguardHired", 0) == 1 ? true : false;
             BodyguardStaminaLevel = PlayerPrefs.GetInt("BodyguardStaminaLevel", 1);
-            BodyguardSpeedLevel = PlayerPrefs.GetInt("BodyguardSpeedLevel", 1);
+            BodyguardLetInDurationLevel = PlayerPrefs.GetInt("BodyguardSpeedLevel", 1);
         }
         private void SaveData()
         {
             PlayerPrefs.SetInt("BodyguardHired", BodyguardHired == true ? 1 : 0);
             PlayerPrefs.SetInt("BodyguardStaminaLevel", BodyguardStaminaLevel);
-            PlayerPrefs.SetInt("BodyguardSpeedLevel", BodyguardSpeedLevel);
+            PlayerPrefs.SetInt("BodyguardSpeedLevel", BodyguardLetInDurationLevel);
             PlayerPrefs.Save();
         }
         //private void OnApplicationPause(bool pause) => SaveData();

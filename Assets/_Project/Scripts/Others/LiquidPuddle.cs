@@ -45,7 +45,7 @@ namespace ClubBusiness
             transform.localScale = _currentScale;
 
             DeleteScaleSequence();
-            CreateScaleSequence(_defaultScale);
+            CreateScaleSequence(_defaultScale, 3f);
             _scaleSequence.Play();
         }
 
@@ -56,13 +56,13 @@ namespace ClubBusiness
             targetScale.y = 1f;
 
             DeleteScaleSequence();
-            CreateScaleSequence(targetScale);
+            CreateScaleSequence(targetScale, _sequenceDuration);
             _scaleSequence.Play();
         }
         #endregion
 
         #region DOTWEEN FUNCTIONS
-        private void CreateScaleSequence(Vector3 scale)
+        private void CreateScaleSequence(Vector3 scale, float duration)
         {
             if (_scaleSequence == null)
             {
@@ -70,7 +70,7 @@ namespace ClubBusiness
                 _scaleSequenceID = Guid.NewGuid();
                 _scaleSequence.id = _scaleSequenceID;
 
-                _scaleSequence.Append(transform.DOScale(scale, _sequenceDuration)).OnComplete(() =>
+                _scaleSequence.Append(transform.DOScale(scale, duration)).OnComplete(() =>
                 {
                     DeleteScaleSequence();
                     _currentScale = scale;

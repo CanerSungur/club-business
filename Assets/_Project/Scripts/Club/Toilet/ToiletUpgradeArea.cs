@@ -1,21 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+using ZestGames;
 
 namespace ClubBusiness
 {
-    public class ToiletUpgradeArea : MonoBehaviour
+    public class ToiletUpgradeArea : UpgradeAreaBase
     {
-        // Start is called before the first frame update
-        void Start()
+        public override void OpenUpgradeCanvas()
         {
-        
+            if (!ToiletUpgradeCanvas.IsOpen)
+            {
+                ToiletUpgradeEvents.OnOpenCanvas?.Invoke();
+                PlayerEvents.OnOpenedUpgradeCanvas?.Invoke();
+            }
         }
-
-        // Update is called once per frame
-        void Update()
+        public override void CloseUpgradeCanvas()
         {
-        
+            if (ToiletUpgradeCanvas.IsOpen)
+            {
+                ToiletUpgradeEvents.OnCloseCanvas?.Invoke();
+                PlayerEvents.OnClosedUpgradeCanvas?.Invoke();
+            }
         }
     }
 }

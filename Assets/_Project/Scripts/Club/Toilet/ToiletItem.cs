@@ -6,17 +6,21 @@ namespace ClubBusiness
 {
     public abstract class ToiletItem : MonoBehaviour
     {
+        [Header("-- SETUP --")]
+        [SerializeField] private Transform cleaningTransform;
+
         private ToiletItemBreakHandler _breakHandler;
         private ToiletCabinDoor _toiletCabinDoor;
         private Collider _collider;
 
         private int _usedCount;
-        private readonly int _breakLimit = 2;
 
         #region PROPERTIES
         public Transform PointTransform { get; private set; }
         public bool PlayerIsInArea { get; set; }
         public bool IsBroken { get; private set; }
+        public Transform CleaningTransform => cleaningTransform;
+        public ToiletItemBreakHandler BreakHandler => _breakHandler;
         #endregion
 
         #region EVENTS
@@ -48,10 +52,17 @@ namespace ClubBusiness
             OnFixCompleted -= FixCompleted;
         }
 
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.B) && !IsBroken)
+                Break();
+        }
+
         private void Break()
         {
             if (!IsBroken)
             {
+                Toilet.AddBrokenToiletItem(this);
                 IsBroken = _collider.enabled = true;
                 OnBreak?.Invoke();
             }
@@ -61,6 +72,8 @@ namespace ClubBusiness
             PlayerEvents.OnStopFixingToilet?.Invoke();
             PlayerIsInArea = IsBroken = _collider.enabled = false;
             _usedCount = 0;
+            
+            Toilet.RemoveBrokenToiletItem(this);
             Toilet.AddEmptyToiletItem(this);
         }
 
@@ -72,7 +85,7 @@ namespace ClubBusiness
         public void Release()
         {
             _usedCount++;
-            if (_usedCount >= _breakLimit)
+            if (_usedCount >= Toilet.ToiletDuration)
                 Break();
 
             if (!IsBroken)

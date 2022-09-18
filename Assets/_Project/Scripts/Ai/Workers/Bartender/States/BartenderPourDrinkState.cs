@@ -6,7 +6,7 @@ namespace ClubBusiness
     public class BartenderPourDrinkState : BartenderBaseState
     {
         private Bartender _bartender;
-        private float _timer, _finishPouringTimer;
+        private float _timer;
         private bool _canPourDrink;
 
         public override void EnterState(BartenderStateManager bartenderStateManager)
@@ -14,7 +14,7 @@ namespace ClubBusiness
             if (_bartender == null)
                 _bartender = bartenderStateManager.Bartender;
 
-            _timer = _finishPouringTimer = 2f;
+            _timer = Bar.BartenderPourDuration;
             _canPourDrink = false;
         }
 
@@ -43,7 +43,7 @@ namespace ClubBusiness
                 _timer -= Time.deltaTime;
                 if (_timer <= 0f)
                 {
-                    _timer = _finishPouringTimer;
+                    _timer = Bar.BartenderPourDuration;
                     _canPourDrink = true;
                     PourDrink();
                 }

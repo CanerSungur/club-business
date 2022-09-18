@@ -12,6 +12,11 @@ namespace ClubBusiness
 
         public static Transform BeerSpawnTransform { get; private set; }
 
+        #region UPGRADE LEVEL CAP
+        public static int BartenderStaminaLevelCap { get; private set; }
+        public static int BartenderPourDurationLevelCap { get; private set; }
+        #endregion
+
         public static bool BartenderHired { get; private set; }
         public static int BartenderHiredCost { get; private set; }
         // ##########
@@ -19,26 +24,28 @@ namespace ClubBusiness
         public static int BartenderStaminaLevel { get; private set; }
         public static int BartenderStaminaCost => (int)(_upgradeCost * Mathf.Pow(_upgradeCostIncreaseRate, BartenderStaminaLevel));
         // ##########
-        public static float BartenderSpeed { get; private set; }
-        public static int BartenderSpeedLevel { get; private set; }
-        public static int BartenderSpeedCost => (int)(_upgradeCost * Mathf.Pow(_upgradeCostIncreaseRate, BartenderSpeedLevel));
+        public static float BartenderPourDuration { get; private set; }
+        public static int BartenderPourDurationLevel { get; private set; }
+        public static int BartenderPourDurationCost => (int)(_upgradeCost * Mathf.Pow(_upgradeCostIncreaseRate, BartenderPourDurationLevel));
 
         // cost data
-        private static readonly int _upgradeCost = 30;
-        private static readonly float _upgradeCostIncreaseRate = 1.2f;
+        private static readonly int _upgradeCost = 70;
+        private static readonly float _upgradeCostIncreaseRate = 1.3f;
 
         // core data
-        private readonly float _coreBartenderStamina = 20f;
-        private readonly float _coreBartenderSpeed = 3f;
+        private readonly float _coreBartenderStamina = 5f;
+        private readonly float _coreBartenderPourDuration = 5f;
 
         // increment data
-        private readonly float _bartenderStaminaIncrement = 5f;
-        private readonly float _bartenderSpeedIncrement = 0.5f;
+        private readonly float _bartenderStaminaIncrement = 1f;
+        private readonly float _bartenderPourDurationDecrease = 0.28f;
 
         private void Start()
         {
             BartenderHiredCost = 1000;
             BeerSpawnTransform = beerSpawnTransform;
+            BartenderStaminaLevelCap = 30;
+            BartenderPourDurationLevelCap = 15;
 
             LoadData();
 
@@ -100,7 +107,7 @@ namespace ClubBusiness
         }
         private void UpdateBartenderSpeed()
         {
-            BartenderSpeed = _coreBartenderSpeed + _bartenderSpeedIncrement * (BartenderSpeedLevel - 1);
+            BartenderPourDuration = _coreBartenderPourDuration + _bartenderPourDurationDecrease * (BartenderPourDurationLevel - 1);
             BarEvents.OnSetCurrentBartenderSpeed?.Invoke();
         }
         #endregion
@@ -130,10 +137,10 @@ namespace ClubBusiness
         }
         private void IncreaseBartenderSpeedLevel()
         {
-            if (DataManager.TotalMoney >= BartenderSpeedCost)
+            if (DataManager.TotalMoney >= BartenderPourDurationCost)
             {
-                CollectableEvents.OnSpend?.Invoke(BartenderSpeedCost);
-                BartenderSpeedLevel++;
+                CollectableEvents.OnSpend?.Invoke(BartenderPourDurationCost);
+                BartenderPourDurationLevel++;
                 BarUpgradeEvents.OnUpdateUpgradeTexts?.Invoke();
                 UiEvents.OnUpdateCollectableText?.Invoke(DataManager.TotalMoney);
             }
@@ -145,13 +152,13 @@ namespace ClubBusiness
         {
             BartenderHired = PlayerPrefs.GetInt("BartenderHired", 0) == 1 ? true : false;
             BartenderStaminaLevel = PlayerPrefs.GetInt("BartenderStaminaLevel", 1);
-            BartenderSpeedLevel = PlayerPrefs.GetInt("BartenderSpeedLevel", 1);
+            BartenderPourDurationLevel = PlayerPrefs.GetInt("BartenderSpeedLevel", 1);
         }
         private void SaveData()
         {
             PlayerPrefs.SetInt("BartenderHired", BartenderHired == true ? 1 : 0);
             PlayerPrefs.SetInt("BartenderStaminaLevel", BartenderStaminaLevel);
-            PlayerPrefs.SetInt("BartenderSpeedLevel", BartenderSpeedLevel);
+            PlayerPrefs.SetInt("BartenderSpeedLevel", BartenderPourDurationLevel);
             PlayerPrefs.Save();
         }
         //private void OnApplicationPause(bool pause) => SaveData();

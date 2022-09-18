@@ -85,7 +85,7 @@ namespace ClubBusiness
             if (Gate.BodyguardHired)
             {
                 bodyguardHire.Button.gameObject.SetActive(false);
-                bodyguardHire.LevelText.text = "ALREADY HIRED!";
+                bodyguardHire.LevelText.text = "HIRED!";
             }
             else
             {
@@ -95,19 +95,39 @@ namespace ClubBusiness
             }
             #endregion
 
-            if (_currentType == Type.Idle)
-                bodyguardStamina.LevelText.text = $"Level {Gate.BodyguardStaminaLevel}";
+            #region BODYGUARD STAMINA
+            if (Gate.BodyguardStaminaLevel >= Gate.BodyguardStaminaLevelCap)
+            {
+                bodyguardStamina.Button.gameObject.SetActive(false);
+                bodyguardStamina.LevelText.text = "MAX LEVEL!";
+            }
             else
-                bodyguardStamina.LevelText.text = Gate.BodyguardStaminaLevel.ToString();
-            
-            bodyguardStamina.CostText.text = Gate.BodyguardStaminaCost.ToString();
+            {
+                bodyguardStamina.Button.gameObject.SetActive(true);
+                if (_currentType == Type.Idle)
+                    bodyguardStamina.LevelText.text = $"Level {Gate.BodyguardStaminaLevel}";
+                else
+                    bodyguardStamina.LevelText.text = Gate.BodyguardStaminaLevel.ToString();
+                bodyguardStamina.CostText.text = Gate.BodyguardStaminaCost.ToString();
+            }
+            #endregion
 
-            if (_currentType == Type.Idle)
-                bodyguardSpeed.LevelText.text = $"Level {Gate.BodyguardSpeedLevel}";
+            #region BODYGUARD SPEED
+            if (Gate.BodyguardLetInDurationLevel >= Gate.BodyguardLetInDurationLevelCap)
+            {
+                bodyguardSpeed.Button.gameObject.SetActive(false);
+                bodyguardSpeed.LevelText.text = "MAX LEVEL!";
+            }
             else
-                bodyguardSpeed.LevelText.text = Gate.BodyguardSpeedLevel.ToString();
-
-            bodyguardSpeed.CostText.text = Gate.BodyguardSpeedCost.ToString();
+            {
+                bodyguardSpeed.Button.gameObject.SetActive(true);
+                if (_currentType == Type.Idle)
+                    bodyguardSpeed.LevelText.text = $"Level {Gate.BodyguardLetInDurationLevel}";
+                else
+                    bodyguardSpeed.LevelText.text = Gate.BodyguardLetInDurationLevel.ToString();
+                bodyguardSpeed.CostText.text = Gate.BodyguardLetInDurationCost.ToString();
+            }
+            #endregion
 
             CheckForMoneySufficiency();
         }
@@ -115,8 +135,8 @@ namespace ClubBusiness
         private void CheckForMoneySufficiency()
         {
             bodyguardHire.Button.interactable = DataManager.TotalMoney >= Gate.BodyguardHiredCost && !Gate.BodyguardHired;
-            bodyguardStamina.Button.interactable = DataManager.TotalMoney >= Gate.BodyguardStaminaCost && Gate.BodyguardHired;
-            bodyguardSpeed.Button.interactable = DataManager.TotalMoney >= Gate.BodyguardSpeedCost && Gate.BodyguardHired;
+            bodyguardStamina.Button.interactable = DataManager.TotalMoney >= Gate.BodyguardStaminaCost && Gate.BodyguardHired && Gate.BodyguardStaminaLevel < Gate.BodyguardStaminaLevelCap;
+            bodyguardSpeed.Button.interactable = DataManager.TotalMoney >= Gate.BodyguardLetInDurationCost && Gate.BodyguardHired && Gate.BodyguardLetInDurationLevel < Gate.BodyguardLetInDurationLevelCap;
         }
         #endregion
 

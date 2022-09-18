@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using ZestGames;
+using DG.Tweening;
 
 namespace ClubBusiness
 {
@@ -45,6 +46,10 @@ namespace ClubBusiness
             OnWaitForCustomer += WaitForCustomers;
             OnWasteTime += WasteTime;
             OnGetWarned += GetWarned;
+
+            BarEvents.OnSetCurrentBartenderStamina += UpdateStamina;
+
+            Bounce();
         }
 
         private void OnDisable()
@@ -55,12 +60,22 @@ namespace ClubBusiness
             OnWaitForCustomer -= WaitForCustomers;
             OnWasteTime -= WasteTime;
             OnGetWarned -= GetWarned;
+
+            BarEvents.OnSetCurrentBartenderStamina -= UpdateStamina;
+
+            transform.DOKill();
+        }
+
+        private void Bounce()
+        {
+            transform.DOShakeScale(1f, 0.25f);
         }
 
         #region EVENT HANDLER FUNCTIONS
+        private void UpdateStamina() => OnGetWarned?.Invoke();
         private void DrinkFinished()
         {
-            _currentStamina -= 5f;
+            _currentStamina--;
 
             if (_currentStamina <= 0)
                 IsWastingTime = true;

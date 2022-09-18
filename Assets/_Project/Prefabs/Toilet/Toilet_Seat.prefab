@@ -32,7 +32,7 @@ Transform:
   m_Children:
   - {fileID: 8786019980622161753}
   m_Father: {fileID: 8919170733414038286}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &256921413
 Animator:
@@ -76,8 +76,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.2372642, y: 2.3932307, z: 3.9340587}
-  m_Center: {x: 0.8597055, y: -0.69661534, z: 0.10984233}
+  m_Size: {x: 1.824192, y: 2.3932307, z: 2.1899774}
+  m_Center: {x: 0.6531694, y: -0.69661534, z: 0.9818829}
 --- !u!1 &2924299298414125664
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,6 +159,36 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &4044118270711606780
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3133578076735951863}
+  m_Layer: 0
+  m_Name: CleaningTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3133578076735951863
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4044118270711606780}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.12, y: -0.096, z: 2.796}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8919170733414038286}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6054737774731275185
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,7 +513,7 @@ Transform:
   m_Children:
   - {fileID: 1829026651870691039}
   m_Father: {fileID: 8919170733414038286}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: -38.322, z: 0}
 --- !u!95 &8919170733133850121
 Animator:
@@ -549,6 +579,7 @@ Transform:
   - {fileID: 8738772975957690271}
   - {fileID: 6989562909735210308}
   - {fileID: 5835704082646241409}
+  - {fileID: 3133578076735951863}
   - {fileID: 8919170733133850122}
   - {fileID: 256921412}
   m_Father: {fileID: 0}
@@ -566,6 +597,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e53482c210922c446b765c83e2e9f637, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cleaningTransform: {fileID: 3133578076735951863}
 --- !u!114 &3031129914650813329
 MonoBehaviour:
   m_ObjectHideFlags: 0

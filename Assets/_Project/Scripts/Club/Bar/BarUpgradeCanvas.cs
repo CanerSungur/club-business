@@ -85,7 +85,7 @@ namespace ClubBusiness
             if (Bar.BartenderHired)
             {
                 bartenderHire.Button.gameObject.SetActive(false);
-                bartenderHire.LevelText.text = "ALREADY HIRED!";
+                bartenderHire.LevelText.text = "HIRED!";
             }
             else
             {
@@ -95,19 +95,39 @@ namespace ClubBusiness
             }
             #endregion
 
-            if (_currentType == Type.Idle)
-                bartenderStamina.LevelText.text = $"Level {Bar.BartenderStaminaLevel}";
+            #region BARTENDER STAMINA
+            if (Bar.BartenderStaminaLevel >= Bar.BartenderStaminaLevelCap)
+            {
+                bartenderStamina.Button.gameObject.SetActive(false);
+                bartenderStamina.LevelText.text = "MAX LEVEL!";
+            }
             else
-                bartenderStamina.LevelText.text = Bar.BartenderStaminaLevel.ToString();
+            {
+                bartenderStamina.Button.gameObject.SetActive(true);
+                if (_currentType == Type.Idle)
+                    bartenderStamina.LevelText.text = $"Level {Bar.BartenderStaminaLevel}";
+                else
+                    bartenderStamina.LevelText.text = Bar.BartenderStaminaLevel.ToString();
+                bartenderStamina.CostText.text = Bar.BartenderStaminaCost.ToString();
+            }
+            #endregion
 
-            bartenderStamina.CostText.text = Bar.BartenderStaminaCost.ToString();
-
-            if (_currentType == Type.Idle)
-                bartenderSpeed.LevelText.text = $"Level {Bar.BartenderSpeedLevel}";
+            #region BARTENDER SPEED
+            if (Bar.BartenderPourDurationLevel >= Bar.BartenderPourDurationLevelCap)
+            {
+                bartenderSpeed.Button.gameObject.SetActive(false);
+                bartenderSpeed.LevelText.text = "MAX LEVEL!";
+            }
             else
-                bartenderSpeed.LevelText.text = Bar.BartenderSpeedLevel.ToString();
-
-            bartenderSpeed.CostText.text = Bar.BartenderSpeedCost.ToString();
+            {
+                bartenderSpeed.Button.gameObject.SetActive(true);
+                if (_currentType == Type.Idle)
+                    bartenderSpeed.LevelText.text = $"Level {Bar.BartenderPourDurationLevel}";
+                else
+                    bartenderSpeed.LevelText.text = Bar.BartenderPourDurationLevel.ToString();
+                bartenderSpeed.CostText.text = Bar.BartenderPourDurationCost.ToString();
+            }
+            #endregion
 
             CheckForMoneySufficiency();
         }
@@ -115,8 +135,8 @@ namespace ClubBusiness
         private void CheckForMoneySufficiency()
         {
             bartenderHire.Button.interactable = DataManager.TotalMoney >= Bar.BartenderHiredCost && !Bar.BartenderHired;
-            bartenderStamina.Button.interactable = DataManager.TotalMoney >= Bar.BartenderStaminaCost && Bar.BartenderHired;
-            bartenderSpeed.Button.interactable = DataManager.TotalMoney >= Bar.BartenderSpeedCost && Bar.BartenderHired;
+            bartenderStamina.Button.interactable = DataManager.TotalMoney >= Bar.BartenderStaminaCost && Bar.BartenderHired && Bar.BartenderStaminaLevel < Bar.BartenderStaminaLevelCap;
+            bartenderSpeed.Button.interactable = DataManager.TotalMoney >= Bar.BartenderPourDurationCost && Bar.BartenderHired && Bar.BartenderPourDurationLevel < Bar.BartenderPourDurationLevelCap;
         }
         #endregion
 
