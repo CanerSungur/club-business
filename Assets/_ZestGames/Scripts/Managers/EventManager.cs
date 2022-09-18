@@ -19,7 +19,7 @@ namespace ZestGames
         public static Action OnOpenedUpgradeCanvas, OnClosedUpgradeCanvas;
         public static Action OnEmptyNextInGateQueue;
         public static Action<Ai> OnEmptyNextInBarQueue, OnThrowADrink;
-        public static Action OnStartLettingPeopleIn, OnStopLettingPeopleIn, OnStartFillingDrinks, OnStopFillingDrinks, OnStartCleaning, OnStopCleaning, OnStartBreakingUpFight, OnStopBreakingUpFight;
+        public static Action OnStartLettingPeopleIn, OnStopLettingPeopleIn, OnStartFillingDrinks, OnStopFillingDrinks, OnStartBreakingUpFight, OnStopBreakingUpFight;
         public static Action OnBodyguardIsActive, OnCleanerIsActive, OnBartenderIsActive;
         public static Action<ToiletItem> OnStartFixingToilet;
         public static Action OnStopFixingToilet;

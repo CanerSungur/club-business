@@ -7,6 +7,7 @@ namespace ClubBusiness
     public abstract class ToiletItem : MonoBehaviour
     {
         private ToiletItemBreakHandler _breakHandler;
+        private ToiletCabinDoor _toiletCabinDoor;
         private Collider _collider;
 
         private int _usedCount;
@@ -19,13 +20,16 @@ namespace ClubBusiness
         #endregion
 
         #region EVENTS
-        public Action OnBreak, OnFix, OnFixCompleted;
+        public Action OnBreak, OnFix, OnFixCompleted, OnCustomerExit;
         #endregion
 
         private void OnEnable()
         {
             if (_breakHandler == null)
             {
+                if (transform.GetChild(transform.childCount - 1).TryGetComponent(out _toiletCabinDoor))
+                    _toiletCabinDoor.Init(this);
+
                 _collider = GetComponent<Collider>();
                 _breakHandler = GetComponent<ToiletItemBreakHandler>();
                 _breakHandler.Init(this);
@@ -55,7 +59,7 @@ namespace ClubBusiness
         private void FixCompleted()
         {
             PlayerEvents.OnStopFixingToilet?.Invoke();
-            IsBroken = _collider.enabled = false;
+            PlayerIsInArea = IsBroken = _collider.enabled = false;
             _usedCount = 0;
             Toilet.AddEmptyToiletItem(this);
         }

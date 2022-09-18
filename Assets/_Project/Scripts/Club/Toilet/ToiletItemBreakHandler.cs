@@ -1,4 +1,5 @@
 using UnityEngine;
+using ZestGames;
 
 namespace ClubBusiness
 {
@@ -11,6 +12,12 @@ namespace ClubBusiness
         [SerializeField] private LiquidPuddle liquidPuddle;
         [SerializeField] private ParticleSystem liquidSplashPS;
 
+        #region LIQUID SPLASH RATE
+        private readonly float _defaultSplashRate = 20f;
+        private readonly float _decreaseSplashRate = 0.3f;
+        private float _currentSplashRate;
+        #endregion
+
         public void Init(ToiletItem toiletItem)
         {
             if (_toiletItem == null)
@@ -18,6 +25,8 @@ namespace ClubBusiness
 
             _currentFixCount = 0;
             liquidPuddle.gameObject.SetActive(false);
+            _currentSplashRate = _defaultSplashRate;
+            SetLiquidSplashRate(_currentSplashRate);
 
             _toiletItem.OnBreak += Break;
             _toiletItem.OnFix += Fix;
@@ -36,6 +45,13 @@ namespace ClubBusiness
             _toiletItem.OnFixCompleted?.Invoke();
             liquidPuddle.gameObject.SetActive(false);
             liquidSplashPS.Stop();
+            _currentSplashRate = _defaultSplashRate;
+            SetLiquidSplashRate(_currentSplashRate);
+        }
+        private void SetLiquidSplashRate(float currentRate)
+        {
+            var emission = liquidSplashPS.emission;
+            emission.rateOverTime = currentRate;
         }
 
         #region EVENT HANDLER FUNCTIONS
@@ -50,9 +66,9 @@ namespace ClubBusiness
         {
             _currentFixCount++;
             // Decrease puddle scale
-            liquidPuddle.DecreasePuddleScale();
+            liquidPuddle.DecreasePuddleScale(_currentFixCount);
             // Decrease splash amount
-
+            SetLiquidSplashRate(_currentSplashRate - (_decreaseSplashRate * _currentFixCount));
 
             if (_currentFixCount >= Toilet.FixCount && _toiletItem.IsBroken)
                 CompleteFixing();

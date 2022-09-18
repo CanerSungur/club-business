@@ -50,10 +50,13 @@ namespace ClubBusiness
         }
 
         #region PUBLICS
-        public void DecreasePuddleScale()
+        public void DecreasePuddleScale(int fixCount)
         {
+            Vector3 targetScale = _defaultScale - (Vector3.one * (0.2f * fixCount));
+            targetScale.y = 1f;
+
             DeleteScaleSequence();
-            CreateScaleSequence(_defaultScale - (Vector3.one * 0.2f));
+            CreateScaleSequence(targetScale);
             _scaleSequence.Play();
         }
         #endregion

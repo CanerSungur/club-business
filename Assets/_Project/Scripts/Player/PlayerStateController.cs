@@ -12,6 +12,9 @@ namespace ClubBusiness
         private bool _startRotatingForGateQueue, _startRotatingForBartending;
         private Quaternion _targetRotation;
 
+        [Header("-- SETUP --")]
+        [SerializeField] private GameObject mopObj;
+
         #region SEQUENCE
         private Sequence _rotateSequence;
         private Guid _rotateSequenceID;
@@ -26,12 +29,15 @@ namespace ClubBusiness
                 _playerMeshTransform = transform.GetChild(0);
             }
 
+            mopObj.SetActive(false);
             _startRotatingForGateQueue = _startRotatingForBartending = false;
 
             PlayerEvents.OnStartLettingPeopleIn += StartLettingPeopleIn;
             PlayerEvents.OnStopLettingPeopleIn += StopLettingPeopleIn;
             PlayerEvents.OnStartFillingDrinks += StartFillingDrinks;
             PlayerEvents.OnStopFillingDrinks += StopFillingDrinks;
+            PlayerEvents.OnStartFixingToilet += EnableMop;
+            PlayerEvents.OnStopFixingToilet += DisableMop;
         }
 
         private void OnDisable()
@@ -42,6 +48,8 @@ namespace ClubBusiness
             PlayerEvents.OnStopLettingPeopleIn -= StopLettingPeopleIn;
             PlayerEvents.OnStartFillingDrinks -= StartFillingDrinks;
             PlayerEvents.OnStopFillingDrinks -= StopFillingDrinks;
+            PlayerEvents.OnStartFixingToilet -= EnableMop;
+            PlayerEvents.OnStopFixingToilet -= DisableMop;
         }
 
         private void Update()
@@ -75,6 +83,8 @@ namespace ClubBusiness
             _startRotatingForBartending = false;
             StartRotateSequence(Vector3.zero, _rotateDuration * 0.25f);
         }
+        private void EnableMop(ToiletItem ignoreThis) => mopObj.SetActive(true);
+        private void DisableMop() => mopObj.SetActive(false);
         #endregion
 
         #region DOTWEEN FUNCTIONS

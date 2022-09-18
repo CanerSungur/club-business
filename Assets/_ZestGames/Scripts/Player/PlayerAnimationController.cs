@@ -8,6 +8,7 @@ namespace ZestGames
         private Player _player;
         private Animator _animator;
         private PlayerAnimationEventListener _animationEventListener;
+        private PlayerHandsIKHandler _handsIKHandler;
 
         #region ANIMATION PARAMETERS
         private readonly int _moveID = Animator.StringToHash("Move");
@@ -23,7 +24,10 @@ namespace ZestGames
         private readonly int _stopFixingToiletID = Animator.StringToHash("StopFixingToilet");
         #endregion
 
+        #region PROPERTIES
         public Player Player => _player;
+        public Animator Animator => _animator;
+        #endregion
 
         public void Init(Player player)
         {
@@ -33,6 +37,8 @@ namespace ZestGames
                 _animator = transform.GetChild(0).GetComponent<Animator>();
                 _animationEventListener = GetComponentInChildren<PlayerAnimationEventListener>();
                 _animationEventListener.Init(this);
+                _handsIKHandler = GetComponentInChildren<PlayerHandsIKHandler>();
+                _handsIKHandler.Init(this);
             }
 
             PlayerEvents.OnMove += Move;

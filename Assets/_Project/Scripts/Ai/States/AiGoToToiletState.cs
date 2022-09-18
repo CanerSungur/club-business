@@ -22,6 +22,8 @@ namespace ClubBusiness
         private readonly Vector3 _rotation = Vector3.zero;
         #endregion
 
+        public ToiletItem CurrentToiletItem => _currentToiletItem;
+
         public override void EnterState(AiStateManager aiStateManager)
         {
             aiStateManager.SwitchStateType(Enums.AiStateType.GoToToilet);
@@ -43,7 +45,14 @@ namespace ClubBusiness
                 _ai.AngerHandler.GetHappier();
             }
             else
+            {
                 Debug.Log("No available toilet!");
+                // increase anger meter
+                _ai.AngerHandler.GetAngrier();
+                // continue waiting
+                aiStateManager.WaitState.SetAttemptedState(aiStateManager.GetIntoToiletQueueState);
+                aiStateManager.SwitchState(aiStateManager.WaitState);
+            }
         }
 
         public override void UpdateState(AiStateManager aiStateManager)
@@ -77,6 +86,7 @@ namespace ClubBusiness
                     _currentToiletItem.Release();
                     _ai.OnStopPissing?.Invoke();
                     aiStateManager.SwitchState(aiStateManager.WanderState);
+                    _currentToiletItem.OnCustomerExit?.Invoke();
 
                     // activate first ai if there is a toilet queue
                     if (QueueManager.ToiletQueue.AisInQueue.Count > 0)

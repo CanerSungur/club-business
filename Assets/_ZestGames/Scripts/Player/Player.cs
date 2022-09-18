@@ -69,12 +69,14 @@ namespace ZestGames
 
             PlayerUpgradeEvents.OnOpenCanvas += HandleUpgradeStart;
             PlayerUpgradeEvents.OnCloseCanvas += HandleUpgradeEnd;
+            PlayerEvents.OnStopFixingToilet += HandleStopFixingToilet;
         }
 
         private void OnDisable()
         {
             PlayerUpgradeEvents.OnOpenCanvas -= HandleUpgradeStart;
             PlayerUpgradeEvents.OnCloseCanvas -= HandleUpgradeEnd;
+            PlayerEvents.OnStopFixingToilet -= HandleStopFixingToilet;
         }
 
         #region EVENT HANDLER FUNCTIONS
@@ -87,6 +89,10 @@ namespace ZestGames
         {
             IsUpgrading = false;
             DeleteUpgradeRotationSequence();
+        }
+        private void HandleStopFixingToilet()
+        {
+            FixedToiletItem = null;
         }
         #endregion
 
