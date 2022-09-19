@@ -65,7 +65,7 @@ namespace ClubBusiness
 
         public void Init(GameManager gameManager)
         {
-            CustomerWaitDuration = 5f;
+            CustomerWaitDuration = 15f;
             _customersOutsideMaxCount = QueueManager.GateQueue.Capacity;
 
             StartCoroutine(SpawnCustomerOutsideCoroutine());

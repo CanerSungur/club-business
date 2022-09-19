@@ -26,6 +26,8 @@ namespace ZestGames
         private readonly int _standUpID = Animator.StringToHash("StandUp");
         #endregion
 
+        public Animator Animator => _animator;
+
         public void Init(Ai ai)
         {
             if (_ai == null)

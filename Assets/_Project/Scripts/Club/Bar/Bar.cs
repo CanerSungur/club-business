@@ -107,7 +107,7 @@ namespace ClubBusiness
         }
         private void UpdateBartenderSpeed()
         {
-            BartenderPourDuration = _coreBartenderPourDuration + _bartenderPourDurationDecrease * (BartenderPourDurationLevel - 1);
+            BartenderPourDuration = _coreBartenderPourDuration - _bartenderPourDurationDecrease * (BartenderPourDurationLevel - 1);
             BarEvents.OnSetCurrentBartenderSpeed?.Invoke();
         }
         #endregion

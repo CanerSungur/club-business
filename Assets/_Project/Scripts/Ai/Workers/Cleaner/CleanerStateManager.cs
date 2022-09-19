@@ -13,6 +13,8 @@ namespace ClubBusiness
         public CleanerGoWaitingState GoWaitingState = new CleanerGoWaitingState();
         public CleanerCleanState CleanState = new CleanerCleanState();
         public CleanerWasteTimeState WasteTimeState = new CleanerWasteTimeState();
+        public CleanerEnterToiletState EnterToiletState = new CleanerEnterToiletState();
+        public CleanerExitToiletState ExitToiletState = new CleanerExitToiletState();
         #endregion
 
         public Cleaner Cleaner => _cleaner;

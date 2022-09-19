@@ -34,6 +34,7 @@ namespace ClubBusiness
         public bool IsCleaning { get; private set; }
         public bool IsAtWaitingPosition { get; private set; }
         public float MovementSpeed { get; private set; }
+        public float RotationSpeed { get; private set; }
         #endregion
 
         public void Init(Toilet toilet)
@@ -43,7 +44,8 @@ namespace ClubBusiness
 
             IsAtWaitingPosition = true;
             IsCleaning = IsWastingTime = false;
-            MovementSpeed = 3f;
+            MovementSpeed = 2f;
+            RotationSpeed = 10f;
             mopObj.SetActive(false);
 
             AnimationController.Init(this);
@@ -97,7 +99,7 @@ namespace ClubBusiness
         {
             mopObj.SetActive(false);
             IsCleaning = false;
-            _currentStamina -= 5f;
+            _currentStamina--;
 
             if (_currentStamina <= 0)
                 IsWastingTime = true;

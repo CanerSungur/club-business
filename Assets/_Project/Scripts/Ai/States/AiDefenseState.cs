@@ -24,6 +24,8 @@ namespace ClubBusiness
 
         public override void UpdateState(AiStateManager aiStateManager)
         {
+            Debug.Log("DEFENSE STATE");
+
             Navigation.LookAtTarget(_ai.transform, _attackerAi.transform.position);
         }
 

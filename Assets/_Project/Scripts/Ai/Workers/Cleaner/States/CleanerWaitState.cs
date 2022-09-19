@@ -33,8 +33,7 @@ namespace ClubBusiness
                 _timer -= Time.deltaTime;
                 if (_timer <= 0f && Toilet.CanCleanerFixToilet)
                 {
-                    Debug.Log("ready to fix");
-                    cleanerStateManager.SwitchState(cleanerStateManager.CleanState);
+                    cleanerStateManager.SwitchState(cleanerStateManager.EnterToiletState);
                     _timer = _counter;
                 }
             }

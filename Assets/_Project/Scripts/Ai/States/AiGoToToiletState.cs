@@ -57,6 +57,8 @@ namespace ClubBusiness
 
         public override void UpdateState(AiStateManager aiStateManager)
         {
+            Debug.Log("TOILET STATE");
+
             if (!_reachedToToilet)
             {
                 if (Operation.IsTargetReached(_ai.transform, _currentToiletItem.PointTransform.position, 0.002f))
@@ -83,9 +85,10 @@ namespace ClubBusiness
                 _timer -= Time.deltaTime;
                 if (_timer <= 0f)
                 {
+                    _ai.MoneyHandler.StartSpawningToiletMoney();
                     _currentToiletItem.Release();
                     _ai.OnStopPissing?.Invoke();
-                    aiStateManager.SwitchState(aiStateManager.WanderState);
+                    aiStateManager.SwitchState(aiStateManager.ExitToiletState);
                     _currentToiletItem.OnCustomerExit?.Invoke();
 
                     // activate first ai if there is a toilet queue

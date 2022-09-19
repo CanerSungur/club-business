@@ -108,6 +108,7 @@ namespace ZestGames
                     {
                         //player.TimerForAction.StartFilling(DataManager.FillDrinkDuration, () => PlayerEvents.OnEmptyNextInQueue?.Invoke(_queueSystem));
                         Ai firstAi = _queueSystem.AisInQueue[0];
+                        firstAi.BarTurnIsUp();
                         player.TimerForAction.StartFilling(DataManager.FillDrinkDuration, () => PlayerEvents.OnThrowADrink?.Invoke(firstAi));
                         _queueSystem.RemoveAiFromQueue(firstAi);
                     }

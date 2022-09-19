@@ -8,7 +8,74 @@ namespace ClubBusiness
     public class CleanerGoWaitingState : CleanerBaseState
     {
         private Cleaner _cleaner;
-        private bool _reachedToWaitingPosition, _isMoving;
+        private Transform _target = null;
+        private int _waypointIndex;
+        private bool _exitedToilet;
+
+        public override void EnterState(CleanerStateManager cleanerStateManager)
+        {
+            if (_cleaner == null)
+                _cleaner = cleanerStateManager.Cleaner;
+
+            _exitedToilet = false;
+        }
+
+        public override void ExitState(CleanerStateManager cleanerStateManager)
+        {
+
+        }
+
+        public override void UpdateState(CleanerStateManager cleanerStateManager)
+        {
+            if (!_exitedToilet)
+            {
+                if (_target == null)
+                    _target = GetClosestWaypoint();
+
+                if (Operation.IsTargetReached(_cleaner.transform, _target.position, 0.05f))
+                {
+                    if (_waypointIndex == 0)
+                    {
+                        _exitedToilet = true;
+                        _cleaner.transform.position = _target.position;
+                        StartRotationSequence();
+
+                        if (_cleaner.IsWastingTime)
+                            cleanerStateManager.SwitchState(cleanerStateManager.WasteTimeState);
+                        else
+                            cleanerStateManager.SwitchState(cleanerStateManager.WaitState);
+                    }
+                    else
+                    {
+                        _waypointIndex--;
+                        _target = CleanerWaypoints.Waypoints[_waypointIndex];
+                    }
+                }
+                else
+                {
+                    Navigation.MoveTransform(_cleaner.transform, _target.position, _cleaner.MovementSpeed);
+                    Navigation.LookAtTarget(_cleaner.transform, _target.position, _cleaner.RotationSpeed);
+                }
+            }
+        }
+
+        private Transform GetClosestWaypoint()
+        {
+            float distance = float.PositiveInfinity;
+            Transform closestWaypoint = null;
+            for (int i = 0; i < CleanerWaypoints.Waypoints.Length; i++)
+            {
+                if ((_cleaner.transform.position - CleanerWaypoints.Waypoints[i].position).magnitude < distance)
+                {
+                    closestWaypoint = CleanerWaypoints.Waypoints[i];
+                    _waypointIndex = i;
+                }
+            }
+            return closestWaypoint;
+        }
+
+        //private Cleaner _cleaner;
+        //private bool _reachedToWaitingPosition, _isMoving;
 
         #region SEQUENCE
         private Sequence _rotationSequence;
@@ -16,52 +83,54 @@ namespace ClubBusiness
         private readonly Vector3 _rotation = new Vector3(0f, 180f, 0f);
         #endregion
 
-        public override void EnterState(CleanerStateManager cleanerStateManager)
-        {
-            if (_cleaner == null)
-                _cleaner = cleanerStateManager.Cleaner;
+        //public override void EnterState(CleanerStateManager cleanerStateManager)
+        //{
+        //    if (_cleaner == null)
+        //        _cleaner = cleanerStateManager.Cleaner;
 
-            _reachedToWaitingPosition = _isMoving = false;
-        }
+        //    _reachedToWaitingPosition = _isMoving = false;
+        //}
 
-        public override void ExitState(CleanerStateManager cleanerStateManager)
-        {
-            
-        }
+        //public override void ExitState(CleanerStateManager cleanerStateManager)
+        //{
 
-        public override void UpdateState(CleanerStateManager cleanerStateManager)
-        {
-            if (!_reachedToWaitingPosition)
-            {
-                if (Operation.IsTargetReached(_cleaner.transform, Toilet.CleanerWaitTransform.position, 0.1f))
-                {
-                    _reachedToWaitingPosition = true;
-                    _cleaner.transform.position = Toilet.CleanerWaitTransform.position;
-                    StartRotationSequence();
+        //}
 
-                    if (_isMoving)
-                    {
-                        _isMoving = false;
+        //public override void UpdateState(CleanerStateManager cleanerStateManager)
+        //{
+        //    if (!_reachedToWaitingPosition)
+        //    {
+        //        if (Operation.IsTargetReached(_cleaner.transform, Toilet.ExitTransform.position, 0.1f))
+        //        {
+        //            _reachedToWaitingPosition = true;
+        //            _cleaner.transform.position = Toilet.ExitTransform.position;
+        //            StartRotationSequence();
 
-                        if (_cleaner.IsWastingTime)
-                            cleanerStateManager.SwitchState(cleanerStateManager.WasteTimeState);
-                        else
-                            cleanerStateManager.SwitchState(cleanerStateManager.WaitState);
-                    }
-                }
-                else
-                {
-                    Navigation.MoveTransform(_cleaner.transform, Toilet.CleanerWaitTransform.position, _cleaner.MovementSpeed);
-                    Navigation.LookAtTarget(_cleaner.transform, Toilet.CleanerWaitTransform.position);
+        //            if (_isMoving)
+        //            {
+        //                _isMoving = false;
 
-                    if (!_isMoving)
-                    {
-                        _isMoving = true;
-                        _cleaner.OnGoWaiting?.Invoke();
-                    }
-                }
-            }
-        }
+        //                cleanerStateManager.SwitchState(cleanerStateManager.ExitToiletState);
+
+        //                //if (_cleaner.IsWastingTime)
+        //                //    cleanerStateManager.SwitchState(cleanerStateManager.WasteTimeState);
+        //                //else
+        //                //    cleanerStateManager.SwitchState(cleanerStateManager.WaitState);
+        //            }
+        //        }
+        //        else
+        //        {
+        //            Navigation.MoveTransform(_cleaner.transform, Toilet.ExitTransform.position, _cleaner.MovementSpeed);
+        //            Navigation.LookAtTarget(_cleaner.transform, Toilet.ExitTransform.position);
+
+        //            if (!_isMoving)
+        //            {
+        //                _isMoving = true;
+        //                _cleaner.OnGoWaiting?.Invoke();
+        //            }
+        //        }
+        //    }
+        //}
 
         #region DOTWEEN FUNCTIONS
         private void StartRotationSequence()

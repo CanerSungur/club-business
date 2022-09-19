@@ -11,7 +11,7 @@ namespace ClubBusiness
     {
         private Ai _ai;
         private QueuePoint _currentQueuePoint;
-        private bool _reachedToQueue, _tookDrink;
+        private bool _reachedToQueue, _tookDrink, _turnIsUp;
 
         private float _waitTimer;
 
@@ -33,7 +33,7 @@ namespace ClubBusiness
             if (_ai == null)
                 _ai = aiStateManager.Ai;
 
-            _reachedToQueue = _tookDrink = false;
+            _reachedToQueue = _tookDrink = _turnIsUp = false;
             _waitTimer = CustomerManager.CustomerWaitDuration;
             _ai.ReactionCanvas.EnableDrinking();
 
@@ -59,6 +59,8 @@ namespace ClubBusiness
 
         public override void UpdateState(AiStateManager aiStateManager)
         {
+            Debug.Log("DRINK STATE");
+
             if (_currentQueuePoint == null)
             {
                 Debug.Log("Switching to idle, Queue point is null");
@@ -89,7 +91,7 @@ namespace ClubBusiness
                 if (!_tookDrink)
                 {
                     _waitTimer -= Time.deltaTime;
-                    if (_waitTimer <= 0f)
+                    if (_waitTimer <= 0f && !_turnIsUp)
                     {
                         _ai.AngerHandler.GetAngrier();
                         _waitTimer = CustomerManager.CustomerWaitDuration;
@@ -117,6 +119,7 @@ namespace ClubBusiness
             _currentQueuePoint.QueueIsReleased();
             _ai.StateManager.SwitchState(_ai.StateManager.WanderState);
         }
+        public void TurnIsUp() => _turnIsUp = true;
         #endregion
 
         private void StartSittingSequence()

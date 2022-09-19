@@ -54,6 +54,7 @@ namespace ZestGames
         #endregion
 
         #region PROPERTIES
+        public bool IsLeaving { get; set; }
         public bool IsDead { get; private set; }
         public Transform Target { get; private set; }
         public bool IsDancing { get; private set; }
@@ -89,7 +90,7 @@ namespace ZestGames
                 CustomerManager.AddCustomerInside(this);
             }
 
-            IsDead = IsDancing = NeedDrink = NeedToPiss = false;
+            IsLeaving = IsDead = IsDancing = NeedDrink = NeedToPiss = false;
             Target = null;
 
             CharacterTracker.AddAi(this);
@@ -169,6 +170,10 @@ namespace ZestGames
 
             Target = transform;
             OnMove?.Invoke();
+        }
+        public void BarTurnIsUp()
+        {
+            StateManager.BuyDrinkState.TurnIsUp();
         }
         public void LeftClub()
         {

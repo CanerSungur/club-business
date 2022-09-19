@@ -37,6 +37,8 @@ namespace ClubBusiness
 
         public override void UpdateState(AiStateManager aiStateManager)
         {
+            Debug.Log("ATTACK STATE");
+
             if (!_reachedTarget)
             {
                 if (Operation.IsTargetReached(_ai.transform, _targetAi.transform.position, 1f))

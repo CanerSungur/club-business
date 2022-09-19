@@ -583,8 +583,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gender: 0
-  runSpeed: 5
-  walkSpeed: 3
+  runSpeed: 2
+  walkSpeed: 2
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 8

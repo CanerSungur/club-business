@@ -46,6 +46,8 @@ namespace ClubBusiness
 
         public override void UpdateState(AiStateManager aiStateManager)
         {
+            Debug.Log("DANCE STATE");
+
             if (!_reachedToDancingPosition)
             {
                 if (Operation.IsTargetReached(_ai.transform, _dancingPosition, 0.02f))

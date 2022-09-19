@@ -21,6 +21,18 @@ namespace ClubBusiness
                 _ai = ai;
         }
 
+        private void Tip()
+        {
+            if (_ai.AngerHandler.CurrentMood == Enums.AiMood.Happy)
+            {
+                // tip 3 dolars
+            }
+            else if (_ai.AngerHandler.CurrentMood == Enums.AiMood.VeryHappy)
+            {
+                // tip 5 dolars
+            }
+        }
+
         #region COLLECTING MONEY
         private IEnumerator SpawnMoneyCoroutine(int value)
         {
@@ -37,6 +49,7 @@ namespace ClubBusiness
         #region PUBLICS
         public void StartSpawningMoney(int value) => StartCoroutine(SpawnMoneyCoroutine(value));
         public void StartSpawningDrinkingMoney() => StartCoroutine(SpawnMoneyCoroutine(_drinkValue));
+        public void StartSpawningToiletMoney() => StartCoroutine(SpawnMoneyCoroutine(_toiletValue));
         #endregion   
         #endregion
     }

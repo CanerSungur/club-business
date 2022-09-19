@@ -51,9 +51,10 @@ namespace ClubBusiness
                 _ai.OnMoodChange?.Invoke(_currentMood);
 
 
-            if (_currentMoodRate <= _angerLimit)
+            if (_currentMoodRate <= _angerLimit && !_ai.IsLeaving)
             {
                 // Leave the club
+                _ai.IsLeaving = true;
                 _ai.StateManager.SwitchState(_ai.StateManager.LeaveClubState);
                 Debug.Log("LEAVE CLUB!");
             }

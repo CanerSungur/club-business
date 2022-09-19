@@ -21,6 +21,8 @@ namespace ZestGames
         public AiDefenseState DefenseState = new AiDefenseState();
         public AiWaitState WaitState = new AiWaitState();
         public AiLeaveClubState LeaveClubState = new AiLeaveClubState();
+        public AiEnterToiletState EnterToiletState = new AiEnterToiletState();
+        public AiExitToiletState ExitToiletState = new AiExitToiletState();
         #endregion
 
         #region PROPERTIES

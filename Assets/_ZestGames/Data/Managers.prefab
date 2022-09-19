@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1aad1b47c1b3fa419e3a32f4a47383a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameSpeed: 1
 --- !u!114 &1232470294
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -151,8 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 487acecbd6b6c494d895e42a16a877cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customersOutsideMaxCount: 10
-  customersInsideMaxCount: 20
   spawnTransform: {fileID: 0}
 --- !u!114 &5478943835266996791
 MonoBehaviour:
@@ -168,8 +167,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idleAreas:
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   danceArea: {fileID: 0}
 --- !u!114 &2105935553845735554
 MonoBehaviour:
@@ -183,4 +180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 820fabb60ee14eb4bb3078a1204a42ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  exitTransform: {fileID: 0}
+  exitTransforms:
+  - {fileID: 0}
+  - {fileID: 0}

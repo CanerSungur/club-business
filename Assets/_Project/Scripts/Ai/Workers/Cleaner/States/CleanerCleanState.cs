@@ -57,7 +57,7 @@ namespace ClubBusiness
                 else
                 {
                     Navigation.MoveTransform(_cleaner.transform, _currentBrokenToilet.CleaningTransform.position, _cleaner.MovementSpeed);
-                    Navigation.LookAtTarget(_cleaner.transform, _currentBrokenToilet.CleaningTransform.position);
+                    Navigation.LookAtTarget(_cleaner.transform, _currentBrokenToilet.CleaningTransform.position, _cleaner.RotationSpeed);
 
                     if (!_isMoving)
                     {
@@ -76,7 +76,7 @@ namespace ClubBusiness
                     if (Toilet.CanCleanerFixToilet && !_cleaner.IsWastingTime)
                         cleanerStateManager.SwitchState(cleanerStateManager.CleanState);
                     else
-                        cleanerStateManager.SwitchState(cleanerStateManager.GoWaitingState);
+                        cleanerStateManager.SwitchState(cleanerStateManager.ExitToiletState);
                 }
 
                 // cleaning

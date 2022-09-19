@@ -9,10 +9,10 @@ namespace ClubBusiness
         [Header("-- SETUP --")]
         [SerializeField] private Cleaner cleaner;
         [SerializeField] private ToiletUpgradeCanvas toiletUpgradeCanvas;
-        [SerializeField] private Transform cleanerWaitTransform;
+        [SerializeField] private Transform cleanerExitTransform;
 
         #region PROPERTIES
-        public static Transform CleanerWaitTransform { get; private set; }
+        public static Transform ExitTransform { get; private set; }
         public static bool CanCleanerFixToilet => BrokenToiletItems.Count > 0f;
         public static int FixCount { get; private set; }
         #endregion
@@ -96,7 +96,7 @@ namespace ClubBusiness
         {
             CleanerHiredCost = 1500;
             FixCount = 5;
-            CleanerWaitTransform = cleanerWaitTransform;
+            ExitTransform = cleanerExitTransform;
             CleanerStaminaLevelCap = 20;
             CleanerSpeedLevelCap = 10;
             ToiletDurationLevelCap = 5;

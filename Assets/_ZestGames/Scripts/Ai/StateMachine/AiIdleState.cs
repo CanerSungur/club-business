@@ -55,7 +55,7 @@ namespace ZestGames
                 else if (_ai.NeedToPiss)
                 {
                     if (ClubManager.ToiletIsAvailable)
-                        aiStateManager.SwitchState(aiStateManager.GoToToiletState);
+                        aiStateManager.SwitchState(aiStateManager.EnterToiletState);
                     else
                         aiStateManager.SwitchState(aiStateManager.GetIntoToiletQueueState);
                 }

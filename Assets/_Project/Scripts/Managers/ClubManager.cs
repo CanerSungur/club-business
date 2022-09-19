@@ -8,7 +8,7 @@ namespace ClubBusiness
     public class ClubManager : MonoBehaviour
     {
         [Header("-- SETUP --")]
-        [SerializeField] private Transform exitTransform;
+        [SerializeField] private Transform[] exitTransforms;
 
         #region FIGHTING
         private int _maxFightAtOnceCount = 1;
@@ -19,7 +19,7 @@ namespace ClubBusiness
         #region PROPERTIES
         public static int ClubCapacity { get; private set; }
         public static int DanceFloorCapacity { get; private set; }
-        public static Transform ExitTransform { get; private set; }
+        public static Transform[] ExitTransforms { get; private set; }
         public static bool CanTriggerFight => CustomerManager.CustomersOnDanceFloor.Count > 1 && RNG.RollDice(fightChance);
         #endregion
 
@@ -33,7 +33,7 @@ namespace ClubBusiness
         {
             ClubCapacity = 100;
             DanceFloorCapacity = 99;
-            ExitTransform = exitTransform;
+            ExitTransforms = exitTransforms;
 
             //StartCoroutine(TriggerFightCoroutine());
         }
