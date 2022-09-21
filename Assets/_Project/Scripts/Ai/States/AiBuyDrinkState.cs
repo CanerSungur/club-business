@@ -59,8 +59,6 @@ namespace ClubBusiness
 
         public override void UpdateState(AiStateManager aiStateManager)
         {
-            Debug.Log("DRINK STATE");
-
             if (_currentQueuePoint == null)
             {
                 Debug.Log("Switching to idle, Queue point is null");

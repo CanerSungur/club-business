@@ -29,11 +29,13 @@ namespace ZestGames
         public static float TotalMoney { get; private set; }
         public static float LetInDuration { get; private set; }
         public static float FillDrinkDuration { get; private set; }
+        public static float BreakFightDuration { get; private set; }
 
         public void Init(GameManager gameManager)
         {
             LetInDuration = 1f;
             FillDrinkDuration = 3f;
+            BreakFightDuration = 2f;
 
             LoadData();
 

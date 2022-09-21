@@ -22,6 +22,16 @@ namespace ClubBusiness
 
             _currentMoodRate = 0;
             UpdateMood();
+
+            ClubEvents.OnEveryoneGetAngrier += EveryoneGetAngrier;
+            ClubEvents.OnEveryoneGetHappier += EveryoneGetHappier;
+        }
+
+        private void OnDisable()
+        {
+            if (_ai == null) return;
+            ClubEvents.OnEveryoneGetAngrier -= EveryoneGetAngrier;
+            ClubEvents.OnEveryoneGetHappier -= EveryoneGetHappier;
         }
 
         private void UpdateMood()
@@ -39,6 +49,19 @@ namespace ClubBusiness
             else
                 _currentMood = Enums.AiMood.Furious;
         }
+
+        #region EVENT HANDLER FUNCTIONS
+        private void EveryoneGetAngrier()
+        {
+            if (_ai.StateManager.CurrentStateType != Enums.AiStateType.Attack && _ai.StateManager.CurrentStateType != Enums.AiStateType.Defend)
+                GetAngrier();
+        }
+        private void EveryoneGetHappier()
+        {
+            if (_ai.StateManager.CurrentStateType != Enums.AiStateType.Attack && _ai.StateManager.CurrentStateType != Enums.AiStateType.Defend)
+                GetHappier();
+        }
+        #endregion
 
         #region PUBLICS
         public void GetAngrier()

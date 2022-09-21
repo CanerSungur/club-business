@@ -21,8 +21,6 @@ namespace ClubBusiness
 
         public override void UpdateState(AiStateManager aiStateManager)
         {
-            Debug.Log("WAIT STATE");
-
             //if (_ai.IsLeaving) return;
             _timer -= Time.deltaTime;
             if (_timer <= 0f)

@@ -7,6 +7,7 @@ namespace ClubBusiness
     public class FightSmoke : MonoBehaviour
     {
         private Ai _ai;
+        private ParticleSystem _particleSystem;
 
         [Header("-- SETUP --")]
         [SerializeField] private GameObject armObj;
@@ -17,7 +18,13 @@ namespace ClubBusiness
 
         public void Init(Ai ai)
         {
-            _ai = ai;
+            if (_ai == null)
+            {
+                _ai = ai;
+                _particleSystem = GetComponent<ParticleSystem>();
+            }
+
+            _particleSystem.Stop();
             _waitForArmSpawnDelay = new WaitForSeconds(0.5f);
             _waitForLegSpawnDelay = new WaitForSeconds(0.75f);
 
@@ -38,11 +45,13 @@ namespace ClubBusiness
 
         private void StartSpawning()
         {
+            _particleSystem.Play();
             StartCoroutine(_spawnArmEnum);
             StartCoroutine(_spawnLegEnum);
         }
         private void StopSpawning()
         {
+            _particleSystem.Stop();
             StopCoroutine(_spawnArmEnum);
             StopCoroutine(_spawnLegEnum);
 

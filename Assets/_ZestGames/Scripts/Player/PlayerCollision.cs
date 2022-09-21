@@ -57,6 +57,19 @@ namespace ZestGames
                 _player.FixedToiletItem = toiletItem;
                 PlayerEvents.OnStartFixingToilet?.Invoke(toiletItem);
             }
+
+            if (other.TryGetComponent(out AiTrigger aiTrigger) && aiTrigger.Ai.IsFighting && !aiTrigger.PlayerIsInTrigger)
+            {
+                aiTrigger.PlayerIsInTrigger = true;
+                _player.TimerForAction.StartFilling(DataManager.BreakFightDuration, () => {
+                    ClubEvents.OnEveryoneGetHappier?.Invoke();
+                    ClubEvents.OnAFightEnded?.Invoke();
+
+                    aiTrigger.Ai.OnStopFighting?.Invoke();
+                    aiTrigger.Ai.StateManager.SwitchState(aiTrigger.Ai.StateManager.LeaveClubState);
+                    DanceFloor.DefenderAi.StateManager.SwitchState(DanceFloor.DefenderAi.StateManager.DanceState);
+                });
+            }
         }
 
         private void OnTriggerExit(Collider other)
@@ -85,6 +98,12 @@ namespace ZestGames
                 toiletItem.PlayerIsInArea = false;
                 _player.FixedToiletItem = null;
                 PlayerEvents.OnStopFixingToilet?.Invoke();
+            }
+
+            if (other.TryGetComponent(out AiTrigger aiTrigger) && aiTrigger.Ai.IsFighting && aiTrigger.PlayerIsInTrigger)
+            {
+                aiTrigger.PlayerIsInTrigger = false;
+                _player.TimerForAction.StopFilling();
             }
         }
     }

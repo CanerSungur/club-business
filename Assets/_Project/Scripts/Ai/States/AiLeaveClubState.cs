@@ -40,8 +40,6 @@ namespace ClubBusiness
 
         public override void UpdateState(AiStateManager aiStateManager)
         {
-            Debug.Log("LEAVE CLUB STATE");
-
             if (!_reached)
             {
                 if (Operation.IsTargetReached(_ai.transform, _target.position, 0.05f))
@@ -64,7 +62,6 @@ namespace ClubBusiness
                         _isMoving = true;
                         _ai.OnMove?.Invoke();
                     }
-                    Debug.Log("Moving");
                     Navigation.MoveTransform(_ai.transform, _target.position, _ai.RunSpeed);
                     Navigation.LookAtTarget(_ai.transform, _target.position, 10f);
                 }

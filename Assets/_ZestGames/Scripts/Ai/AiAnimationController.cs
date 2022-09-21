@@ -24,6 +24,11 @@ namespace ZestGames
         private readonly int _startPissingID = Animator.StringToHash("StartPissing");
         private readonly int _stopPissingID = Animator.StringToHash("StopPissing");
         private readonly int _standUpID = Animator.StringToHash("StandUp");
+        private readonly int _startArguingID = Animator.StringToHash("StartArgue");
+        private readonly int _stopArguingID = Animator.StringToHash("StopArgue");
+        private readonly int _argueIndexID = Animator.StringToHash("ArgueIndex");
+        private readonly int _getKnockedOutID = Animator.StringToHash("GetKnockedOut");
+        private readonly int _getUpID = Animator.StringToHash("GetUp");
         #endregion
 
         public Animator Animator => _animator;
@@ -51,6 +56,10 @@ namespace ZestGames
             _ai.OnStartWaitingForToilet += StartWaitingForToilet;
             _ai.OnStopWaitingForToilet += StopWaitingForToilet;
             _ai.OnStandUp += StandUp;
+            _ai.OnStartArguing += StartArguing;
+            _ai.OnStopArguing += StopArguing;
+            _ai.OnGetKnockedOut += GetKnockedOut;
+            _ai.OnGetUp += GetUp;
         }
 
         private void OnDisable()
@@ -72,8 +81,25 @@ namespace ZestGames
             _ai.OnStartWaitingForToilet -= StartWaitingForToilet;
             _ai.OnStopWaitingForToilet -= StopWaitingForToilet;
             _ai.OnStandUp -= StandUp;
+            _ai.OnStartArguing -= StartArguing;
+            _ai.OnStopArguing -= StopArguing;
+            _ai.OnGetKnockedOut -= GetKnockedOut;
+            _ai.OnGetUp -= GetUp;
         }
 
+        private void GetUp() => _animator.SetTrigger(_getUpID);
+        private void GetKnockedOut() => _animator.SetTrigger(_getKnockedOutID);
+        private void StartArguing(Enums.AiStateType aiStateType)
+        {
+            if (aiStateType == Enums.AiStateType.Attack)
+                _animator.SetInteger(_argueIndexID, 1);
+            else
+                _animator.SetInteger(_argueIndexID, 2);
+
+            _animator.SetTrigger(_startArguingID);
+        }
+
+        private void StopArguing() => _animator.SetTrigger(_stopArguingID);
         private void StandUp() => _animator.SetTrigger(_standUpID);
         private void StartPissing() => _animator.SetTrigger(_startPissingID);
         private void StopPissing() => _animator.SetTrigger(_stopPissingID);

@@ -31,8 +31,8 @@ namespace ZestGames
         public ReactionCanvas ReactionCanvas => _reactionCanvas == null ? _reactionCanvas = GetComponentInChildren<ReactionCanvas>() : _reactionCanvas;
         private AiMoneyHandler _moneyHandler;
         public AiMoneyHandler MoneyHandler => _moneyHandler == null ? _moneyHandler = GetComponent<AiMoneyHandler>() : _moneyHandler;
-        //private IAiMovement movement;
-        //public IAiMovement Movement => movement == null ? movement = GetComponent<IAiMovement>() : movement;
+        private AiTrigger _trigger;
+        public AiTrigger Trigger => _trigger == null ? _trigger = GetComponentInChildren<AiTrigger>() : _trigger;
         #endregion
 
         [Header("-- SETUP --")]
@@ -55,6 +55,7 @@ namespace ZestGames
 
         #region PROPERTIES
         public bool IsLeaving { get; set; }
+        public bool IsFighting { get; private set; }
         public bool IsDead { get; private set; }
         public Transform Target { get; private set; }
         public bool IsDancing { get; private set; }
@@ -73,7 +74,8 @@ namespace ZestGames
 
         #region EVENTS
         public Action OnIdle, OnMove, OnDie, OnWin, OnLose, OnStartDancing, OnStopDancing, OnDrink, OnStartAskingForDrink, OnStopAskingForDrink, OnStartPissing, OnStopPissing, OnStartWaitingForToilet, OnStopWaitingForToilet, OnStandUp;
-        public Action OnStartArguing, OnStopArguing, OnStartFighting, OnStopFighting;
+        public Action OnStopArguing, OnStartFighting, OnStopFighting, OnGetKnockedOut, OnGetUp;
+        public Action<Enums.AiStateType> OnStartArguing;
         public Action<Enums.AiMood> OnMoodChange;
         public Action<Transform> OnSetTarget;
         #endregion
@@ -102,7 +104,7 @@ namespace ZestGames
             AngerHandler.Init(this);
             ReactionCanvas.Init(this);
             MoneyHandler.Init(this);
-            //Movement.Init(this);
+            Trigger.Init(this);
 
             OnSetTarget += SetTarget;
             OnStartDancing += StartDancing;
@@ -112,6 +114,8 @@ namespace ZestGames
             OnDrink += Drink;
             OnStartPissing += GetIntoToilet;
             OnStopPissing += GetOutOfToilet;
+            OnStartFighting += StartFighting;
+            OnStopFighting += StopFighting;
         }
 
         private void OnDisable()
@@ -128,9 +132,19 @@ namespace ZestGames
             OnDrink -= Drink;
             OnStartPissing -= GetIntoToilet;
             OnStopPissing -= GetOutOfToilet;
+            OnStartFighting -= StartFighting;
+            OnStopFighting -= StopFighting;
         }
 
         #region EVENT HANDLER FUNCTIONS
+        private void StartFighting()
+        {
+            IsFighting = true;
+        }
+        private void StopFighting()
+        {
+            IsFighting = false;
+        }
         private void Drink()
         {
             NeedToPiss = true;

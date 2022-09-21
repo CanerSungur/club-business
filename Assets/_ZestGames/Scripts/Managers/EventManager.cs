@@ -52,6 +52,11 @@ namespace ZestGames
         public static Action OnPlayCollectMoney, OnPlaySpendMoney;
     }
 
+    public static class ClubEvents
+    {
+        public static Action OnAFightEnded, OnEveryoneGetAngrier, OnEveryoneGetHappier;
+    }
+
     public static class GateEvents
     {
         public static Action OnBodyguardHired, OnSetCurrentBodyguardStamina, OnSetCurrentBodyguardSpeed;
