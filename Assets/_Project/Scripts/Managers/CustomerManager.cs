@@ -11,7 +11,7 @@ namespace ClubBusiness
         [SerializeField] private Transform spawnTransform;
         private int _customersOutsideMaxCount = 10;
         private int _customersInsideMaxCount = 20;
-        
+
         #region SPAWN SETUP
         private readonly WaitForSeconds _waitForSpawnDelay = new WaitForSeconds(3f);
         #endregion
@@ -47,7 +47,7 @@ namespace ClubBusiness
         #endregion
 
         #region CUSTOMERS ON DANCE FLOOR
-            private static List<Ai> _customersOnDanceFloor;
+        private static List<Ai> _customersOnDanceFloor;
         public static List<Ai> CustomersOnDanceFloor => _customersOnDanceFloor == null ? _customersOnDanceFloor = new List<Ai>() : _customersOnDanceFloor;
         public static void AddCustomerOnDanceFloor(Ai ai)
         {
@@ -58,6 +58,21 @@ namespace ClubBusiness
         {
             if (CustomersOnDanceFloor.Contains(ai))
                 CustomersOnDanceFloor.Remove(ai);
+        }
+        private static List<Ai> _customersCanFight;
+        public static List<Ai> CustomersCanFight => _customersCanFight == null ? _customersCanFight = new List<Ai>() : _customersCanFight;
+        public static void AddCustomersCanFight(Ai ai)
+        {
+            if (!CustomersCanFight.Contains(ai))
+                CustomersCanFight.Add(ai);
+
+            Debug.Log(CustomersCanFight.Count);
+        }
+        public static void RemoveCustomersCanFight(Ai ai)
+        {
+            if (CustomersCanFight.Contains(ai))
+                CustomersCanFight.Remove(ai);
+            Debug.Log(CustomersCanFight.Count);
         }
         #endregion
 

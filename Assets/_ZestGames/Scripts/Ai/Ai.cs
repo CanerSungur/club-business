@@ -55,6 +55,7 @@ namespace ZestGames
 
         #region PROPERTIES
         public bool IsLeaving { get; set; }
+        public bool IsArguing { get; private set; }
         public bool IsFighting { get; private set; }
         public bool IsDead { get; private set; }
         public Transform Target { get; private set; }
@@ -92,7 +93,7 @@ namespace ZestGames
                 CustomerManager.AddCustomerInside(this);
             }
 
-            IsLeaving = IsDead = IsDancing = NeedDrink = NeedToPiss = false;
+            IsArguing = IsFighting = IsLeaving = IsDead = IsDancing = NeedDrink = NeedToPiss = false;
             Target = null;
 
             CharacterTracker.AddAi(this);
@@ -116,6 +117,8 @@ namespace ZestGames
             OnStopPissing += GetOutOfToilet;
             OnStartFighting += StartFighting;
             OnStopFighting += StopFighting;
+            OnStartArguing += StartArguing;
+            OnStopArguing += StopArguing;
         }
 
         private void OnDisable()
@@ -134,9 +137,13 @@ namespace ZestGames
             OnStopPissing -= GetOutOfToilet;
             OnStartFighting -= StartFighting;
             OnStopFighting -= StopFighting;
+            OnStartArguing -= StartArguing;
+            OnStopArguing -= StopArguing;
         }
 
         #region EVENT HANDLER FUNCTIONS
+        private void StartArguing(Enums.AiStateType ignoreThis) => IsArguing = true;
+        private void StopArguing() => IsArguing = false;
         private void StartFighting()
         {
             IsFighting = true;

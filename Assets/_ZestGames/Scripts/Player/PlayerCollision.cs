@@ -62,12 +62,23 @@ namespace ZestGames
             {
                 aiTrigger.PlayerIsInTrigger = true;
                 _player.TimerForAction.StartFilling(DataManager.BreakFightDuration, () => {
-                    ClubEvents.OnEveryoneGetHappier?.Invoke();
-                    ClubEvents.OnAFightEnded?.Invoke();
 
-                    aiTrigger.Ai.OnStopFighting?.Invoke();
-                    aiTrigger.Ai.StateManager.SwitchState(aiTrigger.Ai.StateManager.LeaveClubState);
-                    DanceFloor.DefenderAi.StateManager.SwitchState(DanceFloor.DefenderAi.StateManager.DanceState);
+                    //ClubEvents.OnEveryoneGetHappier?.Invoke();
+                    //ClubEvents.OnAFightEnded?.Invoke();
+
+                    //aiTrigger.Ai.OnStopFighting?.Invoke();
+                    //aiTrigger.Ai.StateManager.SwitchState(aiTrigger.Ai.StateManager.LeaveClubState);
+                    //DanceFloor.DefenderAi.StateManager.SwitchState(DanceFloor.DefenderAi.StateManager.DanceState);
+
+                    if (DanceFloor.AttackerAi && DanceFloor.DefenderAi)
+                    {
+                        aiTrigger.Ai.OnStopFighting?.Invoke();
+                        aiTrigger.Ai.StateManager.SwitchState(aiTrigger.Ai.StateManager.LeaveClubState);
+                        DanceFloor.DefenderAi.StateManager.SwitchState(DanceFloor.DefenderAi.StateManager.DanceState);
+
+                        ClubEvents.OnEveryoneGetHappier?.Invoke();
+                        ClubEvents.OnAFightEnded?.Invoke();
+                    }
                 });
             }
         }

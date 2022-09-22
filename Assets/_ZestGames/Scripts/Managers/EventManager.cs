@@ -83,4 +83,13 @@ namespace ZestGames
     {
         public static Action OnOpenCanvas, OnCloseCanvas, OnUpdateUpgradeTexts, OnUpgradeCleanerHire, OnUpgradeCleanerStamina, OnUpgradeCleanerSpeed, OnUpgradeToiletDuration;
     }
+
+    public static class DanceFloorEvents
+    {
+        public static Action OnBouncerHired, OnSetCurrentBouncerStamina, OnSetCurrentBouncerPower;
+    }
+    public static class DanceFloorUpgradeEvents
+    {
+        public static Action OnOpenCanvas, OnCloseCanvas, OnUpdateUpgradeTexts, OnUpgradeBouncerHire, OnUpgradeBouncerStamina, OnUpgradeBouncerPower;
+    }
 }

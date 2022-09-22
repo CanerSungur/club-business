@@ -31,6 +31,7 @@ namespace ClubBusiness
                 _ai.OnMove?.Invoke();
 
                 CustomerManager.AddCustomerOnDanceFloor(_ai);
+                CustomerManager.AddCustomersCanFight(_ai);
 
                 _ai.AngerHandler.GetHappier();
             }
@@ -68,6 +69,7 @@ namespace ClubBusiness
                 if (_timer <= 0f && _ai.IsDancing)
                 {
                     CustomerManager.RemoveCustomerFromDanceFloor(_ai);
+                    CustomerManager.RemoveCustomersCanFight(_ai);
                     _ai.OnStopDancing?.Invoke();
                     aiStateManager.SwitchState(aiStateManager.IdleState);
                 }
