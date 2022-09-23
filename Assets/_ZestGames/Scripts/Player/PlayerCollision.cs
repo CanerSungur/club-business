@@ -51,6 +51,12 @@ namespace ZestGames
                 cleanerTrigger.Cleaner.OnGetWarned?.Invoke();
             }
 
+            if (other.TryGetComponent(out BouncerTrigger bouncerTrigger) && bouncerTrigger.Bouncer.IsWastingTime)
+            {
+                PlayerEvents.OnWarnWorker?.Invoke();
+                bouncerTrigger.Bouncer.OnGetWarned?.Invoke();
+            }
+
             if (other.TryGetComponent(out ToiletItem toiletItem) && toiletItem.IsBroken && !toiletItem.PlayerIsInArea && _player.FixedToiletItem == null)
             {
                 toiletItem.PlayerIsInArea = true;

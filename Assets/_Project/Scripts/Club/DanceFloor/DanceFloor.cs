@@ -11,6 +11,7 @@ namespace ClubBusiness
         [SerializeField] private Bouncer bouncer;
         [SerializeField] private DanceFloorUpgradeCanvas danceFloorUpgradeCanvas;
         [SerializeField] private Transform bouncerWaitTransform;
+        [SerializeField] private ColoredBoxController coloredBoxController;
 
         #region FIGHTING
         private static bool _fightIsHappening;
@@ -66,6 +67,8 @@ namespace ClubBusiness
 
         private void Start()
         {
+            coloredBoxController.Init(this);
+
             BouncerHiredCost = 2000;
             Capacity = 99;
             AttackerAi = DefenderAi = null;
