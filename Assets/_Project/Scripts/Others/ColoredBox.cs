@@ -16,7 +16,7 @@ namespace ClubBusiness
         [Header("-- SETUP --")]
         [SerializeField] private Material[] lightMaterials;
 
-        private readonly Color _lightOff = new Color(1f, 1f, 1f, 0f);
+        private readonly Color _lightOff = new Color(1f, 1f, 1f, 0.001f);
         private readonly Color _lightOn = new Color(1f, 1f, 1f, 1f);
         private readonly float _colorChangeDuration = 1f;
         private Color _currentColor;

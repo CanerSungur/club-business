@@ -66,7 +66,7 @@ namespace ZestGames
                 _collectSequence.id = _collectSequenceID;
 
                 _collectSequence.Append(_rectTransform.DOAnchorPos(Hud.MoneyAnchoredPosition, 1f))
-                    .Join(_rectTransform.DOScale(Vector3.one * 0.8f, 1f)).OnComplete(() =>
+                    .Join(_rectTransform.DOScale(Vector3.one * 1.2f, 1f)).OnComplete(() =>
                     {
                         AudioEvents.OnPlayCollectMoney?.Invoke();
                         CollectableEvents.OnCollect?.Invoke(DataManager.MoneyValue);

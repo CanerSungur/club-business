@@ -66,13 +66,13 @@ namespace ClubBusiness
             if (!CustomersCanFight.Contains(ai))
                 CustomersCanFight.Add(ai);
 
-            Debug.Log(CustomersCanFight.Count);
+            // Debug.Log(CustomersCanFight.Count);
         }
         public static void RemoveCustomersCanFight(Ai ai)
         {
             if (CustomersCanFight.Contains(ai))
                 CustomersCanFight.Remove(ai);
-            Debug.Log(CustomersCanFight.Count);
+            // Debug.Log(CustomersCanFight.Count);
         }
         #endregion
 

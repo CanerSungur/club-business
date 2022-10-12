@@ -33,7 +33,7 @@ namespace ZestGames
 
         public void Init(GameManager gameManager)
         {
-            LetInDuration = 1f;
+            LetInDuration = 0.5f;
             FillDrinkDuration = 3f;
             BreakFightDuration = 2f;
 

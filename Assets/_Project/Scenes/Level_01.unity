@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.24840653, g: 0.5748241, b: 0.8770408, a: 1}
+  m_IndirectSpecularColor: {r: 0.24832958, g: 0.5746047, b: 0.8756568, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 5ee69136e8e2c4fa78e1bbe4cd81dfb2, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 3ebb20e9e31764f33a2b56907f2f0160, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -6385,7 +6385,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 640593728}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.218, y: 0, z: 4.197}
+  m_LocalPosition: {x: -4.19, y: 0, z: 4.197}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 161255442}
@@ -6442,8 +6442,8 @@ Camera:
   m_GameObject: {fileID: 642203729}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.497152, g: 0.61199117, b: 0.7924528, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -6483,7 +6483,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 642203729}
-  m_LocalRotation: {x: 0.3461832, y: -0.11450996, z: 0.042617097, w: 0.9301766}
+  m_LocalRotation: {x: 0.34618318, y: -0.11450999, z: 0.042617105, w: 0.93017656}
   m_LocalPosition: {x: 4.57, y: 12, z: -15.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -20431,7 +20431,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.5
+  m_Intensity: 2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -22455,7 +22455,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2133251342}
-  m_LocalRotation: {x: 0.3461832, y: -0.11450996, z: 0.042617097, w: 0.9301766}
+  m_LocalRotation: {x: 0.34618318, y: -0.11450999, z: 0.042617105, w: 0.93017656}
   m_LocalPosition: {x: 4.57, y: 12, z: -15.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -26705,7 +26705,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2905051430059840900, guid: d8d6296329c494e419b0e57cfb018578, type: 3}
       propertyPath: m_RootOrder
-      value: 10
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2905051430059840900, guid: d8d6296329c494e419b0e57cfb018578, type: 3}
       propertyPath: m_LocalPosition.x
