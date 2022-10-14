@@ -62,13 +62,13 @@ namespace ZestGames
 
         #region FOR TESTING
 #if UNITY_EDITOR
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.M))
-            {
-                CollectableEvents.OnCollect?.Invoke(1000);
-            }
-        }
+        //private void Update()
+        //{
+        //    if (Input.GetKeyDown(KeyCode.M))
+        //    {
+        //        CollectableEvents.OnCollect?.Invoke(1000);
+        //    }
+        //}
 #endif
         #endregion
 

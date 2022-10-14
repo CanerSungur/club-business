@@ -13,7 +13,7 @@ namespace ZestGames
         [SerializeField] private Hud hud;
         [SerializeField] private LevelFail levelFail;
         [SerializeField] private LevelSuccess levelSuccess;
-        [SerializeField] private SettingsUi settings;
+        [SerializeField] private SettingsMinimalUi settings;
         [SerializeField] private UpgradeCanvas upgradeCanvas;
         [SerializeField] private GateUpgradeCanvas gateUpgradeCanvas;
 
@@ -30,6 +30,7 @@ namespace ZestGames
             hud.Init(this);
             levelFail.Init(this);
             levelSuccess.Init(this);
+            settings.Init(this);
             upgradeCanvas.Init(this);
             //gateUpgradeCanvas.Init(this);
 

@@ -25,6 +25,7 @@ namespace ZestGames
 
         private void OnDisable()
         {
+            if (GameManager.GameState == Enums.GameState.WaitingToStart) return;
             UiEvents.OnUpdateLevelText -= UpdateLevelText;
             UiEvents.OnUpdateCollectableText -= UpdateMoneyText;
         }

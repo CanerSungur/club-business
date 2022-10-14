@@ -1,6 +1,7 @@
 using UnityEngine;
 using DG.Tweening;
 using System;
+using Random = UnityEngine.Random;
 
 namespace ZestGames
 {
@@ -15,6 +16,7 @@ namespace ZestGames
         #region SEQUENCE
         private Sequence _collectSequence;
         private Guid _collectSequenceID;
+        private readonly float _collectDuration = 1f;
         #endregion
 
         public void Init(MoneyCanvas moneyCanvas, Transform spawnTransform)
@@ -29,15 +31,8 @@ namespace ZestGames
             _rectTransform = GetComponent<RectTransform>();
             _rectTransform.localScale = Vector3.one;
             _rectTransform.anchoredPosition = GetWorldPointToScreenPoint(spawnTransform);
-            //_rectTransform.anchoredPosition = _moneyCanvas.MiddlePointRectTransform.anchoredPosition;
 
-            //_rectTransform.DOAnchorPos(Hud.MoneyAnchoredPosition, 1f).OnComplete(() =>
-            //{
-            //    //AudioEvents.OnPlayCollectMoney?.Invoke();
-            //    CollectableEvents.OnCollect?.Invoke(DataManager.MoneyValue);
-            //    gameObject.SetActive(false);
-            //});
-
+            _rectTransform.localRotation = Quaternion.Euler(0f, 0f, Random.Range(0, 360));
             StartCollectSequence();
         }
 
@@ -64,10 +59,11 @@ namespace ZestGames
                 _collectSequence = DOTween.Sequence();
                 _collectSequenceID = Guid.NewGuid();
                 _collectSequence.id = _collectSequenceID;
-
-                _collectSequence.Append(_rectTransform.DOAnchorPos(Hud.MoneyAnchoredPosition, 1f))
-                    .Join(_rectTransform.DOScale(Vector3.one * 1.2f, 1f)).OnComplete(() =>
-                    {
+                
+                _collectSequence.Append(_rectTransform.DOJumpAnchorPos(Hud.MoneyAnchoredPosition, Random.Range(-200, 200), 1, _collectDuration))
+                    .Join(_rectTransform.DOScale(Vector3.one * 1.3f, _collectDuration))
+                    .Join(_rectTransform.DORotate(Vector3.zero, _collectDuration))
+                    .OnComplete(() => {
                         AudioEvents.OnPlayCollectMoney?.Invoke();
                         CollectableEvents.OnCollect?.Invoke(DataManager.MoneyValue);
                         DeleteCollectSequence();
