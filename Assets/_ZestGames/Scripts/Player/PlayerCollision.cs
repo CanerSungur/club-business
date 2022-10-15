@@ -24,6 +24,7 @@ namespace ZestGames
                     PlayerEvents.OnStartLettingPeopleIn?.Invoke();
                 else if (queueActivator.QueueSystem.QueueType == Enums.QueueType.Bar)
                     PlayerEvents.OnStartFillingDrinks?.Invoke();
+                    
                 //_player.TimerForAction.StartFilling(() => queueActivator.StartEmptyingQueue());
             }
 

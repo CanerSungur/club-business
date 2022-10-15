@@ -11,7 +11,7 @@ namespace ZestGames
         [Space(10)]
 
         [Header("-- SETUP --")]
-        [SerializeField, Tooltip("Make it true if you don't want Player to release this queue, instead do it with a condition.")] private bool automaticRelease = false;
+        [SerializeField, Tooltip("Make it true if you don't want Player to release this queue, do it with a condition instead.")] private bool automaticRelease = false;
         [SerializeField] private bool spawnWithCode = true;
         [SerializeField] private bool reFormationWhenActivated = true;
         [SerializeField] private int capacity = 5;

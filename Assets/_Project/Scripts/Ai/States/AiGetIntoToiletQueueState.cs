@@ -50,7 +50,7 @@ namespace ClubBusiness
 
         public override void UpdateState(AiStateManager aiStateManager)
         {
-            Debug.Log("TOILET QUEUE STATE");
+            //Debug.Log("TOILET QUEUE STATE");
 
             if (_currentQueuePoint == null)
             {

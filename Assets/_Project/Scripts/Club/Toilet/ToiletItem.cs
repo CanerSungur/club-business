@@ -75,6 +75,8 @@ namespace ClubBusiness
             
             Toilet.RemoveBrokenToiletItem(this);
             Toilet.AddEmptyToiletItem(this);
+
+            QueueManager.ToiletQueue.UpdateToiletQueue();
         }
 
         #region PUBLICS

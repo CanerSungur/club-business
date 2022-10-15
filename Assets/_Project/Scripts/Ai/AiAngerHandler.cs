@@ -79,7 +79,7 @@ namespace ClubBusiness
                 // Leave the club
                 _ai.IsLeaving = true;
                 _ai.StateManager.SwitchState(_ai.StateManager.LeaveClubState);
-                Debug.Log("LEAVE CLUB!");
+                //Debug.Log("LEAVE CLUB!");
             }
         }
         public void GetHappier()

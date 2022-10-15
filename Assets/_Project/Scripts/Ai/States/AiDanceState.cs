@@ -52,8 +52,7 @@ namespace ClubBusiness
                 if (Operation.IsTargetReached(_ai.transform, _dancingPosition, 0.02f))
                 {
                     _reachedToDancingPosition = true;
-                    if (!_ai.IsDancing)
-                        _ai.OnStartDancing?.Invoke();
+                    _ai.OnStartDancing?.Invoke();
                 }
                 else
                 {

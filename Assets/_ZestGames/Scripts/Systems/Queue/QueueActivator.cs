@@ -76,12 +76,14 @@ namespace ZestGames
             player.TimerForAction.StopFilling();
             StopEmptyingCoroutine();
             _queueSystem.OnPlayerExited?.Invoke();
+            _emptyCoroutine = null;
         }
         #endregion
 
         #region COROUTINE FUNCTIONS
         private void StartEmptyingCoroutine(Player player)
         {
+            if (_emptyCoroutine != null) return;
             _emptyCoroutine = EmptyQueueCoroutine(player);
             StartCoroutine(_emptyCoroutine);
         }
@@ -104,6 +106,8 @@ namespace ZestGames
                 }
                 else if (_queueSystem.QueueType == Enums.QueueType.Bar)
                 {
+                    //Debug.Log("CanGiveDrink: " + CanGiveDrink);
+                    //Debug.Log("Ai Count: " + _queueSystem.AisInQueue.Count);
                     if (CanGiveDrink)
                     {
                         //player.TimerForAction.StartFilling(DataManager.FillDrinkDuration, () => PlayerEvents.OnEmptyNextInQueue?.Invoke(_queueSystem));
@@ -111,6 +115,8 @@ namespace ZestGames
                         firstAi.BarTurnIsUp();
                         player.TimerForAction.StartFilling(DataManager.FillDrinkDuration, () => PlayerEvents.OnThrowADrink?.Invoke(firstAi));
                         _queueSystem.RemoveAiFromQueue(firstAi);
+
+                        //Debug.Log("Start filling canvas activated.");
                     }
 
                     if (_queueSystem.QueueIsFull)

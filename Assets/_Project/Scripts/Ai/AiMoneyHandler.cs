@@ -25,11 +25,15 @@ namespace ClubBusiness
         {
             if (_ai.AngerHandler.CurrentMood == Enums.AiMood.Happy)
             {
-                // tip 3 dolars
+                // tip 3 money: Money value can change
             }
             else if (_ai.AngerHandler.CurrentMood == Enums.AiMood.VeryHappy)
             {
-                // tip 5 dolars
+                // tip 5 money: Money value can change
+            }
+            else
+            {
+                // no tip
             }
         }
 

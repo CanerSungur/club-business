@@ -23,7 +23,7 @@ namespace ClubBusiness
 
         public override void UpdateState(AiStateManager aiStateManager)
         {
-            Debug.Log("ENTER TOILET STATE");
+            //Debug.Log("ENTER TOILET STATE");
 
             if (!_enteredToilet)
             {
