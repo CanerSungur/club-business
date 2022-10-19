@@ -48,6 +48,8 @@ namespace ClubBusiness
             OnGetWarned += GetWarned;
 
             BarEvents.OnSetCurrentBartenderStamina += UpdateStamina;
+            BarUpgradeEvents.OnUpgradeBartenderSpeed += UpgradeHappened;
+            BarUpgradeEvents.OnUpgradeBartenderStamina += UpgradeHappened;
 
             Bounce();
         }
@@ -62,6 +64,8 @@ namespace ClubBusiness
             OnGetWarned -= GetWarned;
 
             BarEvents.OnSetCurrentBartenderStamina -= UpdateStamina;
+            BarUpgradeEvents.OnUpgradeBartenderSpeed -= UpgradeHappened;
+            BarUpgradeEvents.OnUpgradeBartenderStamina -= UpgradeHappened;
 
             transform.DOKill();
         }
@@ -72,6 +76,10 @@ namespace ClubBusiness
         }
 
         #region EVENT HANDLER FUNCTIONS
+        private void UpgradeHappened()
+        {
+            ObjectPooler.Instance.SpawnFromPool(Enums.PoolStamp.LevelUp_PS, transform.position, Quaternion.Euler(-90f, 0f, 0f));
+        }
         private void UpdateStamina() => OnGetWarned?.Invoke();
         private void DrinkFinished()
         {

@@ -10,7 +10,7 @@ namespace ClubBusiness
 
         public override void EnterState(BouncerStateManager bouncerStateManager)
         {
-            Debug.Log("Wait State");
+            //Debug.Log("Wait State");
 
             if (_bouncer == null)
                 _bouncer = bouncerStateManager.Bouncer;

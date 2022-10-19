@@ -5,10 +5,17 @@ namespace ClubBusiness
 {
     public class Bar : MonoBehaviour
     {
-        [Header("-- SETUP --")]
+        [Header("-- GENERAL SETUP --")]
         [SerializeField] private Bartender bartender;
-        [SerializeField] private BarUpgradeCanvas barUpgradeCanvas;
         [SerializeField] private Transform beerSpawnTransform;
+
+        [Header("-- BAR UPGRADE SETUP --")]
+        [SerializeField] private BarUpgradeCanvas barUpgradeCanvas;
+        [SerializeField] private BarUpgradeArea barUpgradeArea;
+
+        [Header("-- BARTENDER HIRE SETUP --")]
+        [SerializeField] private BartenderHireCanvas bartenderHireCanvas;
+        [SerializeField] private BartenderHireArea bartenderHireArea;
 
         public static Transform BeerSpawnTransform { get; private set; }
 
@@ -42,7 +49,7 @@ namespace ClubBusiness
 
         private void Start()
         {
-            BartenderHiredCost = 1000;
+            BartenderHiredCost = 250;
             BeerSpawnTransform = beerSpawnTransform;
             BartenderStaminaLevelCap = 30;
             BartenderPourDurationLevelCap = 15;
@@ -53,7 +60,7 @@ namespace ClubBusiness
             UpdateBartenderSpeed();
             UpdateBartenderHire();
 
-            barUpgradeCanvas.Init(this);
+            CheckForBartenderActivation();
 
             BarUpgradeEvents.OnUpgradeBartenderHire += BartenderHireUpgrade;
             BarUpgradeEvents.OnUpgradeBartenderStamina += BartenderStaminaUpgrade;
@@ -68,6 +75,36 @@ namespace ClubBusiness
 
             SaveData();
         }
+
+        private void CheckForBartenderActivation()
+        {
+            if (Bar.BartenderHired)
+                BartenderIsHired();
+            else
+                BartenderIsNotHired();
+        }
+        private void BartenderIsNotHired()
+        {
+            bartenderHireCanvas.gameObject.SetActive(true);
+            bartenderHireCanvas.Init(this);
+            bartenderHireArea.gameObject.SetActive(true);
+            bartenderHireArea.Init(this);
+
+            barUpgradeCanvas.gameObject.SetActive(false);
+            barUpgradeArea.gameObject.SetActive(false);
+        }
+
+        #region PUBLICS
+        public void BartenderIsHired()
+        {
+            bartenderHireCanvas.gameObject.SetActive(false);
+            bartenderHireArea.gameObject.SetActive(false);
+
+            barUpgradeCanvas.gameObject.SetActive(true);
+            barUpgradeCanvas.Init(this);
+            barUpgradeArea.gameObject.SetActive(true);
+        }
+        #endregion
 
         #region UPGRADE FUNCTIONS
         private void BartenderHireUpgrade()

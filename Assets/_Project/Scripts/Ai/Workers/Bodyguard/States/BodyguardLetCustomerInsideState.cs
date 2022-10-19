@@ -11,7 +11,7 @@ namespace ClubBusiness
 
         public override void EnterState(BodyguardStateManager bodyguardStateManager)
         {
-            Debug.Log("Lettin Customer In");
+            //Debug.Log("Lettin Customer In");
             if (_bodyguard == null)
                 _bodyguard = bodyguardStateManager.Bodyguard;
 

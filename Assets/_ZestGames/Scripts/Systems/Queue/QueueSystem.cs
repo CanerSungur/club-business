@@ -203,8 +203,15 @@ namespace ZestGames
         public QueuePoint GetQueue(Ai ai)
         {
             AddAiInQueue(ai);
-            QueuePoint queue = EmptyQueuePoints[0];
-            queue.QueueIsTaken();
+            QueuePoint queue;
+            if (EmptyQueuePoints.Count == 0 || EmptyQueuePoints == null)
+                queue = null;
+            else
+            {
+                queue = EmptyQueuePoints[0];
+                queue.QueueIsTaken();
+            }
+            
             return queue;
         }
         #endregion

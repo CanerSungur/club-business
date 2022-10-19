@@ -17,6 +17,17 @@ namespace ZestGames
             if (other.TryGetComponent(out UpgradeAreaBase upgradeArea) && !upgradeArea.PlayerIsInArea)
                 upgradeArea.StartOpening();
 
+            #region HIRE WORKER SECTION
+            if (other.TryGetComponent(out BartenderHireArea bartenderHireArea))
+                bartenderHireArea.OpenHireCanvas();
+            if (other.TryGetComponent(out BodyguardHireArea bodyguardHireArea))
+                bodyguardHireArea.OpenHireCanvas();
+            if (other.TryGetComponent(out CleanerHireArea cleanerHireArea))
+                cleanerHireArea.OpenHireCanvas();
+            if (other.TryGetComponent(out BouncerHireArea bouncerHireArea))
+                bouncerHireArea.OpenHireCanvas();
+            #endregion
+
             if (other.TryGetComponent(out QueueActivator queueActivator) && !queueActivator.PlayerIsInArea && queueActivator.CanPlayerActivateQueue)
             {
                 queueActivator.StartEmptyingQueue(_player);
@@ -24,8 +35,6 @@ namespace ZestGames
                     PlayerEvents.OnStartLettingPeopleIn?.Invoke();
                 else if (queueActivator.QueueSystem.QueueType == Enums.QueueType.Bar)
                     PlayerEvents.OnStartFillingDrinks?.Invoke();
-                    
-                //_player.TimerForAction.StartFilling(() => queueActivator.StartEmptyingQueue());
             }
 
             if (other.TryGetComponent(out ExamplePoint examplePoint) && !examplePoint.PlayerIsInArea)
@@ -34,29 +43,28 @@ namespace ZestGames
                 _player.MoneyHandler.StartSpending(examplePoint);
             }
 
+            #region WARN WORKER SECTION
             if (other.TryGetComponent(out BodyguardTrigger bodyguardTrigger) && bodyguardTrigger.Bodyguard.IsWastingTime)
             {
                 PlayerEvents.OnWarnWorker?.Invoke();
                 bodyguardTrigger.Bodyguard.OnGetWarned?.Invoke();
             }
-
             if (other.TryGetComponent(out BartenderTrigger bartenderTrigger) && bartenderTrigger.Bartender.IsWastingTime)
             {
                 PlayerEvents.OnWarnWorker?.Invoke();
                 bartenderTrigger.Bartender.OnGetWarned?.Invoke();
             }
-
             if (other.TryGetComponent(out CleanerTrigger cleanerTrigger) && cleanerTrigger.Cleaner.IsWastingTime)
             {
                 PlayerEvents.OnWarnWorker?.Invoke();
                 cleanerTrigger.Cleaner.OnGetWarned?.Invoke();
             }
-
             if (other.TryGetComponent(out BouncerTrigger bouncerTrigger) && bouncerTrigger.Bouncer.IsWastingTime)
             {
                 PlayerEvents.OnWarnWorker?.Invoke();
                 bouncerTrigger.Bouncer.OnGetWarned?.Invoke();
             }
+            #endregion
 
             if (other.TryGetComponent(out ToiletItem toiletItem) && toiletItem.IsBroken && !toiletItem.PlayerIsInArea && _player.FixedToiletItem == null)
             {
@@ -69,14 +77,6 @@ namespace ZestGames
             {
                 aiTrigger.PlayerIsInTrigger = true;
                 _player.TimerForAction.StartFilling(DataManager.BreakFightDuration, () => {
-
-                    //ClubEvents.OnEveryoneGetHappier?.Invoke();
-                    //ClubEvents.OnAFightEnded?.Invoke();
-
-                    //aiTrigger.Ai.OnStopFighting?.Invoke();
-                    //aiTrigger.Ai.StateManager.SwitchState(aiTrigger.Ai.StateManager.LeaveClubState);
-                    //DanceFloor.DefenderAi.StateManager.SwitchState(DanceFloor.DefenderAi.StateManager.DanceState);
-
                     if (DanceFloor.AttackerAi && DanceFloor.DefenderAi)
                     {
                         aiTrigger.Ai.OnStopFighting?.Invoke();
@@ -102,7 +102,6 @@ namespace ZestGames
                     PlayerEvents.OnStopLettingPeopleIn?.Invoke();
                 else if (queueActivator.QueueSystem.QueueType == Enums.QueueType.Bar)
                     PlayerEvents.OnStopFillingDrinks?.Invoke();
-                //_player.TimerForAction.StopFilling();
             }
 
             if (other.TryGetComponent(out ExamplePoint examplePoint) && examplePoint.PlayerIsInArea)

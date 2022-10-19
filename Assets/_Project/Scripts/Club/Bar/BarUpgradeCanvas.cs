@@ -5,6 +5,7 @@ namespace ClubBusiness
 {
     public class BarUpgradeCanvas : MonoBehaviour
     {
+        private Bar _bar;
         public enum Type { Idle, Incremental }
         [SerializeField] private Type _currentType;
         public Type CurrentType => _currentType;
@@ -19,7 +20,7 @@ namespace ClubBusiness
         #endregion
 
         [Header("-- STAMINA SETUP --")]
-        [SerializeField] private UpgradeCanvasItem bartenderHire;
+        //[SerializeField] private UpgradeCanvasItem bartenderHire;
         [SerializeField] private UpgradeCanvasItem bartenderStamina;
         [SerializeField] private UpgradeCanvasItem bartenderSpeed;
 
@@ -27,6 +28,7 @@ namespace ClubBusiness
         {
             if (_animator == null)
             {
+                _bar = bar;
                 _animator = GetComponent<Animator>();
                 if (_currentType == Type.Idle)
                 {
@@ -34,7 +36,7 @@ namespace ClubBusiness
                     _emptySpaceButton = transform.GetChild(1).GetComponent<CustomButton>();
                 }
 
-                bartenderHire.Init();
+                //bartenderHire.Init();
                 bartenderStamina.Init();
                 bartenderSpeed.Init();
             }
@@ -50,7 +52,7 @@ namespace ClubBusiness
                 _emptySpaceButton.onClick.AddListener(CloseCanvasClicked);
             }
 
-            bartenderHire.Button.onClick.AddListener(BartenderHireUpgradeClicked);
+            //bartenderHire.Button.onClick.AddListener(BartenderHireUpgradeClicked);
             bartenderStamina.Button.onClick.AddListener(BartenderStaminaUpgradeClicked);
             bartenderSpeed.Button.onClick.AddListener(BartenderSpeedUpgradeClicked);
 
@@ -62,13 +64,15 @@ namespace ClubBusiness
 
         private void OnDisable()
         {
+            if (_bar == null) return;
+
             if (_currentType == Type.Idle)
             {
                 _closeButton.onClick.RemoveListener(CloseCanvasClicked);
                 _emptySpaceButton.onClick.RemoveListener(CloseCanvasClicked);
             }
 
-            bartenderHire.Button.onClick.RemoveListener(BartenderHireUpgradeClicked);
+            //bartenderHire.Button.onClick.RemoveListener(BartenderHireUpgradeClicked);
             bartenderStamina.Button.onClick.RemoveListener(BartenderStaminaUpgradeClicked);
             bartenderSpeed.Button.onClick.RemoveListener(BartenderSpeedUpgradeClicked);
 
@@ -82,17 +86,17 @@ namespace ClubBusiness
         private void UpdateTexts()
         {
             #region BARTENDER HIRE
-            if (Bar.BartenderHired)
-            {
-                bartenderHire.Button.gameObject.SetActive(false);
-                bartenderHire.LevelText.text = "HIRED!";
-            }
-            else
-            {
-                bartenderHire.Button.gameObject.SetActive(true);
-                bartenderHire.LevelText.text = "";
-                bartenderHire.CostText.text = Bar.BartenderHiredCost.ToString();
-            }
+            //if (Bar.BartenderHired)
+            //{
+                //bartenderHire.Button.gameObject.SetActive(false);
+                //bartenderHire.LevelText.text = "HIRED!";
+            //}
+            //else
+            //{
+                //bartenderHire.Button.gameObject.SetActive(true);
+                //bartenderHire.LevelText.text = "";
+                //bartenderHire.CostText.text = Bar.BartenderHiredCost.ToString();
+            //}
             #endregion
 
             #region BARTENDER STAMINA
@@ -134,7 +138,7 @@ namespace ClubBusiness
 
         private void CheckForMoneySufficiency()
         {
-            bartenderHire.Button.interactable = DataManager.TotalMoney >= Bar.BartenderHiredCost && !Bar.BartenderHired;
+            //bartenderHire.Button.interactable = DataManager.TotalMoney >= Bar.BartenderHiredCost && !Bar.BartenderHired;
             bartenderStamina.Button.interactable = DataManager.TotalMoney >= Bar.BartenderStaminaCost && Bar.BartenderHired && Bar.BartenderStaminaLevel < Bar.BartenderStaminaLevelCap;
             bartenderSpeed.Button.interactable = DataManager.TotalMoney >= Bar.BartenderPourDurationCost && Bar.BartenderHired && Bar.BartenderPourDurationLevel < Bar.BartenderPourDurationLevelCap;
         }
@@ -146,7 +150,7 @@ namespace ClubBusiness
             BarUpgradeEvents.OnCloseCanvas?.Invoke();
             PlayerEvents.OnClosedUpgradeCanvas?.Invoke();
         }
-        private void UpgradeBartenderHire() => BarUpgradeEvents.OnUpgradeBartenderHire?.Invoke();
+        //private void UpgradeBartenderHire() => BarUpgradeEvents.OnUpgradeBartenderHire?.Invoke();
         private void UpgradeBartenderStamina() => BarUpgradeEvents.OnUpgradeBartenderStamina?.Invoke();
         private void UpgradeBartenderSpeed() => BarUpgradeEvents.OnUpgradeBartenderSpeed?.Invoke();
         #endregion
@@ -160,7 +164,7 @@ namespace ClubBusiness
                 _closeButton.TriggerClick(CloseCanvas);
             }
         }
-        private void BartenderHireUpgradeClicked() => bartenderHire.Button.TriggerClick(UpgradeBartenderHire);
+        //private void BartenderHireUpgradeClicked() => bartenderHire.Button.TriggerClick(UpgradeBartenderHire);
         private void BartenderStaminaUpgradeClicked() => bartenderStamina.Button.TriggerClick(UpgradeBartenderStamina);
         private void BartenderSpeedUpgradeClicked() => bartenderSpeed.Button.TriggerClick(UpgradeBartenderSpeed);
         #endregion

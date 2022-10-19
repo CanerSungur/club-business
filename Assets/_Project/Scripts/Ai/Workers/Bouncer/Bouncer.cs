@@ -54,6 +54,8 @@ namespace ClubBusiness
             OnGetWarned += GetWarned;
 
             DanceFloorEvents.OnSetCurrentBouncerStamina += UpdateStamina;
+            DanceFloorUpgradeEvents.OnUpgradeBouncerPower += UpgradeHappened;
+            DanceFloorUpgradeEvents.OnUpgradeBouncerStamina += UpgradeHappened;
 
             Bounce();
         }
@@ -68,7 +70,9 @@ namespace ClubBusiness
             OnWasteTime -= WasteTime;
             OnGetWarned -= GetWarned;
 
-            GateEvents.OnSetCurrentBodyguardStamina -= UpdateStamina;
+            DanceFloorEvents.OnSetCurrentBouncerStamina -= UpdateStamina;
+            DanceFloorUpgradeEvents.OnUpgradeBouncerPower -= UpgradeHappened;
+            DanceFloorUpgradeEvents.OnUpgradeBouncerStamina -= UpgradeHappened;
 
             transform.DOKill();
         }
@@ -76,6 +80,10 @@ namespace ClubBusiness
         private void Bounce() => transform.DOShakeScale(1f, 0.25f);
 
         #region EVENT HANDLER FUNCTIONS
+        private void UpgradeHappened()
+        {
+            ObjectPooler.Instance.SpawnFromPool(Enums.PoolStamp.LevelUp_PS, transform.position, Quaternion.Euler(-90f, 0f, 0f));
+        }
         private void UpdateStamina() => OnGetWarned?.Invoke();
         private void GoBreakingFight()
         {

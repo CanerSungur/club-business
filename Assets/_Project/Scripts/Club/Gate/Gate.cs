@@ -8,7 +8,14 @@ namespace ClubBusiness
     {
         [Header("-- SETUP --")]
         [SerializeField] private Bodyguard bodyguard;
+
+        [Header("-- GATE UPGRADE SETUP --")]
         [SerializeField] private GateUpgradeCanvas gateUpgradeCanvas;
+        [SerializeField] private GateUpgradeArea gateUpgradeArea;
+
+        [Header("-- BODYGUARD HIRE SETUP --")]
+        [SerializeField] private BodyguardHireCanvas bodyguardHireCanvas;
+        [SerializeField] private BodyguardHireArea bodyguardHireArea;
 
         #region UPGRADE LEVEL CAP
         public static int BodyguardStaminaLevelCap { get; private set; }
@@ -40,7 +47,7 @@ namespace ClubBusiness
 
         public void Start()
         {
-            BodyguardHiredCost = 500;
+            BodyguardHiredCost = 100;
             BodyguardStaminaLevelCap = 30;
             BodyguardLetInDurationLevelCap = 15;
 
@@ -49,8 +56,8 @@ namespace ClubBusiness
             UpdateBodyguardStamina();
             UpdateBodyguardSpeed();
             UpdateBodyguardHire();
-            
-            gateUpgradeCanvas.Init(this);
+
+            CheckForBodyguardActivation();
 
             GateUpgradeEvents.OnUpgradeBodyguardHire += BodyguardHireUpgrade;
             GateUpgradeEvents.OnUpgradeBodyguardStamina += BodyguardStaminaUpgrade;
@@ -65,6 +72,36 @@ namespace ClubBusiness
 
             SaveData();
         }
+
+        private void CheckForBodyguardActivation()
+        {
+            if (Gate.BodyguardHired)
+                BodyguardIsHired();
+            else
+                BodyguardIsNotHired();
+        }
+        private void BodyguardIsNotHired()
+        {
+            bodyguardHireCanvas.gameObject.SetActive(true);
+            bodyguardHireCanvas.Init(this);
+            bodyguardHireArea.gameObject.SetActive(true);
+            bodyguardHireArea.Init(this);
+
+            gateUpgradeCanvas.gameObject.SetActive(false);
+            gateUpgradeArea.gameObject.SetActive(false);
+        }
+
+        #region PUBLICS
+        public void BodyguardIsHired()
+        {
+            bodyguardHireCanvas.gameObject.SetActive(false);
+            bodyguardHireArea.gameObject.SetActive(false);
+
+            gateUpgradeCanvas.gameObject.SetActive(true);
+            gateUpgradeCanvas.Init(this);
+            gateUpgradeArea.gameObject.SetActive(true);
+        }
+        #endregion
 
         #region UPGRADE FUNCTIONS
         private void BodyguardHireUpgrade()

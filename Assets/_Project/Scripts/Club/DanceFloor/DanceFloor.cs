@@ -9,15 +9,22 @@ namespace ClubBusiness
     {
         [Header("-- SETUP --")]
         [SerializeField] private Bouncer bouncer;
-        [SerializeField] private DanceFloorUpgradeCanvas danceFloorUpgradeCanvas;
+        
         [SerializeField] private Transform bouncerWaitTransform;
         [SerializeField] private ColoredBoxController coloredBoxController;
+
+        [Header("-- DANCE FLOOR UPGRADE SETUP --")]
+        [SerializeField] private DanceFloorUpgradeCanvas danceFloorUpgradeCanvas;
+        [SerializeField] private DanceFloorUpgradeArea danceFloorUpgradeArea;
+        [Header("-- BOUNCER HIRE SETUP --")]
+        [SerializeField] private BouncerHireCanvas bouncerHireCanvas;
+        [SerializeField] private BouncerHireArea bouncerHireArea;
 
         #region FIGHTING
         private static bool _fightIsHappening;
         private static int _currentFightCount = 0;
         private static int _maxFightAtOnceCount = 1;
-        private static readonly int _fightChance = 50;
+        private static readonly int _fightChance = 20;
         private readonly WaitForSeconds _waitForTriggerFightDelay = new WaitForSeconds(5f);
         private readonly float _argueDuration = 10f;
         private readonly float _fightDuration = 15f;
@@ -69,7 +76,7 @@ namespace ClubBusiness
         {
             coloredBoxController.Init(this);
 
-            BouncerHiredCost = 2000;
+            BouncerHiredCost = 750;
             Capacity = 99;
             AttackerAi = DefenderAi = null;
             ArgueDuration = _argueDuration;
@@ -84,7 +91,7 @@ namespace ClubBusiness
             UpdateBouncerPower();
             UpdateBouncerHire();
 
-            danceFloorUpgradeCanvas.Init(this);
+            CheckForBouncerActivation();
 
             DanceFloorUpgradeEvents.OnUpgradeBouncerHire += BouncerHireUpgrade;
             DanceFloorUpgradeEvents.OnUpgradeBouncerStamina += BouncerStaminaUpgrade;
@@ -113,6 +120,36 @@ namespace ClubBusiness
                 StartFight();
             }
         }
+
+        private void CheckForBouncerActivation()
+        {
+            if (BouncerHired)
+                BouncerIsHired();
+            else
+                BouncerIsNotHired();
+        }
+        private void BouncerIsNotHired()
+        {
+            bouncerHireCanvas.gameObject.SetActive(true);
+            bouncerHireCanvas.Init(this);
+            bouncerHireArea.gameObject.SetActive(true);
+            bouncerHireArea.Init(this);
+
+            danceFloorUpgradeCanvas.gameObject.SetActive(false);
+            danceFloorUpgradeArea.gameObject.SetActive(false);
+        }
+
+        #region PUBLICS
+        public void BouncerIsHired()
+        {
+            bouncerHireCanvas.gameObject.SetActive(false);
+            bouncerHireArea.gameObject.SetActive(false);
+
+            danceFloorUpgradeCanvas.gameObject.SetActive(true);
+            danceFloorUpgradeCanvas.Init(this);
+            danceFloorUpgradeArea.gameObject.SetActive(true);
+        }
+        #endregion
 
         #region EVENT HANDLER FUNCTIONS
         private void AFightEnded()

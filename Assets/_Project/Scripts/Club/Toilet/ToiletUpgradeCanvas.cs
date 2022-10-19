@@ -5,6 +5,7 @@ namespace ClubBusiness
 {
     public class ToiletUpgradeCanvas : MonoBehaviour
     {
+        private Toilet _toilet;
         public enum Type { Idle, Incremental }
         [SerializeField] private Type _currentType;
         public Type CurrentType => _currentType;
@@ -19,7 +20,7 @@ namespace ClubBusiness
         #endregion
 
         [Header("-- STAMINA SETUP --")]
-        [SerializeField] private UpgradeCanvasItem cleanerHire;
+        //[SerializeField] private UpgradeCanvasItem cleanerHire;
         [SerializeField] private UpgradeCanvasItem cleanerStamina;
         [SerializeField] private UpgradeCanvasItem cleanerSpeed;
         [SerializeField] private UpgradeCanvasItem toiletDuration;
@@ -28,6 +29,7 @@ namespace ClubBusiness
         {
             if (_animator == null)
             {
+                _toilet = toilet;
                 _animator = GetComponent<Animator>();
                 if (_currentType == Type.Idle)
                 {
@@ -35,7 +37,7 @@ namespace ClubBusiness
                     _emptySpaceButton = transform.GetChild(1).GetComponent<CustomButton>();
                 }
 
-                cleanerHire.Init();
+                //cleanerHire.Init();
                 cleanerStamina.Init();
                 cleanerSpeed.Init();
                 toiletDuration.Init();
@@ -52,7 +54,7 @@ namespace ClubBusiness
                 _emptySpaceButton.onClick.AddListener(CloseCanvasClicked);
             }
 
-            cleanerHire.Button.onClick.AddListener(CleanerHireUpgradeClicked);
+            //cleanerHire.Button.onClick.AddListener(CleanerHireUpgradeClicked);
             cleanerStamina.Button.onClick.AddListener(CleanerStaminaUpgradeClicked);
             cleanerSpeed.Button.onClick.AddListener(CleanerSpeedUpgradeClicked);
             toiletDuration.Button.onClick.AddListener(ToiletDurationUpgradeClicked);
@@ -65,13 +67,15 @@ namespace ClubBusiness
 
         private void OnDisable()
         {
+            if (_toilet == null) return;
+
             if (_currentType == Type.Idle)
             {
                 _closeButton.onClick.RemoveListener(CloseCanvasClicked);
                 _emptySpaceButton.onClick.RemoveListener(CloseCanvasClicked);
             }
 
-            cleanerHire.Button.onClick.RemoveListener(CleanerHireUpgradeClicked);
+            //cleanerHire.Button.onClick.RemoveListener(CleanerHireUpgradeClicked);
             cleanerStamina.Button.onClick.RemoveListener(CleanerStaminaUpgradeClicked);
             cleanerSpeed.Button.onClick.RemoveListener(CleanerSpeedUpgradeClicked);
             toiletDuration.Button.onClick.RemoveListener(ToiletDurationUpgradeClicked);
@@ -86,17 +90,17 @@ namespace ClubBusiness
         private void UpdateTexts()
         {
             #region CLEANER HIRE
-            if (Toilet.CleanerHired)
-            {
-                cleanerHire.Button.gameObject.SetActive(false);
-                cleanerHire.LevelText.text = "ALREADY HIRED!";
-            }
-            else
-            {
-                cleanerHire.Button.gameObject.SetActive(true);
-                cleanerHire.LevelText.text = "";
-                cleanerHire.CostText.text = Toilet.CleanerHiredCost.ToString();
-            }
+            //if (Toilet.CleanerHired)
+            //{
+            //    cleanerHire.Button.gameObject.SetActive(false);
+            //    cleanerHire.LevelText.text = "ALREADY HIRED!";
+            //}
+            //else
+            //{
+            //    cleanerHire.Button.gameObject.SetActive(true);
+            //    cleanerHire.LevelText.text = "";
+            //    cleanerHire.CostText.text = Toilet.CleanerHiredCost.ToString();
+            //}
             #endregion
 
             #region CLEANER STAMINA
@@ -156,7 +160,7 @@ namespace ClubBusiness
 
         private void CheckForMoneySufficiency()
         {
-            cleanerHire.Button.interactable = DataManager.TotalMoney >= Toilet.CleanerHiredCost && !Toilet.CleanerHired;
+            //cleanerHire.Button.interactable = DataManager.TotalMoney >= Toilet.CleanerHiredCost && !Toilet.CleanerHired;
             cleanerStamina.Button.interactable = DataManager.TotalMoney >= Toilet.CleanerStaminaCost && Toilet.CleanerHired && Toilet.CleanerStaminaLevel < Toilet.CleanerStaminaLevelCap;
             cleanerSpeed.Button.interactable = DataManager.TotalMoney >= Toilet.CleanerSpeedCost && Toilet.CleanerHired && Toilet.CleanerSpeedLevel < Toilet.CleanerSpeedLevelCap;
             toiletDuration.Button.interactable = DataManager.TotalMoney >= Toilet.ToiletDuration && Toilet.ToiletDurationLevel < Toilet.ToiletDurationLevelCap;
@@ -169,7 +173,7 @@ namespace ClubBusiness
             ToiletUpgradeEvents.OnCloseCanvas?.Invoke();
             PlayerEvents.OnClosedUpgradeCanvas?.Invoke();
         }
-        private void UpgradeCleanerHire() => ToiletUpgradeEvents.OnUpgradeCleanerHire?.Invoke();
+        //private void UpgradeCleanerHire() => ToiletUpgradeEvents.OnUpgradeCleanerHire?.Invoke();
         private void UpgradeCleanerStamina() => ToiletUpgradeEvents.OnUpgradeCleanerStamina?.Invoke();
         private void UpgradeCleanerSpeed() => ToiletUpgradeEvents.OnUpgradeCleanerSpeed?.Invoke();
         private void UpgradeToiletDuration() => ToiletUpgradeEvents.OnUpgradeToiletDuration?.Invoke();
@@ -184,7 +188,7 @@ namespace ClubBusiness
                 _closeButton.TriggerClick(CloseCanvas);
             }
         }
-        private void CleanerHireUpgradeClicked() => cleanerHire.Button.TriggerClick(UpgradeCleanerHire);
+        //private void CleanerHireUpgradeClicked() => cleanerHire.Button.TriggerClick(UpgradeCleanerHire);
         private void CleanerStaminaUpgradeClicked() => cleanerStamina.Button.TriggerClick(UpgradeCleanerStamina);
         private void CleanerSpeedUpgradeClicked() => cleanerSpeed.Button.TriggerClick(UpgradeCleanerSpeed);
         private void ToiletDurationUpgradeClicked() => toiletDuration.Button.TriggerClick(UpgradeToiletDuration);

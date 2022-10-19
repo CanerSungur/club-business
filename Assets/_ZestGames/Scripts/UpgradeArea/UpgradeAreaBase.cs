@@ -15,7 +15,7 @@ namespace ZestGames
         private Sequence _fillSequence, _emptySequence;
         private Guid _fillSequenceID, _emptySequenceID;
 
-        private void Start()
+        private void OnEnable()
         {
             _fillImage = transform.GetChild(0).GetChild(0).GetComponent<Image>();
             _fillImage.fillAmount = 0f;

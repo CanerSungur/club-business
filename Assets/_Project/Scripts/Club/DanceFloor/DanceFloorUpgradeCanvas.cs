@@ -5,6 +5,7 @@ namespace ClubBusiness
 {
     public class DanceFloorUpgradeCanvas : MonoBehaviour
     {
+        private DanceFloor _danceFloor;
         public enum Type { Idle, Incremental }
         [SerializeField] private Type _currentType;
         public Type CurrentType => _currentType;
@@ -19,7 +20,7 @@ namespace ClubBusiness
         #endregion
 
         [Header("-- STAMINA SETUP --")]
-        [SerializeField] private UpgradeCanvasItem bouncerHire;
+        //[SerializeField] private UpgradeCanvasItem bouncerHire;
         [SerializeField] private UpgradeCanvasItem bouncerStamina;
         [SerializeField] private UpgradeCanvasItem bouncerPower;
 
@@ -27,6 +28,7 @@ namespace ClubBusiness
         {
             if (_animator == null)
             {
+                _danceFloor = danceFloor;
                 _animator = GetComponent<Animator>();
                 if (_currentType == Type.Idle)
                 {
@@ -34,7 +36,7 @@ namespace ClubBusiness
                     _emptySpaceButton = transform.GetChild(1).GetComponent<CustomButton>();
                 }
 
-                bouncerHire.Init();
+                //bouncerHire.Init();
                 bouncerStamina.Init();
                 bouncerPower.Init();
             }
@@ -50,7 +52,7 @@ namespace ClubBusiness
                 _emptySpaceButton.onClick.AddListener(CloseCanvasClicked);
             }
 
-            bouncerHire.Button.onClick.AddListener(BouncerHireUpgradeClicked);
+            //bouncerHire.Button.onClick.AddListener(BouncerHireUpgradeClicked);
             bouncerStamina.Button.onClick.AddListener(BouncerStaminaUpgradeClicked);
             bouncerPower.Button.onClick.AddListener(BouncerPowerUpgradeClicked);
 
@@ -62,13 +64,15 @@ namespace ClubBusiness
 
         private void OnDisable()
         {
+            if (_danceFloor == null) return;
+
             if (_currentType == Type.Idle)
             {
                 _closeButton.onClick.RemoveListener(CloseCanvasClicked);
                 _emptySpaceButton.onClick.RemoveListener(CloseCanvasClicked);
             }
 
-            bouncerHire.Button.onClick.RemoveListener(BouncerHireUpgradeClicked);
+            //bouncerHire.Button.onClick.RemoveListener(BouncerHireUpgradeClicked);
             bouncerStamina.Button.onClick.RemoveListener(BouncerStaminaUpgradeClicked);
             bouncerPower.Button.onClick.RemoveListener(BouncerPowerUpgradeClicked);
 
@@ -82,17 +86,17 @@ namespace ClubBusiness
         private void UpdateTexts()
         {
             #region BOUNCER HIRE
-            if (DanceFloor.BouncerHired)
-            {
-                bouncerHire.Button.gameObject.SetActive(false);
-                bouncerHire.LevelText.text = "HIRED!";
-            }
-            else
-            {
-                bouncerHire.Button.gameObject.SetActive(true);
-                bouncerHire.LevelText.text = "";
-                bouncerHire.CostText.text = DanceFloor.BouncerHiredCost.ToString();
-            }
+            //if (DanceFloor.BouncerHired)
+            //{
+            //    bouncerHire.Button.gameObject.SetActive(false);
+            //    bouncerHire.LevelText.text = "HIRED!";
+            //}
+            //else
+            //{
+            //    bouncerHire.Button.gameObject.SetActive(true);
+            //    bouncerHire.LevelText.text = "";
+            //    bouncerHire.CostText.text = DanceFloor.BouncerHiredCost.ToString();
+            //}
             #endregion
 
             #region BOUNCER STAMINA
@@ -134,7 +138,7 @@ namespace ClubBusiness
 
         private void CheckForMoneySufficiency()
         {
-            bouncerHire.Button.interactable = DataManager.TotalMoney >= DanceFloor.BouncerHiredCost && !DanceFloor.BouncerHired;
+            //bouncerHire.Button.interactable = DataManager.TotalMoney >= DanceFloor.BouncerHiredCost && !DanceFloor.BouncerHired;
             bouncerStamina.Button.interactable = DataManager.TotalMoney >= DanceFloor.BouncerStaminaCost && DanceFloor.BouncerHired && DanceFloor.BouncerStaminaLevel < DanceFloor.BouncerStaminaLevelCap;
             bouncerPower.Button.interactable = DataManager.TotalMoney >= DanceFloor.BouncerPowerCost && DanceFloor.BouncerHired && DanceFloor.BouncerPowerLevel < DanceFloor.BouncerPowerLevelCap;
         }
@@ -146,7 +150,7 @@ namespace ClubBusiness
             DanceFloorUpgradeEvents.OnCloseCanvas?.Invoke();
             PlayerEvents.OnClosedUpgradeCanvas?.Invoke();
         }
-        private void UpgradeBouncerHire() => DanceFloorUpgradeEvents.OnUpgradeBouncerHire?.Invoke();
+        //private void UpgradeBouncerHire() => DanceFloorUpgradeEvents.OnUpgradeBouncerHire?.Invoke();
         private void UpgradeBouncerStamina() => DanceFloorUpgradeEvents.OnUpgradeBouncerStamina?.Invoke();
         private void UpgradeBouncerPower() => DanceFloorUpgradeEvents.OnUpgradeBouncerPower?.Invoke();
         #endregion
@@ -160,7 +164,7 @@ namespace ClubBusiness
                 _closeButton.TriggerClick(CloseCanvas);
             }
         }
-        private void BouncerHireUpgradeClicked() => bouncerHire.Button.TriggerClick(UpgradeBouncerHire);
+        //private void BouncerHireUpgradeClicked() => bouncerHire.Button.TriggerClick(UpgradeBouncerHire);
         private void BouncerStaminaUpgradeClicked() => bouncerStamina.Button.TriggerClick(UpgradeBouncerStamina);
         private void BouncerPowerUpgradeClicked() => bouncerPower.Button.TriggerClick(UpgradeBouncerPower);
         #endregion

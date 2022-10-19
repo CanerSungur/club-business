@@ -34,7 +34,11 @@ namespace ZestGames
             {
                 _timer = _decisionDelay;
                 _canMakeADecision = true;
-                MakeDecision(aiStateManager);
+
+                if (_ai.CurrentLocation == Enums.AiLocation.Inside)
+                    MakeDecision(aiStateManager);
+                else
+                    aiStateManager.SwitchState(aiStateManager.GetIntoClubState);
             }
         }
 

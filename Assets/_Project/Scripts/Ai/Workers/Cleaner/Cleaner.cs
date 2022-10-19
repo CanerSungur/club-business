@@ -61,6 +61,8 @@ namespace ClubBusiness
             OnGetWarned += GetWarned;
 
             ToiletEvents.OnSetCurrentCleanerStamina += UpgradeStamina;
+            ToiletUpgradeEvents.OnUpgradeCleanerSpeed += UpgradeHappened;
+            ToiletUpgradeEvents.OnUpgradeCleanerStamina += UpgradeHappened;
 
             Bounce();
         }
@@ -78,6 +80,8 @@ namespace ClubBusiness
             OnGetWarned -= GetWarned;
 
             ToiletEvents.OnSetCurrentCleanerStamina -= UpgradeStamina;
+            ToiletUpgradeEvents.OnUpgradeCleanerSpeed -= UpgradeHappened;
+            ToiletUpgradeEvents.OnUpgradeCleanerStamina -= UpgradeHappened;
 
             transform.DOKill();
         }
@@ -85,6 +89,10 @@ namespace ClubBusiness
         private void Bounce() => transform.DOShakeScale(1f, 0.25f);
 
         #region EVENT HANDLER FUNCTIONS
+        private void UpgradeHappened()
+        {
+            ObjectPooler.Instance.SpawnFromPool(Enums.PoolStamp.LevelUp_PS, transform.position, Quaternion.Euler(-90f, 0f, 0f));
+        }
         private void UpgradeStamina() => OnGetWarned?.Invoke();
         private void GoCleaning()
         {

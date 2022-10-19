@@ -11,7 +11,7 @@ namespace ClubBusiness
 
         public override void EnterState(BodyguardStateManager bodyguardStateManager)
         {
-            Debug.Log("Waiting For Customer!");
+            //Debug.Log("Waiting For Customer!");
 
             if (_bodyguard == null)
                 _bodyguard = bodyguardStateManager.Bodyguard;

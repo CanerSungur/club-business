@@ -9,7 +9,7 @@ namespace ClubBusiness
 
         public override void EnterState(BartenderStateManager bartenderStateManager)
         {
-            Debug.Log("Waiting For Customer!");
+            //Debug.Log("Waiting For Customer!");
 
             if (_bartender == null)
                 _bartender = bartenderStateManager.Bartender;

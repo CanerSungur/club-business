@@ -66,6 +66,8 @@ namespace ClubBusiness
         #region PUBLICS
         public void GetAngrier()
         {
+            if (_ai.CurrentLocation == Enums.AiLocation.Outside) return;
+
             _currentMoodRate -= _angerIncrement;
 
             Enums.AiMood previousMood = _currentMood;
@@ -84,6 +86,8 @@ namespace ClubBusiness
         }
         public void GetHappier()
         {
+            if (_ai.CurrentLocation == Enums.AiLocation.Outside) return;
+
             _currentMoodRate += _happinessIncrement;
 
             Enums.AiMood previousMood = _currentMood;

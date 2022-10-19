@@ -200,6 +200,7 @@ namespace ZestGames
         {
             gameObject.SetActive(false);
         }
+        public void GotIntoClub() => _currentLocation = Enums.AiLocation.Inside;
         #endregion
     }
 }

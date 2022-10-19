@@ -51,13 +51,17 @@ MonoBehaviour:
   - PoolStamp: 2
     Prefabs:
     - {fileID: 6853699254165699102, guid: 9732bacf67005fa49a184ee81646e28d, type: 3}
-    Size: 50
+    Size: 1
   - PoolStamp: 3
     Prefabs:
     - {fileID: 1818305695757563904, guid: bb5dd5fb7cf653c4fb040a87c567b776, type: 3}
     - {fileID: 1818305695757563904, guid: 213530a9cf6275f46b5dd177de608496, type: 3}
-    Size: 100
+    Size: 200
   - PoolStamp: 4
     Prefabs:
     - {fileID: 945012845741502465, guid: 94b3c294176ed3e4784b6896a3e8c73e, type: 3}
+    Size: 5
+  - PoolStamp: 5
+    Prefabs:
+    - {fileID: 5111107911134539422, guid: 26cab0459e8bc43c8bb16ce6b39a6c6c, type: 3}
     Size: 5

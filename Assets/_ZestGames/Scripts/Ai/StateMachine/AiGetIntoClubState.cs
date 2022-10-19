@@ -82,6 +82,7 @@ namespace ZestGames
         {
             CustomerManager.RemoveCustomerOutside(_ai);
             CustomerManager.AddCustomerInside(_ai);
+            _ai.GotIntoClub();
             _ai.StateManager.SwitchState(_ai.StateManager.WanderState);
         }
         #endregion

@@ -10,7 +10,7 @@ namespace ClubBusiness
         [Header("-- SETUP --")]
         [SerializeField] private Transform spawnTransform;
         private int _customersOutsideMaxCount = 10;
-        private int _customersInsideMaxCount = 20;
+        private int _customersInsideMaxCount = 150;
 
         #region SPAWN SETUP
         private readonly WaitForSeconds _waitForSpawnDelay = new WaitForSeconds(3f);
@@ -91,7 +91,7 @@ namespace ClubBusiness
         {
             while (true)
             {
-                if (CustomersOutside.Count < _customersOutsideMaxCount && GameManager.GameState == Enums.GameState.Started)
+                if (CustomersOutside.Count < _customersOutsideMaxCount && GameManager.GameState == Enums.GameState.Started && CustomersInside.Count < _customersInsideMaxCount)
                 {
                     Ai customerOutside = ObjectPooler.Instance.SpawnFromPool(Enums.PoolStamp.Customer, spawnTransform.position, Quaternion.identity).GetComponent<Ai>();
                     customerOutside.Init(this, Enums.AiLocation.Outside);

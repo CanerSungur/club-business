@@ -5,6 +5,7 @@ namespace ClubBusiness
 {
     public class GateUpgradeCanvas : MonoBehaviour
     {
+        private Gate _gate;
         public enum Type { Idle, Incremental }
         [SerializeField] private Type _currentType;
         public Type CurrentType => _currentType;
@@ -19,7 +20,7 @@ namespace ClubBusiness
         #endregion
 
         [Header("-- STAMINA SETUP --")]
-        [SerializeField] private UpgradeCanvasItem bodyguardHire;
+        //[SerializeField] private UpgradeCanvasItem bodyguardHire;
         [SerializeField] private UpgradeCanvasItem bodyguardStamina;
         [SerializeField] private UpgradeCanvasItem bodyguardSpeed;
 
@@ -27,6 +28,7 @@ namespace ClubBusiness
         {
             if (_animator == null)
             {
+                _gate = gate;
                 _animator = GetComponent<Animator>();
                 if (_currentType == Type.Idle)
                 {
@@ -34,7 +36,7 @@ namespace ClubBusiness
                     _emptySpaceButton = transform.GetChild(1).GetComponent<CustomButton>();
                 }
 
-                bodyguardHire.Init();
+                //bodyguardHire.Init();
                 bodyguardStamina.Init();
                 bodyguardSpeed.Init();
             }
@@ -50,7 +52,7 @@ namespace ClubBusiness
                 _emptySpaceButton.onClick.AddListener(CloseCanvasClicked);
             }
 
-            bodyguardHire.Button.onClick.AddListener(BodyguardHireUpgradeClicked);
+            //bodyguardHire.Button.onClick.AddListener(BodyguardHireUpgradeClicked);
             bodyguardStamina.Button.onClick.AddListener(BodyguardStaminaUpgradeClicked);
             bodyguardSpeed.Button.onClick.AddListener(BodyguardSpeedUpgradeClicked);
 
@@ -62,13 +64,15 @@ namespace ClubBusiness
 
         private void OnDisable()
         {
+            if (_gate == null) return;
+
             if (_currentType == Type.Idle)
             {
                 _closeButton.onClick.RemoveListener(CloseCanvasClicked);
                 _emptySpaceButton.onClick.RemoveListener(CloseCanvasClicked);
             }
 
-            bodyguardHire.Button.onClick.RemoveListener(BodyguardHireUpgradeClicked);
+            //bodyguardHire.Button.onClick.RemoveListener(BodyguardHireUpgradeClicked);
             bodyguardStamina.Button.onClick.RemoveListener(BodyguardStaminaUpgradeClicked);
             bodyguardSpeed.Button.onClick.RemoveListener(BodyguardSpeedUpgradeClicked);
 
@@ -82,17 +86,17 @@ namespace ClubBusiness
         private void UpdateTexts()
         {
             #region BODYGUARD HIRE
-            if (Gate.BodyguardHired)
-            {
-                bodyguardHire.Button.gameObject.SetActive(false);
-                bodyguardHire.LevelText.text = "HIRED!";
-            }
-            else
-            {
-                bodyguardHire.Button.gameObject.SetActive(true);
-                bodyguardHire.LevelText.text = "";
-                bodyguardHire.CostText.text = Gate.BodyguardHiredCost.ToString();
-            }
+            //if (Gate.BodyguardHired)
+            //{
+            //    bodyguardHire.Button.gameObject.SetActive(false);
+            //    bodyguardHire.LevelText.text = "HIRED!";
+            //}
+            //else
+            //{
+            //    bodyguardHire.Button.gameObject.SetActive(true);
+            //    bodyguardHire.LevelText.text = "";
+            //    bodyguardHire.CostText.text = Gate.BodyguardHiredCost.ToString();
+            //}
             #endregion
 
             #region BODYGUARD STAMINA
@@ -134,7 +138,7 @@ namespace ClubBusiness
 
         private void CheckForMoneySufficiency()
         {
-            bodyguardHire.Button.interactable = DataManager.TotalMoney >= Gate.BodyguardHiredCost && !Gate.BodyguardHired;
+            //bodyguardHire.Button.interactable = DataManager.TotalMoney >= Gate.BodyguardHiredCost && !Gate.BodyguardHired;
             bodyguardStamina.Button.interactable = DataManager.TotalMoney >= Gate.BodyguardStaminaCost && Gate.BodyguardHired && Gate.BodyguardStaminaLevel < Gate.BodyguardStaminaLevelCap;
             bodyguardSpeed.Button.interactable = DataManager.TotalMoney >= Gate.BodyguardLetInDurationCost && Gate.BodyguardHired && Gate.BodyguardLetInDurationLevel < Gate.BodyguardLetInDurationLevelCap;
         }
@@ -146,7 +150,7 @@ namespace ClubBusiness
             GateUpgradeEvents.OnCloseCanvas?.Invoke();
             PlayerEvents.OnClosedUpgradeCanvas?.Invoke();
         }
-        private void UpgradeBodyguardHire() => GateUpgradeEvents.OnUpgradeBodyguardHire?.Invoke();
+        //private void UpgradeBodyguardHire() => GateUpgradeEvents.OnUpgradeBodyguardHire?.Invoke();
         private void UpgradeBodyguardStamina() => GateUpgradeEvents.OnUpgradeBodyguardStamina?.Invoke();
         private void UpgradeBodyguardSpeed() => GateUpgradeEvents.OnUpgradeBodyguardSpeed?.Invoke();
         #endregion
@@ -160,7 +164,7 @@ namespace ClubBusiness
                 _closeButton.TriggerClick(CloseCanvas);
             }
         }
-        private void BodyguardHireUpgradeClicked() => bodyguardHire.Button.TriggerClick(UpgradeBodyguardHire);
+        //private void BodyguardHireUpgradeClicked() => bodyguardHire.Button.TriggerClick(UpgradeBodyguardHire);
         private void BodyguardStaminaUpgradeClicked() => bodyguardStamina.Button.TriggerClick(UpgradeBodyguardStamina);
         private void BodyguardSpeedUpgradeClicked() => bodyguardSpeed.Button.TriggerClick(UpgradeBodyguardSpeed);
         #endregion

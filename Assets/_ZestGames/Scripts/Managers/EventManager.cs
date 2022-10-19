@@ -64,6 +64,7 @@ namespace ZestGames
     public static class GateUpgradeEvents
     {
         public static Action OnOpenCanvas, OnCloseCanvas, OnUpdateUpgradeTexts, OnUpgradeBodyguardHire, OnUpgradeBodyguardStamina, OnUpgradeBodyguardSpeed;
+        public static Action OnOpenHireCanvas, OnCloseHireCanvas;
     }
 
     public static class BarEvents
@@ -73,6 +74,7 @@ namespace ZestGames
     public static class BarUpgradeEvents
     {
         public static Action OnOpenCanvas, OnCloseCanvas, OnUpdateUpgradeTexts, OnUpgradeBartenderHire, OnUpgradeBartenderStamina, OnUpgradeBartenderSpeed;
+        public static Action OnOpenHireCanvas, OnCloseHireCanvas;
     }
 
     public static class ToiletEvents
@@ -82,14 +84,17 @@ namespace ZestGames
     public static class ToiletUpgradeEvents
     {
         public static Action OnOpenCanvas, OnCloseCanvas, OnUpdateUpgradeTexts, OnUpgradeCleanerHire, OnUpgradeCleanerStamina, OnUpgradeCleanerSpeed, OnUpgradeToiletDuration;
+        public static Action OnOpenHireCanvas, OnCloseHireCanvas;
     }
 
     public static class DanceFloorEvents
     {
         public static Action OnBouncerHired, OnSetCurrentBouncerStamina, OnSetCurrentBouncerPower;
+
     }
     public static class DanceFloorUpgradeEvents
     {
         public static Action OnOpenCanvas, OnCloseCanvas, OnUpdateUpgradeTexts, OnUpgradeBouncerHire, OnUpgradeBouncerStamina, OnUpgradeBouncerPower;
+        public static Action OnOpenHireCanvas, OnCloseHireCanvas;
     }
 }

@@ -8,8 +8,15 @@ namespace ClubBusiness
     {
         [Header("-- SETUP --")]
         [SerializeField] private Cleaner cleaner;
-        [SerializeField] private ToiletUpgradeCanvas toiletUpgradeCanvas;
         [SerializeField] private Transform cleanerExitTransform;
+        
+        [Header("-- TOILET UPGRADE SETUP --")]
+        [SerializeField] private ToiletUpgradeCanvas toiletUpgradeCanvas;
+        [SerializeField] private ToiletUpgradeArea toiletUpgradeArea;
+
+        [Header("-- CLEANER HIRE SETUP --")]
+        [SerializeField] private CleanerHireCanvas cleanerHireCanvas;
+        [SerializeField] private CleanerHireArea cleanerHireArea;
 
         #region PROPERTIES
         public static Transform ExitTransform { get; private set; }
@@ -94,7 +101,7 @@ namespace ClubBusiness
 
         public void Start()
         {
-            CleanerHiredCost = 1500;
+            CleanerHiredCost = 500;
             FixCount = 5;
             ExitTransform = cleanerExitTransform;
             CleanerStaminaLevelCap = 20;
@@ -108,7 +115,7 @@ namespace ClubBusiness
             UpdateToiletDuration();
             UpdateCleanerHire();
 
-            toiletUpgradeCanvas.Init(this);
+            CheckForCleanerActivation();
 
             ToiletUpgradeEvents.OnUpgradeCleanerHire += CleanerHireUpgrade;
             ToiletUpgradeEvents.OnUpgradeCleanerStamina += CleanerStaminaUpgrade;
@@ -125,6 +132,36 @@ namespace ClubBusiness
 
             SaveData();
         }
+
+        private void CheckForCleanerActivation()
+        {
+            if (CleanerHired)
+                CleanerIsHired();
+            else
+                CleanerIsNotHired();
+        }
+        private void CleanerIsNotHired()
+        {
+            cleanerHireCanvas.gameObject.SetActive(true);
+            cleanerHireCanvas.Init(this);
+            cleanerHireArea.gameObject.SetActive(true);
+            cleanerHireArea.Init(this);
+
+            toiletUpgradeCanvas.gameObject.SetActive(false);
+            toiletUpgradeArea.gameObject.SetActive(false);
+        }
+
+        #region PUBLICS
+        public void CleanerIsHired()
+        {
+            cleanerHireCanvas.gameObject.SetActive(false);
+            cleanerHireArea.gameObject.SetActive(false);
+
+            toiletUpgradeCanvas.gameObject.SetActive(true);
+            toiletUpgradeCanvas.Init(this);
+            toiletUpgradeArea.gameObject.SetActive(true);
+        }
+        #endregion
 
         #region UPGRADE FUNCTIONS
         private void CleanerHireUpgrade()
