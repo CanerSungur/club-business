@@ -6,12 +6,12 @@ namespace ClubBusiness
 {
     public class BartenderHireArea : MonoBehaviour
     {
-        private TextMeshPro _costText;
+        private TextMeshProUGUI _costText;
 
         public void Init(Bar bar)
         {
             if (_costText == null)
-                _costText = transform.GetChild(0).GetChild(0).GetChild(2).GetChild(1).GetComponent<TextMeshPro>();
+                _costText = transform.GetChild(0).GetChild(0).GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
 
             _costText.text = Bar.BartenderHiredCost.ToString();
         }

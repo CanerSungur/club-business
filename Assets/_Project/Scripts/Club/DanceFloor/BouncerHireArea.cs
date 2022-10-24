@@ -6,12 +6,12 @@ namespace ClubBusiness
 {
     public class BouncerHireArea : MonoBehaviour
     {
-        private TextMeshPro _costText;
+        private TextMeshProUGUI _costText;
 
         public void Init(DanceFloor danceFloor)
         {
             if (_costText == null)
-                _costText = transform.GetChild(0).GetChild(0).GetChild(2).GetChild(1).GetComponent<TextMeshPro>();
+                _costText = transform.GetChild(0).GetChild(0).GetChild(1).GetChild(1).GetComponent<TextMeshProUGUI>();
 
             _costText.text = DanceFloor.BouncerHiredCost.ToString();
         }
