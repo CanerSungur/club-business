@@ -21,7 +21,7 @@ Player manages a club by doing its chores, hiring employees and upgrading them. 
   _Player can hire employees to do all of the work. There is a cleaner, bartender and two bodyguards. Employees go idle after working for some time. Player has to warn them to make them work again._
 - **Upgrading Employees**\
   _Employees can be upgraded. There are two upgrades. One is increasing employee's speed and the other one is increasing work time._
-- **Dance Floorç**\
+- **Dance Floor**\
   _Customers can decide to dance for a while if they are happy._
 - **Customer Fighting**\
   _Sometimes customers on dance floor can fight. Player can break the fight or hire a bodyguard to do the work. If nobody breaks the fight, one of the customers faint. After some time they both leave and all the customers become unhappy. If fight is broken, customers continue to the next decision._
